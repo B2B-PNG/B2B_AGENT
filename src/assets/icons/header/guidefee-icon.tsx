@@ -7,13 +7,13 @@ interface Props {
 
 }
 
-const GuideFeeIcon = ({ currentColor = "#000000", width = "24px", height = "24px" }: Props) => {
+const GuideFeeIcon = ({ width = "24px", height = "24px" }: Props) => {
   return (
     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
       viewBox="0 0 512.005 512.005" enableBackground="new 0 0 512.005 512.005" xmlSpace="preserve"
       width={width}
       height={height}
-      fill={currentColor}>
+      fill="currentColor">
       <g>
         <g>
           <g>

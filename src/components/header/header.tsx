@@ -15,8 +15,11 @@ import { useRouter } from "@/routes/hooks/use-router";
 import { CONFIG } from "@/config-global";
 import AuthUserInfo from "@/sections/auth/components/auth-user-info";
 import { useUser } from "@/hooks/actions/useAuth";
+import { useLocation } from "react-router-dom";
 
 const Header = () => {
+  const loccation = useLocation();
+  const pathname = loccation.pathname
   const router = useRouter();
   const { user, userLoading } = useUser();
 
@@ -96,16 +99,26 @@ const Header = () => {
       </div>
 
       <div className="flex items-center gap-5">
-        {dataMenu.map((item) => (
-          <div
-            className="flex items-center gap-2 p-1 cursor-pointer hover:text-blue-600 transition-all"
-            key={item.id}
-            onClick={() => router.push(item.link)}
-          >
-            <div className="">{item.icon}</div>
-            <div className="font-semibold text-[14px]">{item.title}</div>
-          </div>
-        ))}
+        {dataMenu.map((item) => {
+          const isActive = pathname === item.link;
+
+          return (
+            <div
+              key={item.id}
+              onClick={() => router.push(item.link)}
+              className={`
+  flex items-center gap-2 p-1 cursor-pointer transition-all
+  ${isActive
+                  ? "text-[#2566b0] font-semibold"
+                  : "text-gray-700 hover:text-[#2566b0] font-semibold"
+                }
+`}
+            >
+              <div>{item.icon}</div>
+              <div className="text-[14px]">{item.title}</div>
+            </div>
+          );
+        })}
       </div>
     </div >
   );

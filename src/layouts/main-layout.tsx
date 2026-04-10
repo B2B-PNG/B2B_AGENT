@@ -9,7 +9,7 @@ export const MainLayout = ({ children }: Props) => {
   return (
     <>
       <Header />
-      <div className=" pt-35 pb-25">
+      <div className="py-25">
         {children}
       </div>
       <Footer />
