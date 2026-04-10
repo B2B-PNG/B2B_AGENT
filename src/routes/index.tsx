@@ -68,6 +68,10 @@ export function Router() {
               element: <VehiclePage />,
             },
             {
+              path: paths.vehicle.detail,
+              element: <DetailVehiclePage />,
+            },
+            {
               path: paths.guide.list,
               element: <GuidePage />,
             },

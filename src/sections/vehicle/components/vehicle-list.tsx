@@ -1,4 +1,3 @@
-import React from 'react';
 import { Star, MapPin } from 'lucide-react';
 
 // 1. Định nghĩa Interface rõ ràng [Gỡ bỏ any]
