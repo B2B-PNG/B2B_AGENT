@@ -1,4 +1,4 @@
-import logo from "@/assets/images/auth/logo itoursys white.png"
+import logo from "@/assets/images/auth/logo-itoursys-white.png"
 import { useTranslation } from "react-i18next";
 import Lang from "@/components/lang/lang";
 const AuthLeftIDP = () => {

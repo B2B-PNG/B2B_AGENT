@@ -4,20 +4,17 @@ import { paths } from "./paths";
 import InitLayout, { LAYOUT } from "../layouts/init-layout";
 import { SplashScreen } from "@/components/loading";
 const TourPage = lazy(() => import("@/pages/tour/list"));
+const TourDetailPage = lazy(() => import("@/pages/tour/detail"));
 const BoatPage = lazy(() => import("@/pages/boat/list"));
 const FlightPage = lazy(() => import("@/pages/flight/list"));
 const DetailFlightPage = lazy(() => import("@/pages/flight/detail"));
-
-
 const VehiclePage = lazy(() => import("@/pages/vehicle/list"));
 const DetailVehiclePage = lazy(() => import("@/pages/vehicle/detail"));
 const GuidePage = lazy(() => import("@/pages/guide-fee/list"));
 const RestaurantPage = lazy(() => import("@/pages/restaurant/list"));
 const DetailRestaurantPage = lazy(() => import("@/pages/restaurant/detail"));
-
-
-
 const SignInPage = lazy(() => import("@/pages/auth/sign-in"));
+const HotelPage = lazy(() => import("@/pages/hotel/list"));
 
 
 // import InitLayout, { LAYOUT } from "@/layouts/init-layout";
@@ -52,8 +49,16 @@ export function Router() {
               element: <TourPage />,
             },
             {
+              path: paths.tour.detail,
+              element: <TourDetailPage />,
+            },
+            {
               path: paths.boat.list,
               element: <BoatPage />,
+            },
+            {
+              path: paths.hotel.list,
+              element: <HotelPage />,
             },
             {
               path: paths.flight.list,
@@ -83,9 +88,6 @@ export function Router() {
               path: paths.restaurant.detail,
               element: <DetailRestaurantPage />,
             },
-            
-            
-
           ],
         },
 

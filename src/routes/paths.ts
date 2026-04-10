@@ -8,25 +8,29 @@ export const paths = {
     newPassword: "/new-password",
   },
   tour: {
-    list: "/tour"
+    list: "/tour",
+    detail: "/tour-detail"
   },
   boat: {
     list: "/boat"
   },
+  hotel: {
+    list: "/hotel"
+  },
   flight: {
     list: "/flight",
-    detail:"/flight-detail"
+    detail: "/flight-detail"
   },
   vehicle: {
     list: "/vehicle",
-    detail:"/vehicle-detail"
+    detail: "/vehicle-detail"
   },
   guide: {
     list: "/guide"
   },
   restaurant: {
     list: "/restaurant",
-    detail:"/restaurant-detail"
+    detail: "/restaurant-detail"
   },
   backdoor: "/backdoor",
   page403: "/error/403",
