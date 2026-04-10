@@ -24,11 +24,11 @@ const Header = () => {
     { id: "mn_1", title: "Tour", link: paths.root, icon: <TourIcon width="18px" height="18px" /> },
     { id: "mn_2", title: "Khách sạn", link: paths.hotel.list, icon: <HotelIcon width="18px" height="18px" /> },
     { id: "mn_3", title: "Tàu", link: paths.boat.list, icon: <BoatIcon width="18px" height="18px" /> },
-    { id: "mn_6", title: "Nhà hàng", link: paths.root, icon: <RestaurantIcon width="18px" height="18px" /> },
-    { id: "mn_8", title: "Chuyến bay", link: paths.root, icon: <FlightIcon width="18px" height="18px" /> },
-    { id: "mn_4", title: "Phương tiện", link: paths.root, icon: <TransportIcon width="18px" height="18px" /> },
+    { id: "mn_6", title: "Nhà hàng", link: paths.restaurant.list, icon: <RestaurantIcon width="18px" height="18px" /> },
+    { id: "mn_8", title: "Chuyến bay", link: paths.flight.list, icon: <FlightIcon width="18px" height="18px" /> },
+    { id: "mn_4", title: "Phương tiện", link: paths.vehicle.list, icon: <TransportIcon width="18px" height="18px" /> },
     { id: "mn_5", title: "Khuyến mãi", link: paths.root, icon: <VoucherIcon width="18px" height="18px" /> },
-    { id: "mn_7", title: "Phí hướng dẫn", link: paths.root, icon: <GuidefeeIcon width="18px" height="18px" /> },
+    { id: "mn_7", title: "Phí hướng dẫn", link: paths.guide.list, icon: <GuidefeeIcon width="18px" height="18px" /> },
   ];
 
   const renderAuthGroup = () => {
