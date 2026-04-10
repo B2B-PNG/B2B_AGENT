@@ -1,0 +1,89 @@
+import { lazy, Suspense } from "react";
+import { Navigate, Outlet, useRoutes } from "react-router-dom";
+import { paths } from "./paths";
+import InitLayout, { LAYOUT } from "../layouts/init-layout";
+import { SplashScreen } from "@/components/loading";
+const TourPage = lazy(() => import("@/pages/tour/list"));
+const BoatPage = lazy(() => import("@/pages/boat/list"));
+const SignInPage = lazy(() => import("@/pages/auth/sign-in"));
+// import InitLayout, { LAYOUT } from "@/layouts/init-layout";
+// import RootRedirect from "./root-redirect";
+
+export function Router() {
+  // const isLoading = true;
+  // if (isLoading) return <SplashScreen />
+
+
+  const router = useRoutes([
+    {
+      path: "/",
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Outlet />
+        </Suspense>
+      ),
+      children: [
+
+        {
+          element: (
+            // <ProtectedRoute>
+            <InitLayout type={LAYOUT.MAIN}>
+              <Outlet />
+            </InitLayout>
+            //  </ProtectedRoute>
+          ),
+          children: [
+            {
+              path: paths.root,
+              element: <TourPage />,
+            },
+            {
+              path: paths.boat.list,
+              element: <BoatPage />,
+            },
+
+          ],
+        },
+
+        // AUTH LAYOUT
+        {
+          element: (
+            <InitLayout type={LAYOUT.AUTH}>
+              <Outlet />
+            </InitLayout>
+          ),
+          children: [
+            {
+              path: paths.auth.signIn,
+              element: <SignInPage />,
+            },
+            // {
+            //   path: paths.auth.signUp,
+            //   element: <SignUpPage />,
+            // },
+            // {
+            //   path: paths.auth.forgotPass,
+            //   element: <ForgotPasswordPage />,
+            // },
+            // {
+            //   path: paths.auth.newPassword,
+            //   element: <NewPasswordPage />,
+            // },
+          ],
+        },
+      ],
+    },
+
+    // OUTSIDE LAYOUT
+    // {
+    //   path: paths.backdoor,
+    //   element: <BackdoorPage />,
+    // },
+    // {
+    //   path: paths.page404,
+    //   element: <NotFoundPage />,
+    // },
+    { path: "*", element: <Navigate to={paths.page404} replace /> },
+  ]);
+  return router;
+}
