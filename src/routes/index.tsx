@@ -5,7 +5,21 @@ import InitLayout, { LAYOUT } from "../layouts/init-layout";
 import { SplashScreen } from "@/components/loading";
 const TourPage = lazy(() => import("@/pages/tour/list"));
 const BoatPage = lazy(() => import("@/pages/boat/list"));
+const FlightPage = lazy(() => import("@/pages/flight/list"));
+const DetailFlightPage = lazy(() => import("@/pages/flight/detail"));
+
+
+const VehiclePage = lazy(() => import("@/pages/vehicle/list"));
+const DetailVehiclePage = lazy(() => import("@/pages/vehicle/detail"));
+const GuidePage = lazy(() => import("@/pages/guide-fee/list"));
+const RestaurantPage = lazy(() => import("@/pages/restaurant/list"));
+const DetailRestaurantPage = lazy(() => import("@/pages/restaurant/detail"));
+
+
+
 const SignInPage = lazy(() => import("@/pages/auth/sign-in"));
+
+
 // import InitLayout, { LAYOUT } from "@/layouts/init-layout";
 // import RootRedirect from "./root-redirect";
 
@@ -41,6 +55,36 @@ export function Router() {
               path: paths.boat.list,
               element: <BoatPage />,
             },
+            {
+              path: paths.flight.list,
+              element: <FlightPage />,
+            },
+            {
+              path: paths.flight.detail,
+              element: <DetailFlightPage />,
+            },
+            {
+              path: paths.vehicle.list,
+              element: <VehiclePage />,
+            },
+            {
+              path: paths.vehicle.detail,
+              element: <DetailVehiclePage />,
+            },
+            {
+              path: paths.guide.list,
+              element: <GuidePage />,
+            },
+            {
+              path: paths.restaurant.list,
+              element: <RestaurantPage />,
+            },
+            {
+              path: paths.restaurant.detail,
+              element: <DetailRestaurantPage />,
+            },
+            
+            
 
           ],
         },
