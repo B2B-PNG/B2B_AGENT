@@ -13,6 +13,21 @@ export const paths = {
   boat: {
     list: "/boat"
   },
+  flight: {
+    list: "/flight",
+    detail:"/flight-detail"
+  },
+  vehicle: {
+    list: "/vehicle",
+    detail:"/vehicle-detail"
+  },
+  guide: {
+    list: "/guide"
+  },
+  restaurant: {
+    list: "/restaurant",
+    detail:"/restaurant-detail"
+  },
   backdoor: "/backdoor",
   page403: "/error/403",
   page404: "/error/404",
