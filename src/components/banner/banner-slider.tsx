@@ -1,40 +1,18 @@
-import { useEffect, useState } from "react";
-import banner1 from "@/assets/images/tour/banner-01.png"
-import banner2 from "@/assets/images/tour/banner-02.png"
-import banner3 from "@/assets/images/tour/banner-03.png"
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useEffect, useState } from "react";
 
-const slides = [
-    {
-        id: 1,
-        image: banner1,
-        title: "Khám phá thế giới cùng iTourGo",
-        desc: "Trải nghiệm những chuyến đi tuyệt vời với giá tốt nhất",
-    },
-    {
-        id: 2,
-        image: banner2,
-        title: "Du lịch thông minh",
-        desc: "Kết nối hàng ngàn dịch vụ du lịch chất lượng cao",
-    },
-    {
-        id: 3,
-        image: banner3,
-        title: "Hành trình đáng nhớ",
-        desc: "Tạo nên kỷ niệm không thể quên cùng chúng tôi",
-    },
-];
-
-const TourBanner = () => {
+const BannerSlider = ({ slides = [] }: { slides: any[] }) => {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
+        if (!slides.length) return;
+
         const interval = setInterval(() => {
             setIndex((prev) => (prev + 1) % slides.length);
         }, 5000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [slides]);
 
     const prevSlide = () => {
         setIndex((prev) => (prev - 1 + slides.length) % slides.length);
@@ -43,6 +21,8 @@ const TourBanner = () => {
     const nextSlide = () => {
         setIndex((prev) => (prev + 1) % slides.length);
     };
+
+    if (!slides.length) return null;
 
     return (
         <div className="relative w-full h-150 overflow-hidden">
@@ -107,11 +87,8 @@ const TourBanner = () => {
                     </div>
                 ))}
             </div>
-
-
-
         </div>
     );
 };
 
-export default TourBanner;
+export default BannerSlider

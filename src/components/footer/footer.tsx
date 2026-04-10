@@ -1,4 +1,4 @@
-import logoFooter from "@/assets/images/logobanner_itourgo_White_und.png";
+import logoFooter from "@/assets/images/auth/logo-itoursys-white.png";
 import {
   Phone,
   Info,
@@ -109,7 +109,7 @@ const Footer = () => {
       </div>
 
       <div className="text-center text-xs text-white/70 border-t border-white/20 py-4 bg-[#246fb9]">
-        Copyright © 2025 iTourGo - All rights reserved · Legal Notice · Privacy
+        Copyright © 2025 ITourLink - All rights reserved · Legal Notice · Privacy
         Policy · Cookie Policy · Terms & Conditions
       </div>
     </div>

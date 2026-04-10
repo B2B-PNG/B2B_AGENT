@@ -8,10 +8,14 @@ export const paths = {
     newPassword: "/new-password",
   },
   tour: {
-    list: "/tour"
+    list: "/tour",
+    detail: "/tour-detail"
   },
   boat: {
     list: "/boat"
+  },
+  hotel: {
+    list: "/hotel"
   },
   backdoor: "/backdoor",
   page403: "/error/403",

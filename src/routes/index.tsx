@@ -4,8 +4,10 @@ import { paths } from "./paths";
 import InitLayout, { LAYOUT } from "../layouts/init-layout";
 import { SplashScreen } from "@/components/loading";
 const TourPage = lazy(() => import("@/pages/tour/list"));
+const TourDetailPage = lazy(() => import("@/pages/tour/detail"));
 const BoatPage = lazy(() => import("@/pages/boat/list"));
 const SignInPage = lazy(() => import("@/pages/auth/sign-in"));
+const HotelPage = lazy(() => import("@/pages/hotel/list"));
 // import InitLayout, { LAYOUT } from "@/layouts/init-layout";
 // import RootRedirect from "./root-redirect";
 
@@ -38,8 +40,16 @@ export function Router() {
               element: <TourPage />,
             },
             {
+              path: paths.tour.detail,
+              element: <TourDetailPage />,
+            },
+            {
               path: paths.boat.list,
               element: <BoatPage />,
+            },
+            {
+              path: paths.hotel.list,
+              element: <HotelPage />,
             },
 
           ],

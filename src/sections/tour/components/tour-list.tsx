@@ -1,0 +1,129 @@
+import { useRouter } from '@/routes/hooks/use-router';
+import { paths } from '@/routes/paths';
+import { Flag, Clock, MapPin, LayoutGrid, List } from 'lucide-react';
+
+export const TourCard = ({ tour }: any) => {
+
+    const router = useRouter()
+    return (
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col h-full">
+            <div className="relative h-48 overflow-hidden">
+                <img
+                    src={tour.image}
+                    alt={tour.title}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                />
+            </div>
+
+            <div className="p-4 flex flex-col flex-grow">
+                <h3 className="text-[#1a4a8d] font-bold text-lg leading-tight uppercase mb-4 h-14 line-clamp-2">
+                    {tour.title}
+                </h3>
+
+                <div className="space-y-2 mb-4 text-sm text-gray-600">
+                    <div className="flex items-center gap-2">
+                        <Flag size={14} className="text-gray-400" />
+                        <span className="truncate">Bởi: {tour.provider}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <Clock size={14} className="text-gray-400" />
+                        <span>Thời lượng: {tour.duration}</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                        <MapPin size={14} className="text-gray-400 mt-1 shrink-0" />
+                        <span className="line-clamp-2 leading-snug">Các điểm đến: {tour.destinations}</span>
+                    </div>
+                </div>
+
+                <div className="mb-4">
+                    <span className="bg-[#e6f0ff] text-[#3b82f6] text-xs font-medium px-3 py-1 rounded-full">
+                        {tour.type}
+                    </span>
+                </div>
+
+                <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
+                    <div>
+                        <p className="text-xs text-gray-500">Giá từ</p>
+                        <p className="text-[#2563eb] font-bold text-xl">
+                            {tour.price === 'N/A' ? 'N/A' : `$${tour.price}`}
+                        </p>
+                    </div>
+                    <button onClick={() => router.push(paths.tour.detail)} className="cursor-pointer text-blue-600 border border-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors">
+                        Xem chi tiết
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const TourList = () => {
+    const tours = [
+        {
+            id: 1,
+            title: "HÀ NỘI - HẠ LONG - VỊNH NGỌC XANH",
+            provider: "CÔNG TY KẾT NỐI DU LỊCH",
+            duration: "2 Ngày / 1 Đêm",
+            destinations: "Hà Nội",
+            type: "Tour trọn gói",
+            price: "446.9",
+            image: "https://images.unsplash.com/photo-1528127269322-539801943592?w=500"
+        },
+        {
+            id: 2,
+            title: "TOUR NINH BÌNH 1 NGÀY: CHÙA BÁI ĐÍNH - TRÀNG AN",
+            provider: "CÔNG TY KẾT NỐI DU LỊCH",
+            duration: "1 Ngày / 0 Đêm",
+            destinations: "Ninh Bình",
+            type: "Tour hằng ngày",
+            price: "41.04",
+            image: "https://images.unsplash.com/photo-1599708153386-62bf3f035c78?w=500"
+        },
+        {
+            id: 3,
+            title: "NHA TRANG - THÁM HIỂM ĐẠI DƯƠNG TẠI ĐẢO KHỈ",
+            provider: "CÔNG TY KẾT NỐI DU LỊCH",
+            duration: "1 Ngày / 0 Đêm",
+            destinations: "Nha Trang",
+            type: "Tour hằng ngày",
+            price: "N/A",
+            image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500"
+        },
+        {
+            id: 4,
+            title: "HÀ NỘI - NINH BÌNH - HẠ LONG - YÊN TỬ - SAPA 6N5Đ",
+            provider: "CÔNG TY KẾT NỐI DU LỊCH",
+            duration: "6 Ngày / 5 Đêm",
+            destinations: "Sa Pa, Ninh Bình, Hạ Long, Hà Nội",
+            type: "Tour hằng ngày",
+            price: "313.2",
+            image: "https://images.unsplash.com/photo-1504457047772-27faf1c00561?w=500"
+        }
+    ];
+
+    return (
+        <div className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">
+            <div className="flex justify-between items-center mb-8">
+                <h2 className="text-2xl font-bold text-gray-800">Tour nổi bật</h2>
+
+                <div className="flex items-center gap-3 bg-white p-1.5 rounded-lg border border-gray-200 shadow-sm">
+                    <span className="text-sm text-gray-500 ml-2">Hiển thị dạng:</span>
+                    <button className="p-1.5 bg-blue-600 text-white rounded-md shadow-sm">
+                        <LayoutGrid size={18} />
+                    </button>
+                    <button className="p-1.5 text-gray-400 hover:bg-gray-100 rounded-md transition-colors">
+                        <List size={18} />
+                    </button>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {tours.map(tour => (
+                    <TourCard key={tour.id} tour={tour} />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default TourList;
