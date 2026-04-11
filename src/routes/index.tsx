@@ -11,6 +11,7 @@ const DetailFlightPage = lazy(() => import("@/pages/flight/detail"));
 const VehiclePage = lazy(() => import("@/pages/vehicle/list"));
 const DetailVehiclePage = lazy(() => import("@/pages/vehicle/detail"));
 const GuidePage = lazy(() => import("@/pages/guide-fee/list"));
+const DetailGuidePage = lazy(() => import("@/pages/guide-fee/detail"));
 const RestaurantPage = lazy(() => import("@/pages/restaurant/list"));
 const DetailRestaurantPage = lazy(() => import("@/pages/restaurant/detail"));
 const SignInPage = lazy(() => import("@/pages/auth/sign-in"));
@@ -79,6 +80,10 @@ export function Router() {
             {
               path: paths.guide.list,
               element: <GuidePage />,
+            },
+            {
+              path: paths.guide.detail,
+              element: <DetailGuidePage />,
             },
             {
               path: paths.restaurant.list,
