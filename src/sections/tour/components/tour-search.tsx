@@ -46,7 +46,7 @@ const TourSearch = () => {
                         type: "search",
                         key: "keyword",
                         label: "Search",
-                        renderDropdown: ({ value, close }) => (
+                        renderDropdown: ({ value: _value, close }) => (
                             <TourLocationDes
                                 data={searchResult}
                                 isLoading={loading}

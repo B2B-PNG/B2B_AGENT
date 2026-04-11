@@ -7,8 +7,6 @@ import {
     Mail,
     CheckCircle2,
     XCircle,
-    AlertCircle,
-    Info,
     ChevronDown,
     ChevronUp,
 } from "lucide-react";
