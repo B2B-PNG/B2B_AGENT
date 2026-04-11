@@ -1,4 +1,3 @@
-import React from 'react';
 import { CameraOff, Star, Filter, RefreshCcw, Search, ChevronDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 
 const VehicleDetail = () => {
