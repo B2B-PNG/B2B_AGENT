@@ -1,8 +1,7 @@
-import FlightDetail from "@/sections/flight/components/flight-detail"
-
+import HotelDetail from "@/sections/hotel/components/hotel-detail";
 import { CONFIG } from "../../config-global";
 
-const metadata = { title: `Flight Detail - ${CONFIG.appName}` };
+const metadata = { title: `Hotel Detail - ${CONFIG.appName}` };
 
 export default function Page() {
     return (
@@ -10,8 +9,7 @@ export default function Page() {
             <div>
                 <title>{metadata.title}</title>
             </div>
-            
-            <FlightDetail />
+            <HotelDetail />
         </>
     );
 }

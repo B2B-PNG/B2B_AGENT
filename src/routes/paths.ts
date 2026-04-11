@@ -15,7 +15,8 @@ export const paths = {
     list: "/boat"
   },
   hotel: {
-    list: "/hotel"
+    list: "/hotel",
+    detail: "/detail"
   },
   flight: {
     list: "/flight",
@@ -27,7 +28,7 @@ export const paths = {
   },
   guide: {
     list: "/guide",
-    detail:"/guide-detail"
+    detail: "/guide-detail"
   },
   restaurant: {
     list: "/restaurant",

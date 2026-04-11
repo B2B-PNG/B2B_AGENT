@@ -7,15 +7,16 @@ const TourPage = lazy(() => import("@/pages/tour/list"));
 const TourDetailPage = lazy(() => import("@/pages/tour/detail"));
 const BoatPage = lazy(() => import("@/pages/boat/list"));
 const FlightPage = lazy(() => import("@/pages/flight/list"));
-const DetailFlightPage = lazy(() => import("@/pages/flight/detail"));
+const FlightDetailPage = lazy(() => import("@/pages/flight/detail"));
 const VehiclePage = lazy(() => import("@/pages/vehicle/list"));
-const DetailVehiclePage = lazy(() => import("@/pages/vehicle/detail"));
+const VehicleDetailPage = lazy(() => import("@/pages/vehicle/detail"));
 const GuidePage = lazy(() => import("@/pages/guide-fee/list"));
-const DetailGuidePage = lazy(() => import("@/pages/guide-fee/detail"));
+const GuideDetailPage = lazy(() => import("@/pages/guide-fee/detail"));
 const RestaurantPage = lazy(() => import("@/pages/restaurant/list"));
-const DetailRestaurantPage = lazy(() => import("@/pages/restaurant/detail"));
+const RestaurantDetailPage = lazy(() => import("@/pages/restaurant/detail"));
 const SignInPage = lazy(() => import("@/pages/auth/sign-in"));
 const HotelPage = lazy(() => import("@/pages/hotel/list"));
+const HotelDetailPage = lazy(() => import("@/pages/hotel/detail"));
 
 
 // import InitLayout, { LAYOUT } from "@/layouts/init-layout";
@@ -62,12 +63,16 @@ export function Router() {
               element: <HotelPage />,
             },
             {
+              path: paths.hotel.detail,
+              element: <HotelDetailPage />,
+            },
+            {
               path: paths.flight.list,
               element: <FlightPage />,
             },
             {
               path: paths.flight.detail,
-              element: <DetailFlightPage />,
+              element: <FlightDetailPage />,
             },
             {
               path: paths.vehicle.list,
@@ -75,7 +80,7 @@ export function Router() {
             },
             {
               path: paths.vehicle.detail,
-              element: <DetailVehiclePage />,
+              element: <VehicleDetailPage />,
             },
             {
               path: paths.guide.list,
@@ -83,7 +88,7 @@ export function Router() {
             },
             {
               path: paths.guide.detail,
-              element: <DetailGuidePage />,
+              element: <GuideDetailPage />,
             },
             {
               path: paths.restaurant.list,
@@ -91,7 +96,7 @@ export function Router() {
             },
             {
               path: paths.restaurant.detail,
-              element: <DetailRestaurantPage />,
+              element: <RestaurantDetailPage />,
             },
           ],
         },

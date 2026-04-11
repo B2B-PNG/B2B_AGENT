@@ -1,9 +1,11 @@
+import { useRouter } from '@/routes/hooks/use-router';
+import { paths } from '@/routes/paths';
 import { Building2, MapPin, Star, LayoutGrid, List } from 'lucide-react';
 
 const HotelCard = ({ hotel }: any) => {
+    const router = useRouter()
     return (
         <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full group">
-            {/* Hình ảnh với hiệu ứng zoom nhẹ */}
             <div className="relative h-44 overflow-hidden">
                 <img
                     src={hotel.image}
@@ -13,17 +15,14 @@ const HotelCard = ({ hotel }: any) => {
             </div>
 
             <div className="p-4 flex flex-col flex-grow">
-                {/* Tên Khách Sạn */}
                 <h3 className="text-gray-800 font-bold text-[15px] leading-tight uppercase mb-4 h-12 line-clamp-2">
                     {hotel.name}
                 </h3>
 
-                {/* Thông tin chi tiết */}
                 <div className="space-y-2.5 mb-4 text-[13px] text-gray-600">
                     <div className="flex items-center gap-2">
                         <Building2 size={14} className="text-gray-400 shrink-0" />
                         <span>Khách sạn</span>
-                        {/* Rating Stars */}
                         <div className="flex items-center ml-1">
                             {[...Array(5)].map((_, i) => (
                                 <Star
@@ -41,7 +40,6 @@ const HotelCard = ({ hotel }: any) => {
                     </div>
                 </div>
 
-                {/* Badge Tăng/Giảm giá kiểu iTourGo */}
                 <div className="mb-4 relative">
                     <div className="absolute inset-0 flex items-center" aria-hidden="true">
                         <div className="w-full border-t border-gray-100"></div>
@@ -53,7 +51,6 @@ const HotelCard = ({ hotel }: any) => {
                     </div>
                 </div>
 
-                {/* Footer: Giá và Action */}
                 <div className="mt-auto flex items-end justify-between">
                     <div>
                         <p className="text-[11px] text-gray-500 mb-0.5">Giá từ</p>
@@ -61,7 +58,7 @@ const HotelCard = ({ hotel }: any) => {
                             {hotel.price === 'N/A' ? <span className="text-gray-400">N/A</span> : `$${hotel.price}`}
                         </p>
                     </div>
-                    <button className="text-blue-600 border border-blue-200 hover:border-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded-lg text-xs font-medium transition-all">
+                    <button onClick={() => router.push(paths.hotel.detail)} className="cursor-pointer text-[#2563eb] border border-blue-200 hover:border-[#2563eb] hover:bg-blue-50 px-3 py-1.5 rounded-lg text-xs font-medium transition-all">
                         Xem chi tiết
                     </button>
                 </div>
