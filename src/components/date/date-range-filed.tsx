@@ -28,7 +28,7 @@ const DateRangeField = () => {
       {/* Popup */}
       {open && (
         <div className="absolute top-full mt-2 z-50">
-          {/* <TourDateRangePopup
+          {/* <DateRangePopup
             value={range || { startDate: null, endDate: null }}
             onApply={(val) => {
               setRange(val);
