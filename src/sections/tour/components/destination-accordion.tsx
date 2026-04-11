@@ -4,37 +4,32 @@ const DestinationCard = ({ destination, isHovered, onMouseEnter, onMouseLeave }:
     return (
         <div
             className={`relative rounded-xl overflow-hidden transition-all duration-700 ease-in-out cursor-pointer group 
-        ${isHovered ? 'flex-grow-[4] sm:flex-grow-[3]' : 'flex-grow-[1]'}`} // Chiều rộng thay đổi khi hover
+        ${isHovered ? 'flex-grow-[4] sm:flex-grow-[3]' : 'flex-grow-[1]'}`}
             style={{
-                flexBasis: 0, // Bắt buộc để flex-grow hoạt động chính xác
-                height: '400px', // Chiều cao cố định cho các thẻ
+                flexBasis: 0,
+                height: '400px',
             }}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
-            {/* Hình ảnh */}
             <img
                 src={destination.image}
                 alt={destination.name}
                 className="absolute inset-0 w-full h-full object-cover"
             />
 
-            {/* Lớp Overlay Gradient màu đen ở dưới (luôn hiển thị) */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
-            {/* Nội dung (Text và Button) */}
             <div className={`absolute bottom-0 left-0 p-4 transition-all duration-500 ease-in-out w-full
         ${isHovered ? 'p-6' : 'p-4'}`}>
 
-                {/* Tên điểm đến (luôn hiển thị) */}
                 <h3 className="text-white font-bold text-xl drop-shadow-md">
                     {destination.name}
                 </h3>
 
-                {/* Nút "Xem tất cả" (Chỉ hiển thị khi hover) */}
                 <div className={`mt-4 transition-all duration-500 ease-out 
           ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                    <button className="border border-white/80 text-white/90 px-4 py-2 rounded-lg text-sm font-medium hover:bg-white/10 hover:border-white transition-colors duration-200">
+                    <button className="cursor-pointer border border-white/80 text-white/90 px-4 py-2 rounded-lg text-sm font-medium hover:bg-white/10 hover:border-white transition-colors duration-200">
                         Xem tất cả
                     </button>
                 </div>

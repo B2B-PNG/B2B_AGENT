@@ -4,5 +4,5 @@ export const LOGOUT_REQUIRED = "LOGOUT_REQUIRED";
 export const LANGUAGE = "LANGUAGE";
 
 
-export const APP_NAME = "Meta - Alpha";
+export const APP_NAME = "Agent";
 
