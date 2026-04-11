@@ -26,7 +26,8 @@ export const paths = {
     detail: "/vehicle-detail"
   },
   guide: {
-    list: "/guide"
+    list: "/guide",
+    detail:"/guide-detail"
   },
   restaurant: {
     list: "/restaurant",

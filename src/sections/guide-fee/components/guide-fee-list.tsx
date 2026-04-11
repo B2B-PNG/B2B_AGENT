@@ -60,7 +60,7 @@ const guideData: GuideItem[] = [
 const GuideCard = ({ item }: { item: GuideItem }) => {
   const router = useRouter();
 
-  const handleNavigate = () => router.push(paths.guide.list);
+  const handleNavigate = () => router.push(paths.guide.detail);
 
   return (
     <div className="flex bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 h-full min-h-[195px] group">

@@ -57,7 +57,7 @@ const restaurantData: RestaurantItem[] = [
 
 // ─── RestaurantCard ───────────────────────────────────────────────────────────
 
-const RestaurantCard = ({ item }: { item: RestaurantItem }) => {
+export const RestaurantCard = ({ item }: { item: RestaurantItem }) => {
   const router = useRouter();
 
   const handleNavigate = () => router.push(paths.restaurant.detail);
