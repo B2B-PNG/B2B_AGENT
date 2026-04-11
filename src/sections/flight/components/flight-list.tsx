@@ -1,8 +1,9 @@
-import { Star } from 'lucide-react'; // Đảm bảo đã cài: npm install lucide-react
-import { useRouter } from '../../../routes/hooks/use-router';
-import { paths } from '../../../routes/paths';
+import { useRouter } from '@/routes/hooks/use-router';
+import { paths } from '@/routes/paths';
+import { Star, LayoutGrid, List, MapPin } from 'lucide-react';
 
-// 1. Interface theo đúng cấu trúc template
+// ─── Types ───────────────────────────────────────────────────────────────────
+
 interface FlightItem {
   id: number;
   name: string;
@@ -10,25 +11,29 @@ interface FlightItem {
   rating: number;
   address: string;
   price: string;
+  tag?: string;
 }
 
-// 2. Mock Data dựa trên ảnh mẫu của bạn
+// ─── Mock Data ────────────────────────────────────────────────────────────────
+
 const flightData: FlightItem[] = [
   {
     id: 1,
     name: 'BAMBOO AIRWAYS',
-    image: 'https://images.unsplash.com/photo-1542296332-2e4473faf563?q=80&w=600', 
+    image: 'https://images.unsplash.com/photo-1542296332-2e4473faf563?q=80&w=600',
     rating: 5,
     address: 'Sân bay Quốc tế Nội Bài, Hà Nội',
-    price: '$45',
+    price: '45',
+    tag: 'Chuyến bay nổi bật',
   },
   {
     id: 2,
-    name: 'VIETJET AIR(VJ)',
-    image: 'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?q=80&w=600', 
+    name: 'VIETJET AIR (VJ)',
+    image: 'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?q=80&w=600',
     rating: 3,
     address: 'Sân bay Quốc tế Tân Sơn Nhất, TP.HCM',
-    price: '$22',
+    price: '22',
+    tag: 'Giá tiết kiệm',
   },
   {
     id: 3,
@@ -36,82 +41,106 @@ const flightData: FlightItem[] = [
     image: 'https://images.unsplash.com/photo-1520437358207-323b43b50729?q=80&w=600',
     rating: 5,
     address: 'Quận Long Biên, Hà Nội',
-    price: '$60',
+    price: '60',
+    tag: 'Hãng nổi bật',
   },
   {
     id: 4,
     name: 'PACIFIC AIRLINES',
-    image: '', // Vẫn giữ một cái trống để test giao diện placeholder của bạn
+    image: '',
     rating: 0,
     address: 'Quận Tân Bình, TP.HCM',
-    price: '$15',
+    price: '15',
+    tag: 'Đang cập nhật',
   },
 ];
 
-// 3. Sub-component Card (Thực hiện đúng theo layout ngang và style của bạn)
+// ─── FlightCard ───────────────────────────────────────────────────────────────
+
 const FlightCard = ({ item }: { item: FlightItem }) => {
   const router = useRouter();
 
-  const handleOpenDetail = () => {
-    // Giả sử bạn có path flight.detail tương tự restaurant.detail
-    router.push(paths.flight.detail); 
-  };
+  const handleNavigate = () => router.push(paths.flight.detail);
 
   return (
-    <div className="flex bg-white p-2 rounded-lg gap-4 hover:shadow-md transition-shadow border border-gray-100 lg:border-none">
-      {/* Khối ảnh bên trái (Placeholder/Image) */}
-      <div 
-        className="w-1/2 h-44 flex-shrink-0 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center cursor-pointer" 
-        onClick={handleOpenDetail}
+    <div className="flex bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 h-full min-h-[195px] group">
+      {/* Image — left */}
+      <div
+        className="relative w-1/2 overflow-hidden bg-gray-100 cursor-pointer shrink-0"
+        onClick={handleNavigate}
       >
         {item.image ? (
-          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+          <img
+            src={item.image}
+            alt={item.name}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          />
         ) : (
-          <div className="text-gray-400">
+          <div className="w-full h-full flex items-center justify-center text-gray-300 min-h-[160px]">
             <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
             </svg>
           </div>
         )}
       </div>
 
-      {/* Khối nội dung bên phải */}
-      <div className="w-1/2 flex flex-col justify-between py-1">
-        <div>
-          <h3 
-            className="font-bold text-gray-700 text-sm mb-1 uppercase line-clamp-2 cursor-pointer hover:text-blue-600 transition-colors" 
-            onClick={handleOpenDetail}
-          >
-            {item.name}
-          </h3>
-          
-          {/* Đánh giá sao */}
-          <div className="flex mb-2">
-            {[...Array(5)].map((_, i) => (
-              <Star 
-                key={i} 
-                size={14} 
-                className={i < item.rating ? "text-orange-400 fill-orange-400" : "text-gray-300"} 
-              />
-            ))}
-          </div>
+      {/* Content — right */}
+      <div className="w-1/2 p-4 flex flex-col">
+        {/* Airline name */}
+        <h3
+          onClick={handleNavigate}
+          className="text-[#1a4a8d] font-bold text-[15px] leading-tight uppercase mb-3 line-clamp-2 cursor-pointer hover:text-blue-600 transition-colors"
+        >
+          {item.name}
+        </h3>
 
-          {/* Địa chỉ */}
-          <p className="text-[11px] text-gray-600 leading-relaxed mb-2">
-            <span className="font-bold">Địa chỉ:</span> {item.address || 'Đang cập nhật...'}
+        {/* Star rating */}
+        <div className="flex items-center gap-0.5 mb-3">
+          {[...Array(5)].map((_, i) => (
+            <Star
+              key={i}
+              size={13}
+              className={i < item.rating ? 'fill-orange-400 text-orange-400' : 'text-gray-300'}
+            />
+          ))}
+        </div>
+
+        {/* Address */}
+        <div className="flex items-start gap-1.5 mb-3">
+          <MapPin size={13} className="text-gray-400 mt-0.5 shrink-0" />
+          <p className="text-[12px] text-gray-600 leading-relaxed line-clamp-2">
+            {item.address || 'Đang cập nhật...'}
           </p>
         </div>
 
-        <div>
-          {/* Giá tiền */}
-          <p className="text-blue-600 text-xs font-bold mb-3">
-            Giá từ: {item.price}
-          </p>
-          
-          {/* Nút Xem chi tiết */}
-          <button 
-            onClick={handleOpenDetail}
-            className="border border-gray-800 text-gray-800 text-[11px] px-6 py-1.5 rounded-full hover:bg-gray-800 hover:text-white transition-colors uppercase font-medium"
+        {/* Badge */}
+        <div className="mb-3">
+          <span className="inline-block bg-[#e6f0ff] text-[#3b82f6] text-[11px] font-medium px-3 py-1 rounded-full">
+            {item.tag || 'Chuyến bay nổi bật'}
+          </span>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-auto pt-3 border-t border-gray-100 flex items-end justify-between gap-2">
+          <div>
+            <p className="text-[11px] text-gray-500 mb-0.5">Giá từ</p>
+            <p className="text-[#2563eb] font-bold text-lg leading-none">
+              {item.price === 'N/A' ? (
+                <span className="text-gray-400 text-base">N/A</span>
+              ) : (
+                `$${item.price}`
+              )}
+            </p>
+          </div>
+
+          <button
+            onClick={handleNavigate}
+            className="cursor-pointer text-blue-600 border border-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap"
           >
             Xem chi tiết
           </button>
@@ -121,23 +150,30 @@ const FlightCard = ({ item }: { item: FlightItem }) => {
   );
 };
 
-// 4. Main Component List
-export const FlightList = () => {
-  return (
-    <section className="max-w-7xl mx-auto py-10 px-6">
-      {/* Tiêu đề */}
-      <h1 className="text-2xl font-bold text-gray-800 mb-8 uppercase">
-        Chuyến bay
-      </h1>
-      
-      {/* Grid layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-8">
-        {flightData.map((item) => (
-          <FlightCard key={item.id} item={item} />
-        ))}
+// ─── FlightList ───────────────────────────────────────────────────────────────
+
+const FlightList = () => (
+  <section className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">
+    <div className="flex justify-between items-center mb-8">
+      <h2 className="text-2xl font-bold text-gray-800">Chuyến bay nổi bật</h2>
+
+      <div className="flex items-center gap-3 bg-white p-1.5 rounded-lg border border-gray-200 shadow-sm">
+        <span className="text-sm text-gray-500 ml-2">Hiển thị dạng:</span>
+        <button className="p-1.5 bg-blue-600 text-white rounded-md shadow-sm">
+          <LayoutGrid size={18} />
+        </button>
+        <button className="p-1.5 text-gray-400 hover:bg-gray-100 rounded-md transition-colors">
+          <List size={18} />
+        </button>
       </div>
-    </section>
-  );
-};
+    </div>
+
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {flightData.map((item) => (
+        <FlightCard key={item.id} item={item} />
+      ))}
+    </div>
+  </section>
+);
 
 export default FlightList;
