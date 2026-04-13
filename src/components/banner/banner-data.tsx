@@ -63,3 +63,83 @@ export const slidesBoat = [
         desc: "Chinh phục những vùng biển tuyệt vời",
     },
 ];
+export const slidesRestaurant = [
+    {
+        id: 1,
+        image: "https://images.unsplash.com/photo-1517248135467-4c7ed906c40a?q=80&w=1600",
+        title: "Ẩm thực tinh hoa",
+        desc: "Thưởng thức hương vị đặc sắc từ các đầu bếp hàng đầu",
+    },
+    {
+        id: 2,
+        image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=1600",
+        title: "Không gian sang trọng",
+        desc: "Địa điểm lý tưởng cho những bữa tiệc ấm cúng",
+    },
+    {
+        id: 3,
+        image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1600",
+        title: "Trải nghiệm vị giác",
+        desc: "Sự kết hợp hoàn hảo giữa truyền thống và hiện đại",
+    },
+];
+export const slidesVehicle = [
+    {
+        id: 1,
+        image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1600",
+        title: "Xe du lịch đời mới",
+        desc: "Hệ thống xe hiện đại, tiện nghi và an toàn",
+    },
+    {
+        id: 2,
+        image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=1600",
+        title: "Xe đưa đón riêng biệt",
+        desc: "Dịch vụ chuyên nghiệp, đúng giờ và tận tâm",
+    },
+    {
+        id: 3,
+        image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=1600",
+        title: "Hành trình êm ái",
+        desc: "Đảm bảo sự thoải mái tối đa trên mọi cung đường",
+    },
+];
+export const slidesFlight = [
+    {
+        id: 1,
+        image: "https://images.unsplash.com/photo-1436491865332-7a61a109c055?q=80&w=1600",
+        title: "Cất cánh vươn xa",
+        desc: "Kết nối bạn đến những điểm đến mơ ước",
+    },
+    {
+        id: 2,
+        image: "https://images.unsplash.com/photo-1507477338308-b7c4360176fb?q=80&w=1600",
+        title: "Dịch vụ hàng không 5 sao",
+        desc: "Tận hưởng sự tiện nghi ngay trên tầng mây",
+    },
+    {
+        id: 3,
+        image: "https://images.unsplash.com/photo-1530521954074-e64f6810b32d?q=80&w=1600",
+        title: "Ưu đãi vé máy bay",
+        desc: "Săn vé giá tốt cho hành trình thêm trọn vẹn",
+    },
+];
+export const slidesGuideFee = [
+    {
+        id: 1,
+        image: "https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?q=80&w=1600",
+        title: "Hướng dẫn viên chuyên nghiệp",
+        desc: "Người đồng hành am hiểu văn hóa và lịch sử",
+    },
+    {
+        id: 2,
+        image: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=1600",
+        title: "Chi phí minh bạch",
+        desc: "Gói dịch vụ đa dạng phù hợp với mọi nhu cầu",
+    },
+    {
+        id: 3,
+        image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1600",
+        title: "Hỗ trợ 24/7",
+        desc: "Tận tâm giải đáp và hỗ trợ du khách suốt chuyến đi",
+    },
+];
