@@ -1,9 +1,14 @@
 import VehicleList from './components/vehicle-list';
+import BannerSlider from '@/components/banner/banner-slider';
+import { slidesVehicle } from '@/components/banner/banner-data';
 
-const VehicleView = () => (
-  <main className="min-h-screen bg-gray-50">
-    <VehicleList />
-  </main>
-);
+const VehicleView = () => {
+  return (
+    <main className="min-h-screen bg-gray-50">
+      <BannerSlider slides={slidesVehicle} />
+      <VehicleList />
+    </main>
+  );
+};
 
 export default VehicleView;

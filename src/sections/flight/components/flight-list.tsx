@@ -153,9 +153,13 @@ const FlightCard = ({ item }: { item: FlightItem }) => {
 // ─── FlightList ───────────────────────────────────────────────────────────────
 
 const FlightList = () => (
-  <section className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">
-    <div className="flex justify-between items-center mb-8">
-      <h2 className="text-2xl font-bold text-gray-800">Chuyến bay nổi bật</h2>
+  <section className="max-w-7xl mx-auto px-6  mb-10">
+    
+    {/* Header */}
+    <div className="flex justify-between items-center mb-6">
+      <h2 className="text-2xl font-bold text-gray-800">
+        Chuyến bay nổi bật
+      </h2>
 
       <div className="flex items-center gap-3 bg-white p-1.5 rounded-lg border border-gray-200 shadow-sm">
         <span className="text-sm text-gray-500 ml-2">Hiển thị dạng:</span>
@@ -168,11 +172,13 @@ const FlightList = () => (
       </div>
     </div>
 
+    {/* List */}
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {flightData.map((item) => (
         <FlightCard key={item.id} item={item} />
       ))}
     </div>
+
   </section>
 );
 
