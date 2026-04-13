@@ -16,6 +16,10 @@ const Header = () => {
   const router = useRouter();
   const { user, userLoading } = useUser();
 
+  const handleLogin = async () => {
+    window.location.href = `${CONFIG.serverUrl}auth/login`;
+  };
+
   const renderAuthGroup = () => {
     if (userLoading) {
       return (
@@ -28,27 +32,25 @@ const Header = () => {
     }
 
     return (
-      <div className="flex w-auto h-10 relative justify-center items-center rounded-lg border border-[rgba(64,64,64,0.5)]">
+      <button onClick={() => handleLogin()} className="cursor-pointer flex w-auto h-10 relative justify-center items-center rounded-lg border border-[rgba(64,64,64,0.5)] hover:bg-slate-50">
         <button
-          onClick={() => (window.location.href = `${CONFIG.serverUrl}auth/login`)}
-          className="w-10 flex justify-center cursor-pointer hover:bg-slate-50 transition-colors"
+
+          className="w-10 flex justify-center cursor-pointer transition-colors"
         >
           <LogIn color="#000000" size={18} />
         </button>
 
-        <div className="h-10 w-px bg-[rgba(64,64,64,0.5)]" />
+        {/* <div className="h-10 w-px bg-[rgba(64,64,64,0.5)]" />
 
         <button onClick={() => { }} className="w-10 flex justify-center hover:bg-slate-50 transition-colors">
           <UserPlus color="#000000" size={18} />
-        </button>
-      </div>
+        </button> */}
+      </button>
     );
   };
 
   return (
     <div className="bg-white px-6 fixed top-0 left-0 w-full z-51 shadow h-30 flex flex-col justify-center gap-5">
-
-
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-5">
           <button onClick={() => router.push(paths.root)} className="overflow-hidden w-10 cursor-pointer">
@@ -59,7 +61,7 @@ const Header = () => {
             Thiết lập kênh bán
           </button>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center">
           <div className="flex items-center gap-2">
             <Lang />
             <Currency />
@@ -71,9 +73,6 @@ const Header = () => {
               Danh sách Agent Host
             </button>
           </div>
-
-
-
           <div className="ml-2">
             {renderAuthGroup()}
           </div>

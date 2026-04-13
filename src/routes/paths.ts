@@ -7,8 +7,11 @@ export const paths = {
     forgotPass: "/forgot-pass",
     newPassword: "/new-password",
   },
+  agentTest: {
+    list: "/"
+  },
   tour: {
-    list: "/",
+    list: "/tour",
     detail: "/tour-detail"
   },
   boat: {
@@ -33,6 +36,9 @@ export const paths = {
   restaurant: {
     list: "/restaurant",
     detail: "/restaurant-detail"
+  },
+  voucher: {
+    list: "/voucher"
   },
   backdoor: "/backdoor",
   page403: "/error/403",

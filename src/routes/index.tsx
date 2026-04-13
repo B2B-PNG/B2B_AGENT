@@ -3,6 +3,7 @@ import { Navigate, Outlet, useRoutes } from "react-router-dom";
 import { paths } from "./paths";
 import InitLayout, { LAYOUT } from "../layouts/init-layout";
 import { SplashScreen } from "@/components/loading";
+import { AuthRoute } from "./auth-route";
 const TourPage = lazy(() => import("@/pages/tour/list"));
 const TourDetailPage = lazy(() => import("@/pages/tour/detail"));
 const BoatPage = lazy(() => import("@/pages/boat/list"));
@@ -17,6 +18,8 @@ const RestaurantDetailPage = lazy(() => import("@/pages/restaurant/detail"));
 const SignInPage = lazy(() => import("@/pages/auth/sign-in"));
 const HotelPage = lazy(() => import("@/pages/hotel/list"));
 const HotelDetailPage = lazy(() => import("@/pages/hotel/detail"));
+const Page404Page = lazy(() => import("@/pages/error/page404"));
+const AgentTestPage = lazy(() => import("@/pages/agent-test/list"));
 
 
 // import InitLayout, { LAYOUT } from "@/layouts/init-layout";
@@ -40,14 +43,17 @@ export function Router() {
         {
           element: (
             // <ProtectedRoute>
-            <InitLayout type={LAYOUT.MAIN}>
-              <Outlet />
-            </InitLayout>
+            <AuthRoute>
+
+              <InitLayout type={LAYOUT.MAIN}>
+                <Outlet />
+              </InitLayout>
+            </AuthRoute>
             //  </ProtectedRoute>
           ),
           children: [
             {
-              path: paths.root,
+              path: paths.tour.list,
               element: <TourPage />,
             },
             {
@@ -101,6 +107,24 @@ export function Router() {
           ],
         },
 
+        // INFO LAYOUT
+        {
+          element: (
+            <AuthRoute>
+              <InitLayout type={LAYOUT.INFO}>
+                <Outlet />
+              </InitLayout>
+            </AuthRoute>
+          ),
+          children: [
+            {
+              // path: paths.agentTest.list,
+              index: true,
+              element: <AgentTestPage />,
+            },
+          ],
+        },
+
         // AUTH LAYOUT
         {
           element: (
@@ -113,32 +137,14 @@ export function Router() {
               path: paths.auth.signIn,
               element: <SignInPage />,
             },
-            // {
-            //   path: paths.auth.signUp,
-            //   element: <SignUpPage />,
-            // },
-            // {
-            //   path: paths.auth.forgotPass,
-            //   element: <ForgotPasswordPage />,
-            // },
-            // {
-            //   path: paths.auth.newPassword,
-            //   element: <NewPasswordPage />,
-            // },
           ],
         },
+
       ],
     },
 
     // OUTSIDE LAYOUT
-    // {
-    //   path: paths.backdoor,
-    //   element: <BackdoorPage />,
-    // },
-    // {
-    //   path: paths.page404,
-    //   element: <NotFoundPage />,
-    // },
+    { path: paths.page404, element: <Page404Page /> },
     { path: "*", element: <Navigate to={paths.page404} replace /> },
   ]);
   return router;

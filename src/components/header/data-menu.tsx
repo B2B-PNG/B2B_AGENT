@@ -20,7 +20,7 @@ export const dataMenu = [
     id: "mn_2",
     title: "Khách sạn",
     link: paths.hotel.list,
-    match: [paths.hotel.list],
+    match: [paths.hotel.list, paths.hotel.detail],
     icon: <HotelIcon width="18px" height="18px" />,
   },
   {
@@ -54,8 +54,8 @@ export const dataMenu = [
   {
     id: "mn_5",
     title: "Khuyến mãi",
-    link: paths.root,
-    match: [paths.root],
+    link: paths.voucher.list,
+    match: [paths.voucher.list],
     icon: <VoucherIcon width="18px" height="18px" />,
   },
   {

@@ -7,48 +7,6 @@ export interface IFiltersRequestParams {
   id?: string;
   page?: string | number;
   limit?: string | number;
-  status?: string;
-  sortBy?: string;
-  type?: string;
-  duration?: string;
-  currency?: string;
-  transaction?: string;
-  packageId?: string;
-  symbol?: string;
-  startTime?: string;
-  endTime?: string;
-  search?: string;
-  asset?: string;
-  walletType?: string;
-  category?: string;
-  interval?: string;
-  chainId?: string;
-  marketType?: string;
-  keyWord?: string;
-  userId?: string;
-  userIdCex?: string;
-  orderBy?: string;
-  order?: string;
-  isActive?: string;
-  isVerified?: string;
-  days?: string;
-  mode?: string;
-  side?: string;
-  traderId?: string;
-  sort?: string;
-  level?: string;
-  packageN?: string;
-  signalId?: string;
-  active?: string;
-  groupName?: string;
-  signalGroupId?: string;
-  email?: string;
-  period?: string;
-  sort_feild?: string;
-  orderStatus?: string;
-  startDate?: string;
-  endDate?: string;
-  groupId?: string;
 }
 export interface IParamsRequest {
   limit: number;
@@ -67,22 +25,16 @@ export interface AxiosErrorResponse {
     statusText?: string;
   };
 }
-export interface IPaginationMeta<T> {
-  result: T[];
-  meta: IMeta;
-}
 
-interface IMeta {
-  page: number;
-  limit: number;
-  itemCount: number;
-  pageCount: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-  totalPages?: number;
+export interface ApiResponse<T> {
+  data: T;
+  isSuccess: boolean;
+  message: string | null;
+  errors: any;
 }
-
-export interface IPaginationMetaBot<T> {
-  results: T[];
-  meta: IMeta;
+export interface ApiResponseUser<T> {
+  data: T[][];
+  isSuccess: boolean;
+  message: string | null;
+  errors: any;
 }

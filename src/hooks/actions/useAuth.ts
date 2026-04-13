@@ -1,38 +1,46 @@
 import apiClient from "@/axios";
-import type { ILogin, IUser } from "../interfaces/auth";
-import { QUERY_KEYS } from "./query-keys";
-import { useQuery } from "@tanstack/react-query";
+import { useUserStore } from "@/zustand/useUserStore";
+import { useEffect, useRef } from "react";
+import type { IUser } from "../interfaces/auth";
+import type { ApiResponseUser } from "../interfaces/axios";
 
-export const useLogin = async (data: ILogin) => {
-  const res = await apiClient.post("login", data);
-  return res;
+export const useUser = () => {
+  const user = useUserStore((state) => state.user);
+  const userLoading = useUserStore((state) => state.loading);
+
+  const setUser = useUserStore((state) => state.setUser);
+  const clearUser = useUserStore((state) => state.clearUser);
+  const setLoading = useUserStore((state) => state.setLoading);
+
+  const hasFetched = useRef(false);
+
+  useEffect(() => {
+    if (hasFetched.current || user !== null) return;
+    hasFetched.current = true;
+
+    const fetchUser = async () => {
+      setLoading(true);
+
+      try {
+        const res = (await apiClient.get<ApiResponseUser<IUser>>(
+          "user/GetMemberDetail"
+        )) as any;
+
+        if (res?.isSuccess) {
+          const user = res.data?.[0]?.[0] || null;
+          setUser(user);
+        } else {
+          clearUser();
+        }
+      } catch {
+        clearUser();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [user]);
+
+  return { user, userLoading };
 };
-
-
-export const fetchUser = async () => {
-  const response = await apiClient.get(`user/information`);
-  return response.data;
-};
-
-export function useUser() {
-
-  const { data, isLoading, error, isFetching, refetch } = useQuery<IUser>({
-    queryKey: [QUERY_KEYS.AUTH.USER_INFO],
-    queryFn: fetchUser,
-    enabled: true,
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 1000 * 60 * 5,
-  });
-
-  const isEmpty = !data || (Object.keys(data).length === 0);
-
-  return {
-    user: data || null,
-    userLoading: isLoading,
-    userFetching: isFetching,
-    userError: error,
-    userEmpty: isEmpty,
-    refetchUser: refetch,
-  };
-}

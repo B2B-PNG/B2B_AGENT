@@ -1,6 +1,9 @@
+import { useListTour } from '@/hooks/actions/useTour';
 import { useRouter } from '@/routes/hooks/use-router';
 import { paths } from '@/routes/paths';
+import { getUrlImage } from '@/utils/format-image';
 import { Flag, Clock, MapPin, LayoutGrid, List } from 'lucide-react';
+import { useState } from 'react';
 
 export const TourCard = ({ tour }: any) => {
 
@@ -9,8 +12,8 @@ export const TourCard = ({ tour }: any) => {
         <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col h-full">
             <div className="relative h-48 overflow-hidden">
                 <img
-                    src={tour.image}
-                    alt={tour.title}
+                    src={getUrlImage(tour?.strTourImageUrl)}
+                    alt={tour?.strTourName}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
             </div>
@@ -23,7 +26,7 @@ export const TourCard = ({ tour }: any) => {
                 <div className="space-y-2 mb-4 text-sm text-gray-600">
                     <div className="flex items-center gap-2">
                         <Flag size={14} className="text-gray-400" />
-                        <span className="truncate">Bởi: {tour.provider}</span>
+                        <span className="truncate">Bởi: {tour?.strOwnerCompanyName}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <Clock size={14} className="text-gray-400" />
@@ -58,48 +61,15 @@ export const TourCard = ({ tour }: any) => {
 };
 
 const TourList = () => {
-    const tours = [
-        {
-            id: 1,
-            title: "HÀ NỘI - HẠ LONG - VỊNH NGỌC XANH",
-            provider: "CÔNG TY KẾT NỐI DU LỊCH",
-            duration: "2 Ngày / 1 Đêm",
-            destinations: "Hà Nội",
-            type: "Tour trọn gói",
-            price: "446.9",
-            image: "https://images.unsplash.com/photo-1528127269322-539801943592?w=500"
-        },
-        {
-            id: 2,
-            title: "TOUR NINH BÌNH 1 NGÀY: CHÙA BÁI ĐÍNH - TRÀNG AN",
-            provider: "CÔNG TY KẾT NỐI DU LỊCH",
-            duration: "1 Ngày / 0 Đêm",
-            destinations: "Ninh Bình",
-            type: "Tour hằng ngày",
-            price: "41.04",
-            image: "https://images.unsplash.com/photo-1599708153386-62bf3f035c78?w=500"
-        },
-        {
-            id: 3,
-            title: "NHA TRANG - THÁM HIỂM ĐẠI DƯƠNG TẠI ĐẢO KHỈ",
-            provider: "CÔNG TY KẾT NỐI DU LỊCH",
-            duration: "1 Ngày / 0 Đêm",
-            destinations: "Nha Trang",
-            type: "Tour hằng ngày",
-            price: "N/A",
-            image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500"
-        },
-        {
-            id: 4,
-            title: "HÀ NỘI - NINH BÌNH - HẠ LONG - YÊN TỬ - SAPA 6N5Đ",
-            provider: "CÔNG TY KẾT NỐI DU LỊCH",
-            duration: "6 Ngày / 5 Đêm",
-            destinations: "Sa Pa, Ninh Bình, Hạ Long, Hà Nội",
-            type: "Tour hằng ngày",
-            price: "313.2",
-            image: "https://images.unsplash.com/photo-1504457047772-27faf1c00561?w=500"
-        }
-    ];
+    const [filters, setFilters] = useState({
+        page: 1,
+        pageSize: 15,
+    });
+
+    const { tourData, tourLoading, tourError } = useListTour(filters);
+
+    console.log("tourData", tourData)
+
 
     return (
         <div className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">
@@ -118,8 +88,8 @@ const TourList = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {tours.map(tour => (
-                    <TourCard key={tour.id} tour={tour} />
+                {tourData.map((tour: any) => (
+                    <TourCard key={tourData.strTourGUID} tour={tour} />
                 ))}
             </div>
         </div>
