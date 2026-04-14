@@ -11,7 +11,6 @@ const AgentTestView = () => {
         <div className="p-4 bg-white min-h-screen">
             <div className="overflow-hidden border border-gray-200 rounded-lg shadow-sm">
                 <table className="w-full text-left border-collapse">
-                    {/* Table Header */}
                     <thead>
                         <tr className="bg-[#D9EFFF]">
                             <th className="px-4 py-3 text-[#1E56A0] font-semibold text-sm w-16">STT</th>

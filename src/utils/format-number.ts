@@ -89,8 +89,27 @@ export const fAddress = (
 
 export const truncateText = (text: string, maxLength?: number) => {
   if (!text) return "";
-  if (!maxLength) return text; // không truyền thì giữ nguyên
+  if (!maxLength) return text;
   return text.length > maxLength
     ? text.slice(0, maxLength) + "..."
     : text;
+};
+
+
+export const formatPrice = (price: any) => {
+  if (
+    price === null ||
+    price === undefined ||
+    price === '' ||
+    price === 'N/A' ||
+    (typeof price === 'object' && Object.keys(price).length === 0)
+  ) {
+    return '---';
+  }
+
+  const num = Number(price);
+
+  if (isNaN(num) || num <= 0) return '---';
+
+  return `$${num}`;
 };

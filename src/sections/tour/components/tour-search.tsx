@@ -46,6 +46,7 @@ const TourSearch = () => {
                         type: "search",
                         key: "keyword",
                         label: "Search",
+                        placeholder: "Search...",
                         renderDropdown: ({ value: _value, close }) => (
                             <TourLocationDes
                                 data={searchResult}
@@ -60,7 +61,6 @@ const TourSearch = () => {
 
                     { type: "guest", key: "guest" },
                     { type: "dateRange", keyStart: "start", keyEnd: "end" },
-                    { type: "date", key: "date" },
                 ]}
                 values={filters}
                 onChange={(k, v) => setFilters((p: any) => ({ ...p, [k]: v }))}
