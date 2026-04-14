@@ -31,14 +31,14 @@ export const useListFlight = (filters: { page: number; pageSize: number }) => {
                 strFilterLocationCode: null,
                 strPriceFromRange: null,
                 dtmDateStart: null,
-                intCateID:6 ,
+                intCateID: 6,
                 strListEasiaCateID: null,
                 intCurPage: filters.page,
                 intPageSize: filters.pageSize,
                 strOrder: null,
                 tblsReturn: "[0]",
             }),
-        enabled: !!user && !!coData,
+        enabled: !!user?.strCompanyGUID && !!coData?.strCompanyGUID && !!user?.intCurrencyID,
         placeholderData: keepPreviousData,
     });
 
@@ -60,7 +60,58 @@ const fetchDetailFlight = async (body: any) => {
     return res.data;
 };
 
-export const useDetailFlight = (filters: {}) => {
+export const useDetailFlight = (filters: {
+  page: number;
+  pageSize: number;
+  strSupplierGUID?: string | null;
+  strFilterSupplierName?: string | null;
+}) => {
+  const { user } = useUser();
+  const { coData } = useListCompanyOwner();
+
+  const query = useQuery({
+    queryKey: [
+      QUERY_KEYS.FLIGHT.DETAIL_FLIGHT,
+      filters,
+      user?.strCompanyGUID,
+      coData?.strCompanyGUID,
+      user?.intCurrencyID,
+    ],
+    queryFn: () =>
+      fetchDetailFlight({
+        strCompanyPartnerGUID:  user?.strCompanyGUID,
+        strCompanyOwnerGUID: coData?.strCompanyGUID,
+        strSupplierGUID: filters?.strSupplierGUID ?? null,
+        intCurrencyID: user?.intCurrencyID,
+        strFilterSupplierName: filters?.strFilterSupplierName ?? null,
+        strFilterLocationCode: null,
+        strPriceFromRange: null,
+        dtmDateStart: null,
+        intCateID: 6,
+        strListEasiaCateID: null,
+        intCurPage: filters?.page,
+        intPageSize: filters?.pageSize,
+        strOrder: null,
+        tblsReturn: "[0]",
+      }),
+    enabled:
+      !!user?.strCompanyGUID &&
+      !!coData?.strCompanyGUID &&
+      !!user?.intCurrencyID &&
+      (!!filters?.strSupplierGUID || !!filters?.strFilterSupplierName),
+    placeholderData: keepPreviousData,
+  });
+  const listData = query.data?.[0] ?? [];
+  const totalRecords = listData?.[0]?.intTotalRecords || 0;
+  const totalPages = Math.ceil(totalRecords / filters.pageSize);
+
+  return {
+    fdData: listData,
+    totalRecords,
+    totalPages,
+    fdLoading: query.isLoading,
+    fdError: query.isError,
+  };
+};
 
 
-}

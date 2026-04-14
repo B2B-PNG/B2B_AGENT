@@ -2,69 +2,21 @@ import { useListFlight } from '@/hooks/actions/useFilght';
 import { useRouter } from '@/routes/hooks/use-router';
 import { paths } from '@/routes/paths';
 import { Star, LayoutGrid, List, MapPin } from 'lucide-react';
-import { useState } from 'react';
 import { getUrlImage } from '@/utils/format-image';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-
-// interface FlightItem {
-//   id: number;
-//   name: string;
-//   image: string;
-//   rating: number;
-//   address: string;
-//   price: string;
-//   tag?: string;
-// }
-
-// ─── Mock Data ────────────────────────────────────────────────────────────────
-
-// const flightData: FlightItem[] = [
-//   {
-//     id: 1,
-//     name: 'BAMBOO AIRWAYS',
-//     image: 'https://images.unsplash.com/photo-1542296332-2e4473faf563?q=80&w=600',
-//     rating: 5,
-//     address: 'Sân bay Quốc tế Nội Bài, Hà Nội',
-//     price: '45',
-//     tag: 'Chuyến bay nổi bật',
-//   },
-//   {
-//     id: 2,
-//     name: 'VIETJET AIR (VJ)',
-//     image: 'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?q=80&w=600',
-//     rating: 3,
-//     address: 'Sân bay Quốc tế Tân Sơn Nhất, TP.HCM',
-//     price: '22',
-//     tag: 'Giá tiết kiệm',
-//   },
-//   {
-//     id: 3,
-//     name: 'VIETNAM AIRLINES',
-//     image: 'https://images.unsplash.com/photo-1520437358207-323b43b50729?q=80&w=600',
-//     rating: 5,
-//     address: 'Quận Long Biên, Hà Nội',
-//     price: '60',
-//     tag: 'Hãng nổi bật',
-//   },
-//   {
-//     id: 4,
-//     name: 'PACIFIC AIRLINES',
-//     image: '',
-//     rating: 0,
-//     address: 'Quận Tân Bình, TP.HCM',
-//     price: '15',
-//     tag: 'Đang cập nhật',
-//   },
-// ];
 
 // ─── FlightCard ───────────────────────────────────────────────────────────────
 
 const FlightCard = ({ flight }:  any ) => {
   const router = useRouter();
 
-  const handleNavigate = () => router.push(paths.flight.detail);
+  const handleNavigate = () => {
+    const supplierGuidQuery = flight?.strSupplierGUID
+      ? `?supplierGuid=${encodeURIComponent(flight.strSupplierGUID)}`
+      : "";
 
+    router.replaceParams(`${paths.flight.detail}${supplierGuidQuery}`, { item: flight });
+  };
   return (
     <div className="flex bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 h-full min-h-[195px] group">
       {/* Image — left */}
@@ -120,16 +72,16 @@ const FlightCard = ({ flight }:  any ) => {
           <div>
             <p className="text-[11px] text-gray-500 mb-0.5">Giá từ</p>
             <p className="text-[#2563eb] font-bold text-lg leading-none">
-              {flight.dblMaxPriceFrom === '$0' || flight.dblMaxPriceFrom === 'N/A' ? (
+              {flight.dblPriceFrom === '$0' || flight.dblPriceFrom === 'N/A' ? (
                 <span className="text-gray-400 text-base">N/A</span>
               ) : (
-                flight.dblMaxPriceFrom
+                flight.dblPriceFrom
               )}
             </p>
           </div>
 
           <button
-            onClick={handleNavigate}
+            onClick={() => handleNavigate()}
             className="cursor-pointer text-blue-600 border border-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap"
           >
             Xem chi tiết
@@ -143,16 +95,12 @@ const FlightCard = ({ flight }:  any ) => {
 // ─── FlightList ───────────────────────────────────────────────────────────────
 
 const FlightList = () => {
-
-
-  const [filters, setFilters] = useState({
+  const filters = {
     page:1,
     pageSize: 15,
-  })
+  };
 
-  const { flightData, flightLoading, flightError} = useListFlight(filters);
-  console.log("flightData", flightData);
-  
+  const { flightData } = useListFlight(filters);
 
   return (
     <section className="max-w-7xl mx-auto px-6  mb-10">
