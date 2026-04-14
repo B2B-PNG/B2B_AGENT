@@ -3,6 +3,7 @@ import { useUser } from "@/hooks/actions/useAuth";
 import { User, LogOut, ChevronDown } from "lucide-react";
 import { getUrlImage } from "@/utils/format-image";
 import { CONFIG } from "@/config-global";
+import { truncateEmail, truncateText } from "@/utils/format-number";
 
 const AuthUserInfo = () => {
     const { user, userLoading } = useUser();
@@ -45,15 +46,15 @@ const AuthUserInfo = () => {
 
                 }
 
-                <span className="font-medium text-slate-700">{user.strFullName || "User"}</span>
+                <span className="font-medium text-slate-700">{truncateText(user.strFullName, 10) || "User"}</span>
                 <ChevronDown size={16} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
             </button>
 
             {isOpen && (
                 <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-100 py-4 z-50">
                     <div className="px-4 pb-3 border-b border-slate-50">
-                        <p className="font-bold text-slate-800">{user?.strFullName}</p>
-                        <p className="text-sm text-slate-400 truncate">{user?.strEmail}</p>
+                        <p className="font-bold text-slate-800">{truncateText(user?.strFullName, 10)}</p>
+                        <p className="text-sm text-slate-400 truncate">{truncateEmail(user?.strEmail, 10)}</p>
                     </div>
 
                     <div className="mt-2">

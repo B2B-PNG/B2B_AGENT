@@ -4,27 +4,27 @@ import EyeIcon from "@/assets/icons/auth/eye-icon";
 import PrimaryButton from "@/components/button/primary-button";
 import { Field, Form } from "@/components/hook-form";
 import { useBoolean } from "@/hooks/components/use-boolean";
-import { useMutation } from "@tanstack/react-query";
+// import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z as zod } from "zod";
 import AuthBox from "./components/auth-box";
-import { useLogin } from "@/hooks/actions/useAuth";
+// import { useLogin } from "@/hooks/actions/useAuth";
 import { useSearchParams } from "react-router-dom";
-import { useToastStore } from "@/zustand/useToastStore";
+// import { useToastStore } from "@/zustand/useToastStore";
 const SignInView = () => {
   const { t } = useTranslation("auth");
   const { value: showPassword, onToggle } = useBoolean();
   const [searchParams] = useSearchParams();
-  const { showToast } = useToastStore()
+  // const { showToast } = useToastStore()
   const appId = searchParams.get("app_id") ?? "";
   const challengeCode = searchParams.get("challenge_code") ?? "";
   const state = searchParams.get("state") ?? "";
 
-  const { mutate: loginApi, isPending: isLoading } = useMutation({
-    mutationFn: useLogin,
-  });
+  // const { mutate: loginApi, isPending: isLoading } = useMutation({
+  //   mutationFn: useLogin,
+  // });
 
   type SchemaType = zod.infer<typeof Schema>;
 
@@ -59,23 +59,23 @@ const SignInView = () => {
 
     console.log("payload:", payload);
 
-    loginApi(payload, {
-      onSuccess: () => {
-        showToast("success", "Đăng nhập thành công");
-      },
-      onError: (error: any) => {
-        const code = error?.response?.data?.code;
-        if (code === "LOGIN_INVALID_CREDENTIALS") {
-          showToast("error", "Email hoặc mật khẩu không chính xác");
-        } else if (code === "LOGIN_USER_NOT_ACTIVE") {
-          showToast("error", "Tài khoản không hoạt động");
-        } else if (code === "LOGIN_ACCOUNT_TYPE_NOT_PERMITTED") {
-          showToast("error", "Loại tài khoản không được phép đăng nhập vào ứng dụng");
-        } else {
-          showToast("error", "Đăng nhập thất bại");
-        }
-      },
-    });
+    // loginApi(payload, {
+    //   onSuccess: () => {
+    //     showToast("success", "Đăng nhập thành công");
+    //   },
+    //   onError: (error: any) => {
+    //     const code = error?.response?.data?.code;
+    //     if (code === "LOGIN_INVALID_CREDENTIALS") {
+    //       showToast("error", "Email hoặc mật khẩu không chính xác");
+    //     } else if (code === "LOGIN_USER_NOT_ACTIVE") {
+    //       showToast("error", "Tài khoản không hoạt động");
+    //     } else if (code === "LOGIN_ACCOUNT_TYPE_NOT_PERMITTED") {
+    //       showToast("error", "Loại tài khoản không được phép đăng nhập vào ứng dụng");
+    //     } else {
+    //       showToast("error", "Đăng nhập thất bại");
+    //     }
+    //   },
+    // });
   });
 
   const renderForm = (
@@ -141,7 +141,7 @@ const SignInView = () => {
       <div className="mt-7 flex flex-col gap-4">
         <PrimaryButton
           text={t("login")}
-          isLoading={isLoading}
+          // isLoading={isLoading}
           disabled={!isValid}
           className={`${isValid ? "cursor-pointer" : "cursor-default"}`}
         />

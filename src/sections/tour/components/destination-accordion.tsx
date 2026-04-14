@@ -1,3 +1,5 @@
+import { useCompanyDes } from '@/hooks/actions/useCompanyOwner';
+import { getUrlImage } from '@/utils/format-image';
 import { useState } from 'react';
 
 const DestinationCard = ({ destination, isHovered, onMouseEnter, onMouseLeave }: any) => {
@@ -13,8 +15,8 @@ const DestinationCard = ({ destination, isHovered, onMouseEnter, onMouseLeave }:
             onMouseLeave={onMouseLeave}
         >
             <img
-                src={destination.image}
-                alt={destination.name}
+                src={getUrlImage(destination?.strCityImage)}
+                alt={destination?.strDestinationName}
                 className="absolute inset-0 w-full h-full object-cover"
             />
 
@@ -24,7 +26,7 @@ const DestinationCard = ({ destination, isHovered, onMouseEnter, onMouseLeave }:
         ${isHovered ? 'p-6' : 'p-4'}`}>
 
                 <h3 className="text-white font-bold text-xl drop-shadow-md">
-                    {destination.name}
+                    {destination?.strDestinationName}
                 </h3>
 
                 <div className={`mt-4 transition-all duration-500 ease-out 
@@ -39,30 +41,17 @@ const DestinationCard = ({ destination, isHovered, onMouseEnter, onMouseLeave }:
 };
 
 const DestinationAccordion = () => {
+    const [filters] = useState({
+        page: 1,
+        pageSize: 4,
+        intFilterByCateID: 18
+    });
+
+    const { tcdData, tcdLoading, tcdError } = useCompanyDes(filters);
     const [hoveredIndex, setHoveredIndex] = useState(0);
 
-    const destinations = [
-        {
-            id: 1,
-            name: "Ba Be",
-            image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=600&h=400&fit=crop"
-        },
-        {
-            id: 2,
-            name: "Bac Giang",
-            image: "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?w=600&h=400&fit=crop"
-        },
-        {
-            id: 3,
-            name: "Da Lat",
-            image: "https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?w=600&h=400&fit=crop"
-        },
-        {
-            id: 4,
-            name: "Da Nang",
-            image: "https://images.unsplash.com/photo-1517713982677-4b66332f98de?w=600&h=400&fit=crop"
-        }
-    ];
+    if (tcdLoading) return <DestinationSkeleton />;
+    if (tcdError) return <DestinationError />;
 
     return (
         <div className="max-w-7xl mx-auto p-6 bg-white min-h-screen">
@@ -73,9 +62,9 @@ const DestinationAccordion = () => {
             </div>
 
             <div className="flex flex-row items-stretch gap-4">
-                {destinations.map((dest, index) => (
+                {tcdData?.map((dest: any, index: any) => (
                     <DestinationCard
-                        key={dest.id}
+                        key={dest?.No}
                         destination={dest}
                         isHovered={index === hoveredIndex}
                         onMouseEnter={() => setHoveredIndex(index)}
@@ -87,3 +76,27 @@ const DestinationAccordion = () => {
 };
 
 export default DestinationAccordion;
+
+
+const DestinationSkeleton = () => {
+    return (
+        <div className="flex flex-row items-stretch gap-4">
+            {[...Array(4)].map((_, i) => (
+                <div
+                    key={i}
+                    className="flex-grow rounded-xl h-[400px] bg-gray-200 animate-pulse"
+                />
+            ))}
+        </div>
+    );
+};
+
+const DestinationError = () => {
+    return (
+        <div className="text-center py-20">
+            <p className="text-red-500 font-medium">
+                Có lỗi xảy ra, vui lòng thử lại
+            </p>
+        </div>
+    );
+};

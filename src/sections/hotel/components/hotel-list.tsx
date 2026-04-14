@@ -1,6 +1,10 @@
+import { useListHotel } from '@/hooks/actions/useHotel';
 import { useRouter } from '@/routes/hooks/use-router';
 import { paths } from '@/routes/paths';
+import { getUrlImage } from '@/utils/format-image';
+import { formatPrice } from '@/utils/format-number';
 import { Building2, MapPin, Star, LayoutGrid, List } from 'lucide-react';
+import { useState } from 'react';
 
 const HotelCard = ({ hotel }: any) => {
     const router = useRouter()
@@ -8,15 +12,15 @@ const HotelCard = ({ hotel }: any) => {
         <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full group">
             <div className="relative h-44 overflow-hidden">
                 <img
-                    src={hotel.image}
-                    alt={hotel.name}
+                    src={getUrlImage(hotel?.strSupplierImage)}
+                    alt={hotel?.strSupplierName}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
             </div>
 
             <div className="p-4 flex flex-col flex-grow">
                 <h3 className="text-gray-800 font-bold text-[15px] leading-tight uppercase mb-4 h-12 line-clamp-2">
-                    {hotel.name}
+                    {hotel?.strSupplierName}
                 </h3>
 
                 <div className="space-y-2.5 mb-4 text-[13px] text-gray-600">
@@ -24,11 +28,12 @@ const HotelCard = ({ hotel }: any) => {
                         <Building2 size={14} className="text-gray-400 shrink-0" />
                         <span>Khách sạn</span>
                         <div className="flex items-center ml-1">
+                            { }
                             {[...Array(5)].map((_, i) => (
                                 <Star
                                     key={i}
                                     size={14}
-                                    className={i < hotel.stars ? "fill-orange-400 text-orange-400" : "text-gray-300"}
+                                    className={i < hotel.intEasiaCateID ? "fill-orange-400 text-orange-400" : "text-gray-300"}
                                 />
                             ))}
                         </div>
@@ -36,7 +41,7 @@ const HotelCard = ({ hotel }: any) => {
 
                     <div className="flex items-start gap-2">
                         <MapPin size={14} className="text-gray-400 mt-0.5 shrink-0" />
-                        <span className="line-clamp-3 leading-relaxed">{hotel.address}</span>
+                        <span className="line-clamp-3 leading-relaxed">{hotel?.strSupplierAddr}</span>
                     </div>
                 </div>
 
@@ -55,10 +60,10 @@ const HotelCard = ({ hotel }: any) => {
                     <div>
                         <p className="text-[11px] text-gray-500 mb-0.5">Giá từ</p>
                         <p className="text-[#2563eb] font-bold text-xl leading-none">
-                            {hotel.price === 'N/A' ? <span className="text-gray-400">N/A</span> : `$${hotel.price}`}
+                            {formatPrice(hotel?.dblPriceFrom)}
                         </p>
                     </div>
-                    <button onClick={() => router.push(paths.hotel.detail)} className="cursor-pointer text-[#2563eb] border border-blue-200 hover:border-[#2563eb] hover:bg-blue-50 px-3 py-1.5 rounded-lg text-xs font-medium transition-all">
+                    <button onClick={() => router.replaceParams(paths.hotel.detail, { item: hotel })} className="cursor-pointer text-[#2563eb] border border-blue-200 hover:border-[#2563eb] hover:bg-blue-50 px-3 py-1.5 rounded-lg text-xs font-medium transition-all">
                         Xem chi tiết
                     </button>
                 </div>
@@ -68,40 +73,14 @@ const HotelCard = ({ hotel }: any) => {
 };
 
 const HotelList = () => {
-    const hotels = [
-        {
-            id: 1,
-            name: "AIRA BOUTIQUE HANOI HOTEL&SPA",
-            stars: 4,
-            address: "38A P. Trần Phú, Điện Biên, Ba Đình, Hà Nội",
-            price: "82.8",
-            image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500"
-        },
-        {
-            id: 2,
-            name: "ALAGON CITY HOTEL & SPA",
-            stars: 4,
-            address: "54-56-58 Pham Hong Thai Street, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam",
-            price: "129.6",
-            image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500"
-        },
-        {
-            id: 3,
-            name: "ALAGON D'ANTIQUE HOTEL & SPA",
-            stars: 4,
-            address: "301-303 Ly Tu Trong Str., Ben Thanh Ward, Dist. 1, Ho Chi Minh City, Viet Nam",
-            price: "N/A",
-            image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=500"
-        },
-        {
-            id: 4,
-            name: "ALMA CAM RANH RESORT",
-            stars: 5,
-            address: "Nguyễn Tất Thành, Cam Hải Đông, Cam Lâm, Khánh Hòa 650000",
-            price: "N/A",
-            image: "https://images.unsplash.com/photo-1540541338287-41700207dee6?w=500"
-        }
-    ];
+    const [filters] = useState({
+        page: 1,
+        pageSize: 15,
+        strSupplierGUID: null,
+        tblsReturn: "[0]"
+    });
+
+    const { hotelData, hotelLoading, hotelError } = useListHotel(filters);
 
     return (
         <div className="max-w-7xl mx-auto p-6 bg-white min-h-screen">
@@ -114,20 +93,56 @@ const HotelList = () => {
                         <button className="p-1.5 bg-blue-600 text-white rounded-md">
                             <LayoutGrid size={16} />
                         </button>
-                        <button className="p-1.5 text-gray-400 hover:bg-gray-200 rounded-md transition-colors">
+                        <button className="p-1.5 text-gray-400 hover:bg-gray-200 rounded-md">
                             <List size={16} />
                         </button>
                     </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                {hotels.map(hotel => (
-                    <HotelCard key={hotel.id} hotel={hotel} />
-                ))}
-            </div>
+            {/* LOADING */}
+            {hotelLoading && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    {[...Array(8)].map((_, i) => (
+                        <HotelCardSkeleton key={i} />
+                    ))}
+                </div>
+            )}
+
+            {/* ERROR */}
+            {hotelError && <HotelError />}
+
+            {/* DATA */}
+            {!hotelLoading && !hotelError && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    {hotelData?.map((hotel: any) => (
+                        <HotelCard key={hotel?.strSupplierGUID} hotel={hotel} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
 
 export default HotelList;
+
+
+const HotelCardSkeleton = () => (
+    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden p-4 animate-pulse">
+        <div className="h-44 bg-gray-200 rounded mb-4" />
+        <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
+        <div className="h-3 bg-gray-200 rounded w-1/2 mb-4" />
+        <div className="h-3 bg-gray-200 rounded w-full mb-2" />
+        <div className="h-3 bg-gray-200 rounded w-5/6 mb-4" />
+        <div className="flex justify-between items-center">
+            <div className="h-6 bg-gray-200 rounded w-1/3" />
+            <div className="h-6 bg-gray-200 rounded w-1/4" />
+        </div>
+    </div>
+);
+
+const HotelError = () => (
+    <div className="text-center py-20 text-red-500">
+        Không tải được danh sách khách sạn
+    </div>
+);

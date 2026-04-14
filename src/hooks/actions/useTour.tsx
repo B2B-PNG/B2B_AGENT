@@ -9,16 +9,14 @@ const fetchListTour = async (body: any) => {
     return res.data;
 };
 
-export const useListTour = (filters: { page: number; pageSize: number }) => {
+export const useListTour = (filters?: { page?: number; pageSize?: number }) => {
     const { user } = useUser();
     const { coData } = useListCompanyOwner();
 
+    const { page = 1, pageSize = 10 } = filters || {};
+
     const query = useQuery({
-        queryKey: [
-            QUERY_KEYS.TOUR.LIST_TOUR,
-            filters,
-            coData?.strCompanyGUID,
-        ],
+        queryKey: [QUERY_KEYS.TOUR.LIST_TOUR, filters, coData?.strCompanyGUID],
         queryFn: () =>
             fetchListTour({
                 strCompanyOwnerGUID: coData?.strCompanyGUID,
@@ -27,8 +25,8 @@ export const useListTour = (filters: { page: number; pageSize: number }) => {
                 intLangID: user?.intLangID,
                 intCurrencyID: user?.intCurrencyID,
                 strOrder: null,
-                intCurPage: filters.page,
-                intPageSize: filters.pageSize,
+                intCurPage: page,
+                intPageSize: pageSize,
                 tblsReturn: "[0]",
             }),
         enabled: !!user && !!coData,
@@ -37,7 +35,7 @@ export const useListTour = (filters: { page: number; pageSize: number }) => {
 
     const listData = query.data?.[0] ?? [];
     const totalRecords = listData?.[0]?.intTotalRecords || 0;
-    const totalPages = Math.ceil(totalRecords / filters.pageSize);
+    const totalPages = Math.ceil(totalRecords / pageSize);
 
     return {
         tourData: listData,
@@ -48,29 +46,31 @@ export const useListTour = (filters: { page: number; pageSize: number }) => {
     };
 };
 
-
-
 const fetchDetailTour = async (body: any) => {
     const res = await apiClient.post("tour/GetListTourDetailByPtn", body);
     return res.data;
 };
 
-export const useDetailTour = (filters: { page: number; pageSize: number; strServiceNameUrl: string }) => {
+export const useDetailTour = (filters?: {
+    page?: number;
+    pageSize?: number;
+    strServiceNameUrl?: string;
+}) => {
     const { user } = useUser();
 
+    const { page = 1, pageSize = 10, strServiceNameUrl } = filters || {};
+
     const query = useQuery({
-        queryKey: [
-            QUERY_KEYS.TOUR.DETAIL_TOUR,
-            filters],
+        queryKey: [QUERY_KEYS.TOUR.DETAIL_TOUR, filters],
         queryFn: () =>
             fetchDetailTour({
                 strTourGUID: null,
-                strServiceNameUrl: filters?.strServiceNameUrl,
+                strServiceNameUrl,
                 intLangID: user?.intLangID,
-                intCurPage: filters?.page,
-                intPageSize: filters?.pageSize,
+                intCurPage: page,
+                intPageSize: pageSize,
                 strOrder: null,
-                tblsReturn: "[0][2]"
+                tblsReturn: "[0][2]",
             }),
         enabled: !!user,
         placeholderData: keepPreviousData,
@@ -78,7 +78,7 @@ export const useDetailTour = (filters: { page: number; pageSize: number; strServ
 
     const listData = query.data ?? [];
     const totalRecords = listData?.[0]?.intTotalRecords || 0;
-    const totalPages = Math.ceil(totalRecords / filters.pageSize);
+    const totalPages = Math.ceil(totalRecords / pageSize);
 
     return {
         tdData: listData,
@@ -89,22 +89,29 @@ export const useDetailTour = (filters: { page: number; pageSize: number; strServ
     };
 };
 
-
 const fetchListTourPublish = async (body: any) => {
     const res = await apiClient.post("tour/GetListTourPublish", body);
     return res.data;
 };
 
-export const useListTourPublish = (filters: { page: number; pageSize: number; intCateID: number, intProductID: number }) => {
+export const useListTourPublish = (filters?: {
+    page?: number;
+    pageSize?: number;
+    intCateID?: number;
+    intProductID?: number;
+}) => {
     const { user } = useUser();
     const { coData } = useListCompanyOwner();
 
+    const {
+        page = 1,
+        pageSize = 10,
+        intCateID,
+        intProductID,
+    } = filters || {};
+
     const query = useQuery({
-        queryKey: [
-            QUERY_KEYS.TOUR.LIST_TOUR_PUBLISH,
-            filters,
-            coData?.strCompanyGUID,
-        ],
+        queryKey: [QUERY_KEYS.TOUR.LIST_TOUR_PUBLISH, filters, coData?.strCompanyGUID],
         queryFn: () =>
             fetchListTourPublish({
                 strTourGUID: null,
@@ -113,8 +120,8 @@ export const useListTourPublish = (filters: { page: number; pageSize: number; in
                 strMemberPartnerGUID: user?.strUserGUID,
                 intLangID: null,
                 strPriceLevelGUID: null,
-                intCateID: filters?.intCateID,
-                intProductID: filters?.intProductID,
+                intCateID,
+                intProductID,
                 strNoOfDayRange: null,
                 strFilterServiceName: null,
                 strListEasiaCateID: null,
@@ -126,10 +133,10 @@ export const useListTourPublish = (filters: { page: number; pageSize: number; in
                 strPriceFromRange: null,
                 intCurrencyView: 1,
                 strLocationCode: null,
-                intCurPage: filters.page,
-                intPageSize: filters.pageSize,
+                intCurPage: page,
+                intPageSize: pageSize,
                 tblsReturn: "[0]",
-                intTotalPax: null
+                intTotalPax: null,
             }),
         enabled: !!user && !!coData,
         placeholderData: keepPreviousData,
@@ -137,7 +144,7 @@ export const useListTourPublish = (filters: { page: number; pageSize: number; in
 
     const listData = query.data?.[0] ?? [];
     const totalRecords = listData?.[0]?.intTotalRecords || 0;
-    const totalPages = Math.ceil(totalRecords / filters.pageSize);
+    const totalPages = Math.ceil(totalRecords / pageSize);
 
     return {
         tdpData: listData,
@@ -153,23 +160,22 @@ const fetchListTourDay = async (body: any) => {
     return res.data;
 };
 
-export const useListTourDay = (filters: { strTourGUID: string }) => {
+export const useListTourDay = (filters?: { strTourGUID?: string }) => {
     const { user } = useUser();
 
+    const { strTourGUID } = filters || {};
+
     const query = useQuery({
-        queryKey: [
-            QUERY_KEYS.TOUR.LIST_TOUR_DAY,
-            filters
-        ],
+        queryKey: [QUERY_KEYS.TOUR.LIST_TOUR_DAY, filters],
         queryFn: () =>
             fetchListTourDay({
                 strTourDayGUID: null,
-                strTourGUID: filters?.strTourGUID,
+                strTourGUID,
                 intLangID: user?.intLangID,
                 intCurPage: null,
                 intPageSize: null,
                 strOrder: null,
-                tblsReturn: "[0][2]"
+                tblsReturn: "[0][2]",
             }),
         enabled: !!user,
         placeholderData: keepPreviousData,
@@ -183,3 +189,4 @@ export const useListTourDay = (filters: { strTourGUID: string }) => {
         tddError: query.isError,
     };
 };
+

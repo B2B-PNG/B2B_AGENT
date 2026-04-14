@@ -87,14 +87,21 @@ export const fAddress = (
 };
 
 
-export const truncateText = (text: string, maxLength?: number) => {
+export const truncateText = (text?: string, max = 20) => {
   if (!text) return "";
-  if (!maxLength) return text;
-  return text.length > maxLength
-    ? text.slice(0, maxLength) + "..."
-    : text;
+  return text.length > max ? text.slice(0, max) + "..." : text;
 };
 
+export const truncateEmail = (email?: string, max = 5) => {
+  if (!email) return "";
+
+  const [name, domain] = email.split("@");
+  if (!domain) return email;
+
+  return name.length > max
+    ? name.slice(0, max) + "...@" + domain
+    : email;
+};
 
 export const formatPrice = (price: any) => {
   if (

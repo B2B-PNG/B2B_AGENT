@@ -9,10 +9,15 @@ export const QUERY_KEYS = {
         DETAIL_TOUR: "DETAIL_TOUR",
         LIST_TOUR_PUBLISH: "LIST_TOUR_PUBLISH",
         LIST_TOUR_DAY: "LIST_TOUR_DAY",
-
+        LIST_PARTNER: "LIST_PARTNER",
+    },
+    HOTEL: {
+        LIST_HOTEL: "LIST_HOTEL",
+        LIST_ITEM_BY_AGENT: "LIST_ITEM_BY_AGENT"
     },
     COMPANY_OWNER: {
         LIST_COMPANY_OWNER: "LIST_COMPANY_OWNER",
+        LIST_COMPANY_DES_DAY: "LIST_COMPANY_DES_DAY",
     },
     VEHICLE: {
         LIST_VEHICLE: "LIST_VEHICLE",
@@ -26,5 +31,5 @@ export const QUERY_KEYS = {
     GUIDE_FEE: {
         LIST_GUIDE_FEE: "LIST_GUIDE_FEE",
     },
-    
+
 };

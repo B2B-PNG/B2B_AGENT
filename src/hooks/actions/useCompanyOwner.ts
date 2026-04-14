@@ -40,3 +40,90 @@ export const useListCompanyOwner = () => {
         coError: query.isError,
     };
 };
+
+
+
+
+
+export const useListCompanyPartner = (filters?: { page?: number; pageSize?: number }) => {
+    const { user } = useUser();
+    const { coData } = useListCompanyOwner();
+
+    const query = useQuery({
+        queryKey: [QUERY_KEYS.TOUR.LIST_PARTNER, filters, coData?.strCompanyGUID],
+        queryFn: () =>
+            fetchListCompanyOwner({
+                strUserPartnerGUID: user?.strUserGUID,
+                strCompanyPartnerGUID: user?.strCompanyGUID,
+                strCompanyOwnerGUID: coData?.strCompanyGUID,
+                intCurPage: filters?.page ?? 1,
+                intPageSize: filters?.pageSize ?? 10,
+                strOrder: null,
+                strFilterCompanyName: "",
+                strCompanyNameUrl: null,
+                IsOwnerFriend: true,
+                tblsReturn: "[0]"
+            }),
+        enabled: !!user && !!coData,
+        placeholderData: keepPreviousData,
+    });
+
+    const listData = query.data?.[0] ?? [];
+    const totalRecords = listData?.[0]?.intTotalRecords || 0;
+    // const totalPages = Math.ceil(totalRecords / filters?.pageSize);
+
+    return {
+        tpData: listData,
+        totalRecords,
+        // totalPages,
+        tpLoading: query.isLoading,
+        tpError: query.isError,
+    };
+};
+
+
+const fetchCompanyDes = async (body: any) => {
+    const res = await apiClient.post("user/GetListCompanyDestinationByPtn", body);
+    return res.data;
+};
+
+export const useCompanyDes = (filters?: {
+    page?: number;
+    pageSize?: number;
+    intFilterByCateID?: number
+}) => {
+    const { user } = useUser();
+    const { coData } = useListCompanyOwner();
+
+    const { page = 1, pageSize = 10, intFilterByCateID = 18 } = filters || {};
+
+    const query = useQuery({
+        queryKey: [QUERY_KEYS.COMPANY_OWNER.LIST_COMPANY_DES_DAY, filters, coData?.strCompanyGUID],
+        queryFn: () =>
+            fetchCompanyDes({
+                strCompanyOwnerGUID: coData?.strCompanyGUID,
+                strDestinationGUID: null,
+                strFilterSearchText: null,
+                intFilterByCateID: intFilterByCateID,
+                IsTopDestination: true,
+                strOrder: null,
+                intCurPage: page,
+                intPageSize: pageSize,
+                tblsReturn: "[0]",
+            }),
+        enabled: !!user && !!coData,
+        placeholderData: keepPreviousData,
+    });
+
+    const listData = query.data?.[0] ?? [];
+    const totalRecords = listData?.[0]?.intTotalRecords || 0;
+    const totalPages = Math.ceil(totalRecords / pageSize);
+
+    return {
+        tcdData: listData,
+        totalRecords,
+        totalPages,
+        tcdLoading: query.isLoading,
+        tcdError: query.isError,
+    };
+};
