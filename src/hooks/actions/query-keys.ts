@@ -24,6 +24,7 @@ export const QUERY_KEYS = {
     },
     FLIGHT: {
         LIST_FLIGHT: "LIST_FLIGHT",
+        DETAIL_FLIGHT:"DETAIL_FLIGHT",
     },
     RESTAURANT: {
         LIST_RESTAURANT: "LIST_RESTAURANT",
