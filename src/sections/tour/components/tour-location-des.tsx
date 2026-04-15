@@ -54,7 +54,6 @@ const TourLocationDes = ({ data, isLoading, onSelectDestination }: Props) => {
                         {locations.map((loc, index) => (
                             <button onClick={() => {
                                 onSelectDestination?.(loc.strDisplayName)
-                                console.log("first", loc.strDisplayName)
                             }
 
                             } key={index} className="flex gap-3 cursor-pointer hover:bg-[#e9e9e981] px-4 py-2 transition">

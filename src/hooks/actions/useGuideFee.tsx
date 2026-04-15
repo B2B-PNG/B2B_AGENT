@@ -5,52 +5,115 @@ import { useListCompanyOwner } from "./useCompanyOwner";
 import { QUERY_KEYS } from "./query-keys";
 
 const fetchListGuideFee = async (body: any) => {
-    const res = await apiClient.post("supplier/GetListSupplierByAgent", body);
-    return res.data;
+  const res = await apiClient.post("supplier/GetListSupplierByAgent", body);
+  return res.data;
 };
 
-export const useListGuideFee = (filters: { page: number; pageSize: number }) => {
-    const { user } = useUser();
-    const { coData } = useListCompanyOwner();
+export const useListGuideFee = (filters: {
+  page: number;
+  pageSize: number;
+}) => {
+  const { user } = useUser();
+  const { coData } = useListCompanyOwner();
 
-    const query = useQuery({
-        queryKey: [
-            QUERY_KEYS.GUIDE_FEE.LIST_GUIDE_FEE,
-            filters,
-            user?.strCompanyGUID,
-            coData?.strCompanyGUID,
-            user?.intCurrencyID,
-        ],
-        queryFn: () =>
-            fetchListGuideFee({
-                strCompanyPartnerGUID: user?.strCompanyGUID,
-                strCompanyOwnerGUID: coData?.strCompanyGUID,
-                intCurrencyID: user?.intCurrencyID,
-                strSupplierGUID: null,
-                strFilterSupplierName: null,
-                strFilterLocationCode: null,
-                strPriceFromRange: null,
-                dtmDateStart: null,
-                intCateID: 8,
-                strListEasiaCateID: null,
-                intCurPage: filters.page,
-                intPageSize: filters.pageSize,
-                strOrder: null,
-                tblsReturn: "[0]",
-            }),
-        enabled: !!user && !!coData,
-        placeholderData: keepPreviousData,
-    });
+  const query = useQuery({
+    queryKey: [
+      QUERY_KEYS.GUIDE_FEE.LIST_GUIDE_FEE,
+      filters,
+      user?.strCompanyGUID,
+      coData?.strCompanyGUID,
+      user?.intCurrencyID,
+    ],
+    queryFn: () =>
+      fetchListGuideFee({
+        strCompanyPartnerGUID: user?.strCompanyGUID,
+        strCompanyOwnerGUID: coData?.strCompanyGUID,
+        intCurrencyID: user?.intCurrencyID,
+        strSupplierGUID: null,
+        strFilterSupplierName: null,
+        strFilterLocationCode: null,
+        strPriceFromRange: null,
+        dtmDateStart: null,
+        intCateID: 8,
+        strListEasiaCateID: null,
+        intCurPage: filters.page,
+        intPageSize: filters.pageSize,
+        strOrder: null,
+        tblsReturn: "[0]",
+      }),
+    enabled: !!user && !!coData,
+    placeholderData: keepPreviousData,
+  });
 
-    const listData = query.data?.[0] ?? [];
-    const totalRecords = listData?.[0]?.intTotalRecords || 0;
-    const totalPages = Math.ceil(totalRecords / filters.pageSize);
+  const listData = query.data?.[0] ?? [];
+  const totalRecords = listData?.[0]?.intTotalRecords || 0;
+  const totalPages = Math.ceil(totalRecords / filters.pageSize);
 
-    return {
-        guideFeeData: listData,
-        totalRecords,
-        totalPages,
-        guideFeeLoading: query.isLoading,
-        guideFeeError: query.isError,
-    };
+  return {
+    guideFeeData: listData,
+    totalRecords,
+    totalPages,
+    guideFeeLoading: query.isLoading,
+    guideFeeError: query.isError,
+  };
+};
+
+const fetchDetailGuideFee = async (body: any) => {
+  const res = await apiClient.post("supplier/GetListSupplierByAgent", body);
+  return res.data;
+};
+
+export const useDetailGuideFee = (filters?: {
+  page?: number;
+  pageSize?: number;
+  strSupplierGUID?: string | null;
+}) => {
+  const { user } = useUser();
+  const { coData } = useListCompanyOwner();
+
+  const page = filters?.page ?? 1;
+  const pageSize = filters?.pageSize ?? 1;
+
+  const query = useQuery({
+    queryKey: [
+      QUERY_KEYS.GUIDE_FEE.DETAIL_GUIDE_FEE,
+      filters,
+      user?.strCompanyGUID,
+      coData?.strCompanyGUID,
+      user?.intCurrencyID,
+    ],
+    queryFn: () =>
+      fetchDetailGuideFee({
+        strCompanyPartnerGUID: user?.strCompanyGUID ?? null,
+        strCompanyOwnerGUID: coData?.strCompanyGUID ?? null,
+        strSupplierGUID: filters?.strSupplierGUID ?? null,
+        intCurrencyID: user?.intCurrencyID ?? null,
+        strFilterSupplierName: null,
+        strFilterLocationCode: null,
+        strPriceFromRange: null,
+        dtmDateStart: null,
+        intCateID: 8,
+        strListEasiaCateID: null,
+        intCurPage: page,
+        intPageSize: pageSize,
+        strOrder: null,
+        tblsReturn: "[0][1]",
+      }),
+    enabled: !!user && !!coData,
+    placeholderData: keepPreviousData,
+  });
+
+  const listData = query.data ?? [];
+  const totalRecords = listData?.[0]?.[0]?.intTotalRecords || 0;
+  const totalPages = Math.ceil(totalRecords / pageSize);
+
+  
+  return {
+    gfData: listData,
+    totalPages,
+    totalRecords,
+    dgfLoading: query.isLoading,
+    dgfError: query.isError,
+    refetch: query.refetch,
+  };
 };

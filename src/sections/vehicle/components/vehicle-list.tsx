@@ -89,13 +89,12 @@ const VehicleCard = ({ vehicle }: any) => {
 };
 
 const VehicleList = () => {
-  const [filters, setFilters] = useState({
+  const [filters] = useState({
     page: 1,
     pageSize: 15,
   });
 
-  const { vehicleData, vehicleLoading, vehicleError } = useListVehicle(filters);
-  console.log('vehicleData', vehicleData);
+  const { vehicleData } = useListVehicle(filters);
 
   return (
     <section className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">

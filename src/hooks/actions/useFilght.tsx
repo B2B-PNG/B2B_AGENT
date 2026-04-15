@@ -5,70 +5,136 @@ import { useListCompanyOwner } from "./useCompanyOwner";
 import { QUERY_KEYS } from "./query-keys";
 
 const fetchListFlight = async (body: any) => {
-    const res = await apiClient.post("supplier/GetListSupplierByAgent", body);
-    return res.data;
+  const res = await apiClient.post("supplier/GetListSupplierByAgent", body);
+  return res.data;
 };
 
 export const useListFlight = (filters: { page: number; pageSize: number }) => {
-    const { user } = useUser();
-    const { coData } = useListCompanyOwner();
+  const { user } = useUser();
+  const { coData } = useListCompanyOwner();
 
-    const query = useQuery({
-        queryKey: [
-            QUERY_KEYS.FLIGHT.LIST_FLIGHT,
-            filters,
-            user?.strCompanyGUID,
-            coData?.strCompanyGUID,
-            user?.intCurrencyID,
-        ],
-        queryFn: () =>
-            fetchListFlight({
-                strCompanyPartnerGUID: user?.strCompanyGUID,
-                strCompanyOwnerGUID: coData?.strCompanyGUID,
-                intCurrencyID: user?.intCurrencyID,
-                strSupplierGUID: null,
-                strFilterSupplierName: null,
-                strFilterLocationCode: null,
-                strPriceFromRange: null,
-                dtmDateStart: null,
-                intCateID: 6,
-                strListEasiaCateID: null,
-                intCurPage: filters.page,
-                intPageSize: filters.pageSize,
-                strOrder: null,
-                tblsReturn: "[0]",
-            }),
-        enabled: !!user?.strCompanyGUID && !!coData?.strCompanyGUID && !!user?.intCurrencyID,
-        placeholderData: keepPreviousData,
-    });
+  const query = useQuery({
+    queryKey: [
+      QUERY_KEYS.FLIGHT.LIST_FLIGHT,
+      filters,
+      user?.strCompanyGUID,
+      coData?.strCompanyGUID,
+      user?.intCurrencyID,
+    ],
+    queryFn: () =>
+      fetchListFlight({
+        strCompanyPartnerGUID: user?.strCompanyGUID,
+        strCompanyOwnerGUID: coData?.strCompanyGUID,
+        intCurrencyID: user?.intCurrencyID,
+        strSupplierGUID: null,
+        strFilterSupplierName: null,
+        strFilterLocationCode: null,
+        strPriceFromRange: null,
+        dtmDateStart: null,
+        intCateID: 6,
+        strListEasiaCateID: null,
+        intCurPage: filters.page,
+        intPageSize: filters.pageSize,
+        strOrder: null,
+        tblsReturn: "[0]",
+      }),
+    enabled:
+      !!user?.strCompanyGUID &&
+      !!coData?.strCompanyGUID &&
+      !!user?.intCurrencyID,
+    placeholderData: keepPreviousData,
+  });
 
-    const listData = query.data?.[0] ?? [];
-    const totalRecords = listData?.[0]?.intTotalRecords || 0;
-    const totalPages = Math.ceil(totalRecords / filters.pageSize);
+  const listData = query.data?.[0] ?? [];
+  const totalRecords = listData?.[0]?.intTotalRecords || 0;
+  const totalPages = Math.ceil(totalRecords / filters.pageSize);
 
-    return {
-        flightData: listData,
-        totalRecords,
-        totalPages,
-        flightLoading: query.isLoading,
-        flightError: query.isError,
-    };
+  return {
+    flightData: listData,
+    totalRecords,
+    totalPages,
+    flightLoading: query.isLoading,
+    flightError: query.isError,
+  };
 };
 
+// const fetchDetailFlight = async (body: any) => {
+//     const res = await apiClient.post("supplier/GetListSupplierByAgent", body);
+//     return res.data;
+// };
+
+// export const useDetailFlight = (filters: {
+//   page: number;
+//   pageSize: number;
+//   strSupplierGUID?: string | null;
+//   strFilterSupplierName?: string | null;
+// }) => {
+//   const { user } = useUser();
+//   const { coData } = useListCompanyOwner();
+
+//   const query = useQuery({
+//     queryKey: [
+//       QUERY_KEYS.FLIGHT.DETAIL_FLIGHT,
+//       filters,
+//       user?.strCompanyGUID,
+//       coData?.strCompanyGUID,
+//       user?.intCurrencyID,
+//     ],
+//     queryFn: () =>
+//       fetchDetailFlight({
+//         strCompanyPartnerGUID: user?.strCompanyGUID ?? null,
+//                 strCompanyOwnerGUID: coData?.strCompanyGUID ?? null,
+//                 strSupplierGUID: filters?.strSupplierGUID ?? null,
+//                 intCurrencyID: user?.intCurrencyID ?? 1,
+//                 strFilterSupplierName: filters?.strFilterSupplierName ?? null,
+//                 strFilterLocationCode: null,
+//                 strPriceFromRange: null,
+//                 dtmDateStart: null,
+//                 intCateID: 6,
+//                 strListEasiaCateID: null,
+//                 intCurPage: filters?.page,
+//                 intPageSize: filters?.pageSize,
+//                 strOrder: null,
+//                 tblsReturn: "[0][1]",
+//       }),
+//     enabled:
+//       !!user?.strCompanyGUID &&
+//       !!coData?.strCompanyGUID,
+//     placeholderData: keepPreviousData,
+//   });
+//   const listData = query.data?.[0] ?? [];
+//   // Nếu API trả về [0] là list chính, [1] là metadata thì bạn có thể lấy thêm ở đây
+//     const extraInfo = query.data?.[1] ?? null;
+//   const totalRecords = listData?.[0]?.intTotalRecords || 0;
+//   const totalPages = Math.ceil(totalRecords / filters.pageSize);
+
+//   return {
+//     fdData: listData,
+//     extraInfo,
+//     totalRecords,
+//     totalPages,
+//     fdLoading: query.isLoading,
+//     fdError: query.isError,
+
+//   };
+// };
+
 const fetchDetailFlight = async (body: any) => {
-    const res = await apiClient.post("supplier/GetListSupplierByAgent", body);
-    return res.data;
+  // Lưu ý: Kết quả trả về là { data: [[...], [...]], isSuccess: true }
+  const res = await apiClient.post("supplier/GetListSupplierByAgent", body);
+  return res.data;
 };
 
 export const useDetailFlight = (filters: {
   page: number;
   pageSize: number;
-  strSupplierGUID?: string | null;
-  strFilterSupplierName?: string | null;
+  strSupplierGUID?: string ;
 }) => {
   const { user } = useUser();
   const { coData } = useListCompanyOwner();
 
+  const page = filters?.page ?? 1;
+  const pageSize = filters?.pageSize ?? 10;
   const query = useQuery({
     queryKey: [
       QUERY_KEYS.FLIGHT.DETAIL_FLIGHT,
@@ -79,31 +145,33 @@ export const useDetailFlight = (filters: {
     ],
     queryFn: () =>
       fetchDetailFlight({
-        strCompanyPartnerGUID:  user?.strCompanyGUID,
+        RestrCompanyPartnerGUID: user?.strCompanyGUID,
         strCompanyOwnerGUID: coData?.strCompanyGUID,
-        strSupplierGUID: filters?.strSupplierGUID ?? null,
+        strSupplierGUID: filters?.strSupplierGUID || null,
         intCurrencyID: user?.intCurrencyID,
-        strFilterSupplierName: filters?.strFilterSupplierName ?? null,
+        strFilterSupplierName: null,
         strFilterLocationCode: null,
         strPriceFromRange: null,
         dtmDateStart: null,
         intCateID: 6,
         strListEasiaCateID: null,
-        intCurPage: filters?.page,
-        intPageSize: filters?.pageSize,
+        intCurPage: page,
+        intPageSize: pageSize,
         strOrder: null,
-        tblsReturn: "[0]",
+        tblsReturn: "[0][1]",
+
+
       }),
-    enabled:
-      !!user?.strCompanyGUID &&
-      !!coData?.strCompanyGUID &&
-      !!user?.intCurrencyID &&
-      (!!filters?.strSupplierGUID || !!filters?.strFilterSupplierName),
+    enabled: !!user && !!coData,
     placeholderData: keepPreviousData,
   });
-  const listData = query.data?.[0] ?? [];
+
+  const listData = query.data ?? [];
+
   const totalRecords = listData?.[0]?.intTotalRecords || 0;
-  const totalPages = Math.ceil(totalRecords / filters.pageSize);
+
+  const totalPages = Math.ceil(totalRecords / pageSize);
+  console.log("listData Flight", listData);
 
   return {
     fdData: listData,
@@ -111,7 +179,63 @@ export const useDetailFlight = (filters: {
     totalPages,
     fdLoading: query.isLoading,
     fdError: query.isError,
+    refetch: query.refetch,
   };
 };
 
 
+
+// const fetchMappingPrice = async (body: any) => {
+//   const res = await apiClient.post(
+//     "supplier/GetListSupplierMappingPriceForBoatByAgent",
+//     body,
+//   );
+//   return res.data;
+// };
+
+// export const useListMappingPrice = (filters?: {
+//   page?: number | null;
+//   pageSize?: number | null;
+//   strSupplierGUID?: string | null;
+//   tblsReturn?: string | null;
+// }) => {
+//   const page = filters?.page ?? 1;
+//   const pageSize = filters?.pageSize ?? 10;
+//   const { user } = useUser();
+//   const { coData } = useListCompanyOwner();
+//   const query = useQuery({
+//     queryKey: [QUERY_KEYS.BOAT.LIST_MAPPING_PRICE, filters],
+//     queryFn: () =>
+//       fetchMappingPrice({
+//         strSupplierMappingPriceGUID: null,
+//         strCompanyPartnerGUID: user?.strCompanyGUID,
+//         strSupplierGUID: filters?.strSupplierGUID || null,
+//         strPriceLevelGUID: coData?.strPriceLevelGUID,
+//         strCompanyOwnerGUID: coData?.strCompanyGUID,
+//         dtmDateStart: null,
+//         strFilterLocationCode: null,
+//         strFilterItemTypeName: null,
+//         strFilterItineraryName: null,
+//         intTotalPax: 1,
+//         strPriceRange: null,
+//         intCurPage: page,
+//         intPageSize: pageSize,
+//         intCurrencyView: 1,
+//         strOrder: null,
+//         tblsReturn: filters?.tblsReturn,
+//       }),
+//     placeholderData: keepPreviousData,
+//   });
+
+//   const listData = query.data?.[0] ?? [];
+//   const totalRecords = listData?.[0]?.intTotalRecords || 0;
+//   const totalPages = Math.ceil(totalRecords / pageSize);
+
+//   return {
+//     mpData: listData,
+//     totalRecords,
+//     totalPages,
+//     mpLoading: query.isLoading,
+//     mpError: query.isError,
+//   };
+// };

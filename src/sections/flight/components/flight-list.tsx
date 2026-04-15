@@ -10,19 +10,13 @@ import { getUrlImage } from '@/utils/format-image';
 const FlightCard = ({ flight }:  any ) => {
   const router = useRouter();
 
-  const handleNavigate = () => {
-    const supplierGuidQuery = flight?.strSupplierGUID
-      ? `?supplierGuid=${encodeURIComponent(flight.strSupplierGUID)}`
-      : "";
-
-    router.replaceParams(`${paths.flight.detail}${supplierGuidQuery}`, { item: flight });
-  };
+ 
   return (
     <div className="flex bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 h-full min-h-[195px] group">
       {/* Image — left */}
       <div
         className="relative w-1/2 overflow-hidden bg-gray-100 cursor-pointer shrink-0"
-        onClick={handleNavigate}
+        // onClick={handleNavigate}
       >
         <img
           src={getUrlImage(flight?.strSupplierImage)}
@@ -35,7 +29,7 @@ const FlightCard = ({ flight }:  any ) => {
       <div className="w-1/2 p-4 flex flex-col">
         {/* Airline name */}
         <h3
-          onClick={handleNavigate}
+          // onClick={handleNavigate}
           className="text-[#1a4a8d] font-bold text-[15px] leading-tight uppercase mb-3 line-clamp-2 cursor-pointer hover:text-[#2566b0] transition-colors"
         >
           {flight.strSupplierName}
@@ -81,7 +75,12 @@ const FlightCard = ({ flight }:  any ) => {
           </div>
 
           <button
-            onClick={() => handleNavigate()}
+            // onClick={() => handleNavigate()}
+            onClick={() => {
+              router.replaceParams(paths.flight.detail, {
+                item: flight
+              })
+            }}
             className="cursor-pointer text-[#2566b0] border border-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap"
           >
             Xem chi tiết
