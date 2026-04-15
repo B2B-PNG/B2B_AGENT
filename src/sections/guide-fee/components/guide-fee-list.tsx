@@ -89,12 +89,12 @@ export const GuideCard = ({ guide }: any) => {
 };
 
 const GuideFeeList = () => {
-  const [filters, setFilters] = useState({
+  const [filters] = useState({
     page: 1,
     pageSize: 15,
   });
 
-  const { guideFeeData: guideData, guideFeeLoading, guideFeeError } = useListGuideFee(filters);
+  const { guideFeeData: guideData } = useListGuideFee(filters);
   console.log('guideData', guideData);
 
   return (

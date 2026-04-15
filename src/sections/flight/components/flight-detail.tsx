@@ -10,6 +10,7 @@ import {
 import { useLocation, useSearchParams } from "react-router-dom";
 
 import { useDetailFlight } from "@/hooks/actions/useFilght";
+import BookingForm from "@/sections/flight/components/booking-form";
 
 const FlightDetail = () => {
   const location = useLocation();
@@ -26,10 +27,13 @@ const FlightDetail = () => {
     strSupplierGUID: supplierGuid || null,
   });
 
+
   const detail = fdData?.[0] ?? supplierFromState ?? null;
   const strCompanyName = detail?.strCompanyName || detail?.strSupplierName || "";
   const priceFrom = detail?.dblPriceFrom ?? detail?.dblMaxPriceFrom ?? "0";
 
+  console.log("detail", detail);
+  
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedCompany, setSelectedCompany] = useState("");
 
@@ -107,7 +111,7 @@ const FlightDetail = () => {
               Chọn hành trình
             </h2>
 
-            <div className="bg-[#f7f7f7] px-4 py-3">
+            <div className="bg-white px-4 py-3">
               <label className="mb-2 block text-[15px] font-medium text-[#1f2937]">
                 Lựa chọn nhà cung cấp
               </label>
@@ -124,7 +128,7 @@ const FlightDetail = () => {
               </select>
             </div>
 
-            <div className="rounded-2xl bg-[#f7f7f7] p-4">
+            <div className="rounded-2xl bg-white p-4">
               <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                 <div>
                   <label className="mb-2 block text-[15px] font-medium text-[#1f2937]">
@@ -218,36 +222,7 @@ const FlightDetail = () => {
           </div>
         </div>
 
-        <div className="w-full lg:w-[320px]">
-          <div className="sticky top-[130px] space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-xl font-bold text-[#2566b0]">Đặt vé</h2>
-
-            <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-600">
-                Ngày khởi hành <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                defaultValue="10/04/2026"
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-[#2566b0]"
-              />
-            </div>
-
-            <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-600">
-                Số lượng khách
-              </label>
-              <select className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none">
-                <option>1 N.Lớn - 0 T.Em</option>
-                <option>2 N.Lớn - 0 T.Em</option>
-              </select>
-            </div>
-
-            <button className="w-full rounded-lg bg-[#2566b0] px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700">
-              Xác nhận đặt vé
-            </button>
-          </div>
-        </div>
+        <BookingForm />
       </div>
     </section>
   );

@@ -89,12 +89,12 @@ const VehicleCard = ({ vehicle }: any) => {
 };
 
 const VehicleList = () => {
-  const [filters, setFilters] = useState({
+  const [filters] = useState({
     page: 1,
     pageSize: 15,
   });
 
-  const { vehicleData, vehicleLoading, vehicleError } = useListVehicle(filters);
+  const { vehicleData } = useListVehicle(filters);
   console.log('vehicleData', vehicleData);
 
   return (

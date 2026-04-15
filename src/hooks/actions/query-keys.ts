@@ -28,6 +28,7 @@ export const QUERY_KEYS = {
     },
     RESTAURANT: {
         LIST_RESTAURANT: "LIST_RESTAURANT",
+        DETAIL_RESTAURANT: "DETAIL_RESTAURANT",
     },
     GUIDE_FEE: {
         LIST_GUIDE_FEE: "LIST_GUIDE_FEE",
