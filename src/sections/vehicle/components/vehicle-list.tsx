@@ -95,7 +95,6 @@ const VehicleList = () => {
   });
 
   const { vehicleData } = useListVehicle(filters);
-  console.log('vehicleData', vehicleData);
 
   return (
     <section className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">

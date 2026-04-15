@@ -2,70 +2,60 @@ import { useState } from "react";
 import {
   CameraOff,
   Star,
-  Filter,
-  RefreshCcw,
-  Search,
-  ChevronDown,
 } from "lucide-react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { useDetailFlight } from "@/hooks/actions/useFilght";
 import BookingForm from "@/sections/flight/components/booking-form";
 
 const FlightDetail = () => {
   const location = useLocation();
-  const [searchParams] = useSearchParams();
-  const routeState = location.state as { item?: Record<string, any> } | null;
-  const supplierFromState = routeState?.item ?? null;
+  const item = location?.state?.item;
+  console.log("item", item);
   
-  const supplierGuid =
-    searchParams.get("supplierGuid") ?? supplierFromState?.strSupplierGUID ?? "";
 
-  const { fdData, fdLoading, fdError } = useDetailFlight({
+  const { fdData } = useDetailFlight({
     page: 1,
     pageSize: 1,
-    strSupplierGUID: supplierGuid || null,
+    strSupplierGUID: item?.strSupplierGUID
+
   });
-
-
-  const detail = fdData?.[0] ?? supplierFromState ?? null;
-  const strCompanyName = detail?.strCompanyName || detail?.strSupplierName || "";
-  const priceFrom = detail?.dblPriceFrom ?? detail?.dblMaxPriceFrom ?? "0";
-
-  console.log("detail", detail);
+  console.log("fdData", fdData);
   
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [selectedCompany, setSelectedCompany] = useState("");
+  const flight = fdData?.[0]?.[0];
+  console.log("flight" , flight);
 
-  if (!supplierGuid && !supplierFromState) {
-    return (
-      <section className="min-h-screen bg-[#f3f4f6] px-6 py-10 text-slate-700 md:px-6">
-        <div className="mx-auto max-w-[1180px] rounded-2xl bg-white p-6 shadow-sm">
-          Không tìm thấy thông tin chuyến bay.
-        </div>
-      </section>
-    );
-  }
+  const [selectedCompany] = useState("");
 
-  if (fdLoading && !detail) {
-    return (
-      <section className="min-h-screen bg-[#f3f4f6] px-6 py-10 text-slate-700 md:px-6">
-        <div className="mx-auto max-w-[1180px] rounded-2xl bg-white p-6 shadow-sm">
-          Đang tải thông tin chuyến bay...
-        </div>
-      </section>
-    );
-  }
+  // if (!supplierGuid && !supplierFromState) {
+  //   return (
+  //     <section className="min-h-screen bg-[#f3f4f6] px-6 py-10 text-slate-700 md:px-6">
+  //       <div className="mx-auto max-w-[1180px] rounded-2xl bg-white p-6 shadow-sm">
+  //         Không tìm thấy thông tin chuyến bay.
+  //       </div>
+  //     </section>
+  //   );
+  // }
 
-  if (fdError && !detail) {
-    return (
-      <section className="min-h-screen bg-[#f3f4f6] px-6 py-10 text-slate-700 md:px-6">
-        <div className="mx-auto max-w-[1180px] rounded-2xl bg-white p-6 shadow-sm">
-          Không tải được thông tin chuyến bay.
-        </div>
-      </section>
-    );
-  }
+  // if (fdLoading && !detail) {
+  //   return (
+  //     <section className="min-h-screen bg-[#f3f4f6] px-6 py-10 text-slate-700 md:px-6">
+  //       <div className="mx-auto max-w-[1180px] rounded-2xl bg-white p-6 shadow-sm">
+  //         Đang tải thông tin chuyến bay...
+  //       </div>
+  //     </section>
+  //   );
+  // }
+
+  // if (fdError && !detail) {
+  //   return (
+  //     <section className="min-h-screen bg-[#f3f4f6] px-6 py-10 text-slate-700 md:px-6">
+  //       <div className="mx-auto max-w-[1180px] rounded-2xl bg-white p-6 shadow-sm">
+  //         Không tải được thông tin chuyến bay.
+  //       </div>
+  //     </section>
+  //   );
+  // }
 
   return (
     <section className="min-h-screen bg-[#f3f4f6] px-6 py-10 text-slate-700 md:px-6">
@@ -78,7 +68,7 @@ const FlightDetail = () => {
 
             <div className="flex-1 pt-1">
               <h1 className="text-[28px] font-medium uppercase leading-none text-[#1f2937] md:text-[44px]">
-                {detail?.strSupplierName || "Không có dữ liệu"}
+                {flight?.strSupplierName || "Không có dữ liệu"}
               </h1>
 
               <div className="mt-3 flex items-center gap-0.5 text-[#facc15]">
@@ -93,13 +83,13 @@ const FlightDetail = () => {
               <div className="mt-2 space-y-3 text-[15px] text-[#111827]">
                 <p>
                   <span className="font-medium">Địa chỉ: </span>
-                  {detail?.strSupplierAddr || "Không có dữ liệu"}
+                  {flight?.strSupplierAddr || "Không có dữ liệu"}
                 </p>
 
                 <div>
                   <p className="font-medium">Mô tả:</p>
                   <p className="mt-3 italic text-slate-600">
-                    {detail?.description || detail?.strRemark || "Không có dữ liệu"}
+                    {flight?.description || flight?.strRemark || "Không có dữ liệu"}
                   </p>
                 </div>
               </div>
@@ -116,7 +106,7 @@ const FlightDetail = () => {
                 Lựa chọn nhà cung cấp
               </label>
 
-              <select
+              {/* <select
                 className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-[15px]"
                 value={selectedCompany || strCompanyName}
                 onChange={(event) => setSelectedCompany(event.target.value)}
@@ -125,10 +115,10 @@ const FlightDetail = () => {
                   {strCompanyName || "Không có dữ liệu"}
                   {strCompanyName ? ` (Giá từ: ${priceFrom}/Vé)` : ""}
                 </option>
-              </select>
+              </select> */}
             </div>
 
-            <div className="rounded-2xl bg-white p-4">
+            {/* <div className="rounded-2xl bg-white p-4">
               <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                 <div>
                   <label className="mb-2 block text-[15px] font-medium text-[#1f2937]">
@@ -207,7 +197,7 @@ const FlightDetail = () => {
                     <tr className="border-t border-slate-200">
                       <td className="px-4 py-3">1</td>
                       <td className="px-4 py-3">
-                        {strCompanyName || detail?.strSupplierName || "Không có dữ liệu"}
+                        {strCompanyName || flight?.strSupplierName || "Không có dữ liệu"}
                       </td>
                       <td className="px-4 py-3 text-center">
                         <button className="rounded bg-gray-100 px-3 py-1.5 text-sm text-slate-700 hover:bg-gray-200">
@@ -218,7 +208,7 @@ const FlightDetail = () => {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 

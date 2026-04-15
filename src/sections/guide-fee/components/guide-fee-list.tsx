@@ -15,10 +15,18 @@ import { getUrlImage } from '@/utils/format-image';
 //   tag?: string;
 // }
 
-export const GuideCard = ({ guide }: any) => {
+export const GuideCard = ({ guide }: {guide: any}) => {
   const router = useRouter();
 
-  const handleNavigate = () => router.push(paths.guide.detail);
+  const handleNavigate = () => {
+    const supplierGuidQuery = guide?.strSupplierGUID
+      ? `?supplierGuid=${encodeURIComponent(guide.strSupplierGUID)}`
+      : "";
+
+    router.replaceParams(`${paths.guide.detail}${supplierGuidQuery}`, {
+      item: guide,
+    });
+  };
 
   return (
     <div className="flex bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 h-full min-h-[195px] group">
@@ -95,7 +103,6 @@ const GuideFeeList = () => {
   });
 
   const { guideFeeData: guideData } = useListGuideFee(filters);
-  console.log('guideData', guideData);
 
   return (
     <section className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">

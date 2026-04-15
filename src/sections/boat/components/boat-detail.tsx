@@ -9,7 +9,6 @@ import { TableCore, type ColumnDef } from "@/components/table/table-core";
 const BoatDetail = () => {
     const location = useLocation()
     const item = location?.state?.item
-    console.log("itemsssssss", item)
     const [filters] = useState({
         strSupplierGUID: item?.strSupplierGUID
     });

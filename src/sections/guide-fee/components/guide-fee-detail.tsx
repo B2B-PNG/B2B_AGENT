@@ -1,6 +1,36 @@
 import { CameraOff, Star, Filter, RefreshCcw, Search, ChevronDown } from 'lucide-react';
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useDetailRestaurant } from "@/hooks/actions/useRestaurant";
+import { useListMappingPrice } from "@/hooks/actions/useBoat";
+import { TableCore } from "@/components/table/table-core";
+import { useDetailGuideFee } from '@/hooks/actions/useGuideFee';
+
+
+
+
+
+
 
 const GuideFeeDetail = () => {
+  const location = useLocation();
+  const item = location?.state?.item;
+  console.log("item guide", item);
+  
+  const[filters] = useState({
+    page: 1,
+    pageSize: 1,
+    strSupplierGUID: item?.strSupplierGUID,
+
+  })
+
+  const { gfData, dgfLoading, dgfError } = useDetailGuideFee(filters)
+  console.log("gf  data " , gfData);
+  
+  
+
+
+
   return (
     <div className="max-w-[1400px] mx-auto px-6 pb-6 pt-[50px] bg-[#f8f9fa] min-h-screen flex flex-col lg:flex-row items-start gap-8 font-sans">
       

@@ -10,7 +10,6 @@ import { getUrlImage } from "@/utils/format-image";
 // ─── RestaurantCard ───────────────────────────────────────────────────────────
 
 export const RestaurantCard = ({ restaurant }: { restaurant: any }) => {
-  // console.log(restaurant);
 
   const router = useRouter();
 
@@ -107,7 +106,6 @@ const RestaurantList = () => {
   });
 
   const { restaurantData } = useListRestaurant(filters);
-  console.log("restaurantData", restaurantData);
 
   return (
     <section className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">

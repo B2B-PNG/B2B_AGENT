@@ -1,7 +1,5 @@
 import { GenericFilter } from "@/components/generic-filter/generic-filter";
-import TourLocationDes from "./tour-location-des";
 import { useState } from "react";
-import { useSearchTour } from "@/hooks/actions/useTour";
 
 const TourSearch = () => {
     const [filters, setFilters] = useState<any>({

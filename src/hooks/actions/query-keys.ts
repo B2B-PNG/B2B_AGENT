@@ -37,6 +37,7 @@ export const QUERY_KEYS = {
     },
     GUIDE_FEE: {
         LIST_GUIDE_FEE: "LIST_GUIDE_FEE",
+        DETAIL_GUIDE_FEE: "DETAIL_GUIDE_FEE",
     },
 
 };

@@ -67,7 +67,7 @@ const fetchDetailRestaurant = async (body: any) => {
 export const useDetailRestaurant = (filters?: {
   page?: number;
   pageSize?: number;
-  strSupplierGUID?: string | null;
+  strSupplierGUID?: string;
 }) => {
   const { user } = useUser();
   const { coData } = useListCompanyOwner();
@@ -127,7 +127,3 @@ export const useDetailRestaurant = (filters?: {
 
 // table 
 
-const fetchTableRestaurant = async (body: any) => {
-  const res = await apiClient.post("supplier/GetListSupplierByAgent", body);
-  return res.data;
-};
