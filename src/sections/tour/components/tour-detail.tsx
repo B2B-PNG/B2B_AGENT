@@ -214,7 +214,11 @@ const TourDetail = () => {
                 </div>
 
                 {/* RIGHT */}
-                <BookingForm />
+                <div className="relative">
+                    <div className="sticky top-32">
+                        <BookingForm />
+                    </div>
+                </div>
             </div>
 
             {/* RELATED */}

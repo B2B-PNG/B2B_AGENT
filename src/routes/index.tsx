@@ -7,6 +7,7 @@ import { AuthRoute } from "./auth-route";
 const TourPage = lazy(() => import("@/pages/tour/list"));
 const TourDetailPage = lazy(() => import("@/pages/tour/detail"));
 const BoatPage = lazy(() => import("@/pages/boat/list"));
+const BoatDetailPage = lazy(() => import("@/pages/boat/detail"));
 const FlightPage = lazy(() => import("@/pages/flight/list"));
 const FlightDetailPage = lazy(() => import("@/pages/flight/detail"));
 const VehiclePage = lazy(() => import("@/pages/vehicle/list"));
@@ -63,6 +64,10 @@ export function Router() {
             {
               path: paths.boat.list,
               element: <BoatPage />,
+            },
+            {
+              path: paths.boat.detail,
+              element: <BoatDetailPage />,
             },
             {
               path: paths.hotel.list,

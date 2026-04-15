@@ -46,7 +46,7 @@ const VehicleDetail = () => {
           <div className="bg-white p-5 rounded-md shadow-sm border border-gray-200 space-y-4">
             <div className="flex flex-col">
               <label className="text-sm text-gray-800 mb-2">Lựa chọn nhà cung cấp</label>
-              <select className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500 w-full bg-white text-gray-700">
+              <select className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#2566b0] w-full bg-white text-gray-700">
                 <option>CÔNG TY KẾT NỐI DU LỊCH (Giá từ: $42.04/Xe)</option>
               </select>
             </div>
@@ -54,7 +54,7 @@ const VehicleDetail = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start pt-2">
               <div className="flex flex-col">
                 <label className="text-sm text-gray-800 mb-2">Tên xe</label>
-                <input type="text" className="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:border-blue-500" />
+                <input type="text" className="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:border-[#2566b0]" />
               </div>
               
               <div className="flex flex-col">
@@ -99,7 +99,7 @@ const VehicleDetail = () => {
               <button className="border border-gray-300 p-1.5 rounded bg-white hover:bg-gray-50 text-gray-600 transition-colors">
                 <RefreshCcw className="w-4 h-4" />
               </button>
-              <button className="text-blue-600 hover:bg-blue-50 p-1.5 rounded flex items-center gap-0.5 transition-colors">
+              <button className="text-[#2566b0] hover:bg-blue-50 p-1.5 rounded flex items-center gap-0.5 transition-colors">
                 <Search className="w-4 h-4" />
                 <ChevronDown className="w-3 h-3" />
               </button>
@@ -158,14 +158,14 @@ const VehicleDetail = () => {
                 <span className="text-sm text-gray-600">[1 - 7]/7</span>
               </div>
               <div className="flex items-center gap-1">
-                <button className="p-1 border border-gray-300 rounded text-blue-600 hover:bg-blue-50"><ChevronsLeft className="w-4 h-4" /></button>
-                <button className="p-1 border border-gray-300 rounded text-blue-600 hover:bg-blue-50"><ChevronLeft className="w-4 h-4" /></button>
+                <button className="p-1 border border-gray-300 rounded text-[#2566b0] hover:bg-blue-50"><ChevronsLeft className="w-4 h-4" /></button>
+                <button className="p-1 border border-gray-300 rounded text-[#2566b0] hover:bg-blue-50"><ChevronLeft className="w-4 h-4" /></button>
                 <select className="border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none bg-white text-gray-700 mx-1">
                   <option>1</option>
                 </select>
                 <span className="text-sm text-gray-600">/ 1</span>
-                <button className="p-1 border border-gray-300 rounded text-blue-600 hover:bg-blue-50"><ChevronRight className="w-4 h-4" /></button>
-                <button className="p-1 border border-gray-300 rounded text-blue-600 hover:bg-blue-50"><ChevronsRight className="w-4 h-4" /></button>
+                <button className="p-1 border border-gray-300 rounded text-[#2566b0] hover:bg-blue-50"><ChevronRight className="w-4 h-4" /></button>
+                <button className="p-1 border border-gray-300 rounded text-[#2566b0] hover:bg-blue-50"><ChevronsRight className="w-4 h-4" /></button>
               </div>
             </div>
           </div>
@@ -178,7 +178,7 @@ const VehicleDetail = () => {
           ========================================= */}
       <div className="w-full lg:w-[320px] flex-shrink-0 sticky top-[150px] self-start h-fit">
         <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-          <h2 className="text-xl font-medium text-blue-600 mb-5">Đặt Xe</h2>
+          <h2 className="text-xl font-medium text-[#2566b0] mb-5">Đặt Xe</h2>
           
           <div className="space-y-4">
             <div className="flex flex-col">
@@ -188,12 +188,12 @@ const VehicleDetail = () => {
               <input 
                 type="text" 
                 defaultValue="11/04/2026" 
-                className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-blue-500 w-full"
+                className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-[#2566b0] w-full"
               />
             </div>
             
             <div className="flex flex-col">
-              <select className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-blue-500 bg-white text-gray-700 w-full mt-2">
+              <select className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-[#2566b0] bg-white text-gray-700 w-full mt-2">
                 <option>1 N.Lớn - 0 T.Em</option>
               </select>
             </div>

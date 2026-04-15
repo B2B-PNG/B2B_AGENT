@@ -13,7 +13,7 @@ const TopDestinationCard = ({ dest }: any) => {
                         <ImageIcon size={28} className="text-gray-400" strokeWidth={1.5} />
                     </div>
                 </div>
-                <p className="text-gray-900 font-semibold text-sm drop-shadow-sm group-hover:text-blue-600 truncate w-32 text-center px-2">
+                <p className="text-gray-900 font-semibold text-sm drop-shadow-sm group-hover:text-[#2566b0] truncate w-32 text-center px-2">
                     {dest?.strDestinationName}
                 </p>
             </div>

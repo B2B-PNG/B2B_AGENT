@@ -25,7 +25,7 @@ const HotelDetail = () => {
     const { hotelData, hotelLoading, hotelError } = useListHotel(filters);
     const { ibgData, ibgLoading, ibgError } = useListItemByAgent(filters);
 
-    const hotel = hotelData?.[0] ?? {}; // ✅ fix crash
+    const hotel = hotelData?.[0] ?? {};
 
     const colDefs: ColumnDef<any>[] = [
         {

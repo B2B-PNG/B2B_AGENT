@@ -33,8 +33,8 @@ const PartnerCard = ({ partner }: any) => {
                         </div>
 
                         <div className="space-y-3 pt-2 border-t border-gray-100">
-                            <button className="flex items-center gap-2.5 text-blue-600 text-sm font-medium hover:underline group-hover:underline">
-                                <Link2 size={14} className="text-blue-500" />
+                            <button className="flex items-center gap-2.5 text-[#2566b0] text-sm font-medium hover:underline group-hover:underline">
+                                <Link2 size={14} className="text-[#2566b0]" />
                                 <span>[Liên kết tarrif]</span>
                             </button>
 
