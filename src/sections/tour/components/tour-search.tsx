@@ -18,7 +18,7 @@ const TourSearch = () => {
         // start: null,
         // end: null,
     });
-    // const { searchData, searchError, searchLoading } = useSearchTour(filters)
+    const { searchData, searchError, searchLoading } = useSearchTour(filters)
     const handleSearch = () => {
         // const guest = filters.guestRoom || {};
 
@@ -50,22 +50,22 @@ const TourSearch = () => {
             <GenericFilter
                 filters={[
                     { type: "toggle", key: "series", label: "Tour Series" },
-                    // {
-                    //     type: "search",
-                    //     key: "keyword",
-                    //     label: "Search",
-                    //     placeholder: "Search...",
-                    //     renderDropdown: ({ value: _value, close }) => (
-                    //         <TourLocationDes
-                    //             data={searchData}
-                    //             isLoading={searchLoading}
-                    //             onSelectDestination={(val) => {
-                    //                 setFilters((p: any) => ({ ...p, keyword: val }));
-                    //                 close();
-                    //             }}
-                    //         />
-                    //     ),
-                    // },
+                    {
+                        type: "search",
+                        key: "keyword",
+                        label: "Search",
+                        placeholder: "Search...",
+                        renderDropdown: ({ value: _value, close }) => (
+                            <TourLocationDes
+                                data={searchData}
+                                isLoading={searchLoading}
+                                onSelectDestination={(val) => {
+                                    setFilters((p: any) => ({ ...p, keyword: val }));
+                                    close();
+                                }}
+                            />
+                        ),
+                    },
 
                     { type: "guestRoom", key: "guestRoom", isRoomDetail: true, },
                     { type: "dateRange", keyStart: "start", keyEnd: "end" },

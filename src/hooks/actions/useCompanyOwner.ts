@@ -127,3 +127,52 @@ export const useCompanyDes = (filters?: {
         tcdError: query.isError,
     };
 };
+
+
+
+const fetchListAgentHost = async (body: any) => {
+    const res = await apiClient.post("user/GetListAgentHostNoAddByAgent", body);
+    return res.data;
+};
+
+export const useListAgentHost = (filters?: {
+    page?: number | null;
+    pageSize?: number | null;
+}) => {
+    const { user } = useUser();
+
+    const page = filters?.page;
+    const pageSize = filters?.pageSize;
+    const query = useQuery({
+        queryKey: [QUERY_KEYS.COMPANY_OWNER.LIST_COMPANY_DES_DAY, filters],
+        queryFn: () =>
+            fetchListAgentHost({
+                strCompanyGUID: user?.strCompanyGUID,
+                strFilterCompanyName: "",
+                strFilterLocationCode: null,
+                intCateID: null,
+                intCurPage: filters?.page ?? null,
+                intPageSize: filters?.pageSize ?? null,
+                strOrder: null,
+                tblsReturn: "[0]",
+            }),
+        enabled: !!user,
+        placeholderData: keepPreviousData,
+    });
+
+    const listData = query.data?.[0] ?? [];
+    const totalRecords = listData?.[0]?.intTotalRecords || 0;
+    const totalPages = pageSize
+        ? Math.ceil(totalRecords / pageSize)
+        : 0;
+
+    return {
+        ahData: listData,
+        totalRecords,
+        totalPages,
+        ahLoading: query.isLoading,
+        ahError: query.isError,
+    };
+};
+
+

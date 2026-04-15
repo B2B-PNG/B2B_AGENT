@@ -41,6 +41,9 @@ export const paths = {
   voucher: {
     list: "/voucher"
   },
+  agentCompany: {
+    list: "/agent-company"
+  },
   backdoor: "/backdoor",
   page403: "/error/403",
   page404: "/error/404",
