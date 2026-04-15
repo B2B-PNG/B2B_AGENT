@@ -15,7 +15,8 @@ export const paths = {
     detail: "/tour-detail"
   },
   boat: {
-    list: "/boat"
+    list: "/boat",
+    detail: "/boat-detail"
   },
   hotel: {
     list: "/hotel",

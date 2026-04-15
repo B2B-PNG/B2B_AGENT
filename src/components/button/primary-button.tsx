@@ -30,7 +30,7 @@ const PrimaryButton = ({
       onClick={onClick}
       className={twMerge(
         clsx(` flex flex-row justify-center items-center gap-3 px-6 py-4 rounded-[12px] cursor-pointer h-[50px]
-          text-mdSemiBold w-full bg-blue-500 ${!disabled ? " text-white" : "opacity-50 "}`),
+          text-mdSemiBold w-full bg-[#2566b0] ${!disabled ? " text-white" : "opacity-50 "}`),
         className
       )}
       disabled={disabled}

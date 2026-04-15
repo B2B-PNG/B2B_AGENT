@@ -58,12 +58,12 @@ const TourLocationDes = ({ data, isLoading, onSelectDestination }: Props) => {
                             }
 
                             } key={index} className="flex gap-3 cursor-pointer hover:bg-[#e9e9e981] px-4 py-2 transition">
-                                <MapPin className="text-blue-500 mt-1" size={18} />
+                                <MapPin className="text-[#2566b0] mt-1" size={18} />
 
                                 <div>
                                     <div className="flex items-center gap-2">
                                         <span className="font-semibold">{loc.strDisplayName}</span>
-                                        <span className="text-[10px] bg-blue-100 text-blue-500 rounded-full">
+                                        <span className="text-[10px] bg-blue-100 text-[#2566b0] rounded-full">
                                             DESTINATION
                                         </span>
                                     </div>
@@ -92,12 +92,12 @@ const TourLocationDes = ({ data, isLoading, onSelectDestination }: Props) => {
                             <button
                                 // onClick={() => router.push(paths.tour.detail(tour?.strUrlLink ?? ""))}
                                 key={index} className="flex gap-3 cursor-pointer hover:bg-[#e9e9e981] px-4 py-2 transition">
-                                <Flag className="text-blue-500 mt-1" size={18} />
+                                <Flag className="text-[#2566b0] mt-1" size={18} />
 
                                 <div className="flex-1">
                                     <div className="flex items-start justify-between gap-2">
                                         <div className="font-medium text-start">{tour.strDisplayName}</div>
-                                        <span className="text-[10px] px-2 py-0.5 bg-blue-100 text-blue-500 rounded-full">
+                                        <span className="text-[10px] px-2 py-0.5 bg-blue-100 text-[#2566b0] rounded-full">
                                             TOUR
                                         </span>
                                     </div>

@@ -1,65 +1,73 @@
 import { GenericFilter } from "@/components/generic-filter/generic-filter";
 import TourLocationDes from "./tour-location-des";
 import { useState } from "react";
+import { useSearchTour } from "@/hooks/actions/useTour";
 
 const TourSearch = () => {
     const [filters, setFilters] = useState<any>({
+        page: 1,
+        pageSize: 10,
+        series: false,
         keyword: "",
+        // guestRoom: {
+        //     rooms: 1,
+        //     adults: 1,
+        //     children: 0,
+        //     childAges: [],
+        // },
+        // start: null,
+        // end: null,
     });
-
-    const [searchResult, setSearchResult] = useState<any[]>([]);
-    const [loading, setLoading] = useState(false);
-
+    // const { searchData, searchError, searchLoading } = useSearchTour(filters)
     const handleSearch = () => {
-        console.log("search filters:", filters);
+        // const guest = filters.guestRoom || {};
+
+        const payload = {
+            page: 1,
+            pageSize: filters.pageSize,
+
+            isTourSeries: filters.series,
+
+            strFilterDestinationName: filters.keyword || "",
+
+            // rooms: guest.rooms || 1,
+            // adults: guest.adults || 1,
+            // children: guest.children || 0,
+            // childAges: guest.childAges || [],
+
+            // startDate: filters.start,
+            // endDate: filters.end,
+        };
+
+        setFilters((prev: any) => ({
+            ...prev,
+            ...payload,
+        }));
     };
-
-    const handleKeywordChange = async (val: string) => {
-        setFilters((p: any) => ({ ...p, keyword: val }));
-
-        if (!val) {
-            setSearchResult([]);
-            return;
-        }
-
-        setLoading(true);
-
-        try {
-            const res = await fetch(`/api/search?keyword=${val}`);
-            const data = await res.json();
-
-            setSearchResult(data);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    console.log("handleKeywordChange", handleKeywordChange)
-
     return (
         <div>
 
             <GenericFilter
                 filters={[
                     { type: "toggle", key: "series", label: "Tour Series" },
-                    {
-                        type: "search",
-                        key: "keyword",
-                        label: "Search",
-                        placeholder: "Search...",
-                        renderDropdown: ({ value: _value, close }) => (
-                            <TourLocationDes
-                                data={searchResult}
-                                isLoading={loading}
-                                onSelectDestination={(val) => {
-                                    setFilters((p: any) => ({ ...p, keyword: val }));
-                                    close();
-                                }}
-                            />
-                        ),
-                    },
+                    // {
+                    //     type: "search",
+                    //     key: "keyword",
+                    //     label: "Search",
+                    //     placeholder: "Search...",
+                    //     renderDropdown: ({ value: _value, close }) => (
+                    //         <TourLocationDes
+                    //             data={searchData}
+                    //             isLoading={searchLoading}
+                    //             onSelectDestination={(val) => {
+                    //                 setFilters((p: any) => ({ ...p, keyword: val }));
+                    //                 close();
+                    //             }}
+                    //         />
+                    //     ),
+                    // },
 
-                    { type: "guest", key: "guest" },
+                    { type: "guestRoom", key: "guestRoom", isRoomDetail: true, },
                     { type: "dateRange", keyStart: "start", keyEnd: "end" },
                 ]}
                 values={filters}

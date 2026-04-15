@@ -74,7 +74,7 @@ export function RHFTextField({
 
           <div
             className={`relative bg-white text-gray-900 w-full h-[48px] flex items-center border rounded-[10px] transition-all duration-200
-            ${isFocused && !error && "border-blue-500"}
+            ${isFocused && !error && "border-[#2566b0]"}
             ${error ? "border-red-500" : "border-gray-300"}
             `}
           >

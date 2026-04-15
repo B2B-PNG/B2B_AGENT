@@ -36,7 +36,7 @@ const FlightCard = ({ flight }:  any ) => {
         {/* Airline name */}
         <h3
           onClick={handleNavigate}
-          className="text-[#1a4a8d] font-bold text-[15px] leading-tight uppercase mb-3 line-clamp-2 cursor-pointer hover:text-blue-600 transition-colors"
+          className="text-[#1a4a8d] font-bold text-[15px] leading-tight uppercase mb-3 line-clamp-2 cursor-pointer hover:text-[#2566b0] transition-colors"
         >
           {flight.strSupplierName}
         </h3>
@@ -82,7 +82,7 @@ const FlightCard = ({ flight }:  any ) => {
 
           <button
             onClick={() => handleNavigate()}
-            className="cursor-pointer text-blue-600 border border-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap"
+            className="cursor-pointer text-[#2566b0] border border-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap"
           >
             Xem chi tiết
           </button>

@@ -6,6 +6,7 @@ import GuestPopup from "./guest-popup";
 import DateRangePopup from "./date-range-popup";
 import DatePopup from "./date-popup";
 import TypeSelect, { type Option } from "./type-select";
+import GuestRoomPopup from "./guess-room-popup";
 
 type FilterItem =
     | {
@@ -15,6 +16,7 @@ type FilterItem =
         }) => React.ReactNode
     }
     | { type: "guest"; key: string; label?: string }
+    | { type: "guestRoom"; key: string; label?: string; isRoomDetail?: boolean }
     | { type: "dateRange"; keyStart: string; keyEnd: string; label?: string }
     | { type: "date"; key: string; label?: string }
     | { type: "select"; key: string; label?: string; options: Option[] }
@@ -42,7 +44,7 @@ export const GenericFilter = ({
     const locadesRef = useRef<HTMLDivElement>(null);
 
     const [active, setActive] = useState<
-        "guest" | "date" | "dateOne" | "locades" | "search" | null
+        "guest" | "guestRoom" | "date" | "dateOne" | "locades" | "search" | null
     >(null);
 
     useEffect(() => {
@@ -161,6 +163,56 @@ export const GenericFilter = ({
                     </div>
                 );
 
+            case "guestRoom":
+                const val = values[item.key] || {
+                    rooms: 1,
+                    adults: 1,
+                    children: 0,
+                    childAges: [],
+                    roomTypes: {
+                        sgl: 0,
+                        dbl: 1,
+                        twn: 0,
+                        tpl: 0,
+                    },
+                };
+
+                return (
+                    <div ref={guestRef} className="relative">
+                        <button
+                            onClick={() =>
+                                setActive(active === "guestRoom" ? null : "guestRoom")
+                            }
+                            className="flex items-center gap-2 cursor-pointer"
+                        >
+                            <Users size={18} />
+                            <div>
+                                <div className="text-sm font-semibold">
+                                    {item.label || "Guest & Room"}
+                                </div>
+
+                                <div className="text-sm">
+                                    {val.rooms} Room • {val.adults} Adult
+                                    {val.children > 0 ? ` • ${val.children} Child` : ""}
+                                </div>
+                            </div>
+                        </button>
+
+                        {active === "guestRoom" && (
+                            <div className="absolute top-20 z-50">
+                                <GuestRoomPopup
+                                    isOpen
+                                    isRoomDetail={item.isRoomDetail ?? false} // 👈 FIX chính
+                                    value={val}
+                                    onDone={(newVal) => {
+                                        onChange(item.key, newVal);
+                                        setActive(null);
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </div>
+                );
             case "dateRange":
                 return (
                     <div ref={dateRef} className="relative">
