@@ -27,7 +27,10 @@ export const dataMenu = [
     id: "mn_3",
     title: "Tàu",
     link: paths.boat.list,
-    match: [paths.boat.list],
+    match: [
+      paths.boat.list,
+      paths.boat.detail
+    ],
     icon: <BoatIcon width="18px" height="18px" />,
   },
   {

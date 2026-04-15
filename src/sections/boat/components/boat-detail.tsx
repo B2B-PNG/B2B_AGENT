@@ -23,6 +23,7 @@ const BoatDetail = () => {
         page: null,
         pageSize: null,
         strSupplierGUID: item?.strSupplierGUID,
+        tblsReturn: "[0][1]"
     });
     const { imgData, imgLoading, imgError } = useListImage(filters)
     const { boatData, boatLoading, boatError } = useListBoat(filters2)

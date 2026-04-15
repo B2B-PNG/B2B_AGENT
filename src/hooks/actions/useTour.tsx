@@ -189,4 +189,49 @@ export const useListTourDay = (filters?: { strTourGUID?: string }) => {
         tddError: query.isError,
     };
 };
+const fetchSearchTour = async (body: any) => {
+    const res = await apiClient.post("system/GetListDirectorySearchingForTourByAgent", body);
+    return res.data;
+};
+
+export const useSearchTour = (filters?: {
+    page?: number,
+    pageSize?: number,
+    strFilterDestinationName?: string
+    isTourSeries?: boolean
+}) => {
+    const { user } = useUser();
+    const { coData } = useListCompanyOwner();
+    const page = filters?.page ?? 1;
+    const pageSize = filters?.pageSize ?? 10;
+
+    const query = useQuery({
+        queryKey: [QUERY_KEYS.TOUR.LIST_TOUR_DAY, filters],
+        queryFn: () =>
+            fetchSearchTour({
+                strCompanyPartnerGUID: user?.strCompanyGUID,
+                strCompanyOwnerGUID: coData?.strCompanyGUID,
+                intCateID: 0,
+                strFilterDestinationName: filters?.strFilterDestinationName,
+                isTourSeries: filters?.isTourSeries,
+                intCurPage: page,
+                intPageSize: pageSize,
+                strOrder: null,
+                tblsReturn: "[0]"
+            }),
+        enabled: !!user,
+        placeholderData: keepPreviousData,
+    });
+
+    const listData = query.data?.[0] ?? [];
+    const totalRecords = listData?.[0]?.intTotalRecords || 0;
+    const totalPages = Math.ceil(totalRecords / pageSize);
+    return {
+        searchData: listData,
+        totalRecords,
+        totalPages,
+        searchLoading: query.isLoading,
+        searchError: query.isError,
+    };
+};
 

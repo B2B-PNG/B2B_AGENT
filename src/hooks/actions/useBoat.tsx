@@ -109,6 +109,7 @@ export const useListMappingPrice = (
         page?: number | null;
         pageSize?: number | null;
         strSupplierGUID?: string | null;
+        tblsReturn?: string | null
     }
 ) => {
     const page = filters?.page ?? 1;
@@ -134,7 +135,7 @@ export const useListMappingPrice = (
                 intPageSize: pageSize,
                 intCurrencyView: 1,
                 strOrder: null,
-                tblsReturn: "[0][1]"
+                tblsReturn: filters?.tblsReturn
             }),
         placeholderData: keepPreviousData,
     });
