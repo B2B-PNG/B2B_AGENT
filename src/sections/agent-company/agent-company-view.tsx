@@ -1,6 +1,6 @@
 import { useListAgentHost } from "@/hooks/actions/useCompanyOwner";
 import { getUrlImage } from "@/utils/format-image";
-import { FileCheck, Search } from "lucide-react";
+import { FileCheck } from "lucide-react";
 import { useState } from "react";
 
 const MOCK_COMPANIES = [
