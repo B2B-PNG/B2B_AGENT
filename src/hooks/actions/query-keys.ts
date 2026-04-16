@@ -3,6 +3,9 @@ export const QUERY_KEYS = {
     AUTH: {
         USER_INFO: "USER_INFO",
     },
+    USER: {
+        LIST_AGENT_NOTIFY: "LIST_AGENT_NOTIFY",
+    },
     TOUR:
     {
         LIST_TOUR: "LIST_TOUR",

@@ -41,6 +41,9 @@ export const paths = {
   voucher: {
     list: "/voucher"
   },
+  notification: {
+    list: "/notification"
+  },
   agentCompany: {
     list: "/agent-company"
   },

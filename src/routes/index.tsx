@@ -16,6 +16,7 @@ const GuidePage = lazy(() => import("@/pages/guide-fee/list"));
 const GuideDetailPage = lazy(() => import("@/pages/guide-fee/detail"));
 const RestaurantPage = lazy(() => import("@/pages/restaurant/list"));
 const RestaurantDetailPage = lazy(() => import("@/pages/restaurant/detail"));
+const NotificationPage = lazy(() => import("@/pages/notification/notification"));
 const SignInPage = lazy(() => import("@/pages/auth/sign-in"));
 const HotelPage = lazy(() => import("@/pages/hotel/list"));
 const HotelDetailPage = lazy(() => import("@/pages/hotel/detail"));
@@ -109,6 +110,10 @@ export function Router() {
             {
               path: paths.restaurant.detail,
               element: <RestaurantDetailPage />,
+            },
+            {
+              path: paths.notification.list,
+              element: <NotificationPage />,
             },
             {
               path: paths.agentCompany.list,
