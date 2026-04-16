@@ -7,6 +7,7 @@ import DateRangePopup from "./date-range-popup";
 import DatePopup from "./date-popup";
 import TypeSelect, { type Option } from "./type-select";
 import GuestRoomPopup from "./guess-room-popup";
+import TourTypeSelect from "./tour-type-select";
 
 type FilterItem =
     | {
@@ -20,7 +21,9 @@ type FilterItem =
     | { type: "dateRange"; keyStart: string; keyEnd: string; label?: string }
     | { type: "date"; key: string; label?: string }
     | { type: "select"; key: string; label?: string; options: Option[] }
-    | { type: "toggle"; key: string; label?: string };
+    | { type: "toggle"; key: string; label?: string }
+    | { type: "tourType"; key: string; label?: string; mainOptions: Option[]; getSubOptions: (val: any) => Option[] }
+
 interface Props {
     filters: FilterItem[];
     values: Record<string, any>;
@@ -306,6 +309,21 @@ export const GenericFilter = ({
                         </div>
                     </div>
                 );
+
+            case "tourType":
+                return (
+                    <div className="flex flex-col gap-1">
+                        <div className="text-sm font-semibold">
+                            {item.label || "Loại tour"}
+                        </div>
+                        <TourTypeSelect
+                            value={values[item.key] || { mainType: "all", subType: "all" }}
+                            mainOptions={item.mainOptions}
+                            getSubOptions={item.getSubOptions}
+                            onChange={(newVal) => onChange(item.key, newVal)}
+                        />
+                    </div>
+                );
             default:
                 return null;
         }
@@ -327,7 +345,7 @@ export const GenericFilter = ({
 
                 <button
                     onClick={onSearch}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#2566b0] text-white rounded-lg"
+                    className="cursor-pointer flex items-center gap-2 px-6 py-3 bg-[#2566b0] hover:bg-[#003566] text-white rounded-lg"
                 >
                     <SearchIcon size={16} />
                     Search

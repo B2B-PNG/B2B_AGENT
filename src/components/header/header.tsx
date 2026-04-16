@@ -9,8 +9,10 @@ import AuthUserInfo from "@/sections/auth/components/auth-user-info";
 import { useUser } from "@/hooks/actions/useAuth";
 import { useLocation } from "react-router-dom";
 import { dataMenu } from "./data-menu";
+import { useToastStore } from "@/zustand/useToastStore";
 
 const Header = () => {
+  const { showToast } = useToastStore()
   const loccation = useLocation();
   const pathname = loccation.pathname
   const router = useRouter();
@@ -65,7 +67,7 @@ const Header = () => {
           <div className="flex items-center gap-2">
             <Lang />
             <Currency />
-            <button className="cursor-pointer rounded-lg border border-[rgba(64,64,64,0.5)] px-3 py-2 text-[14px] font-medium text-gray-700 hover:text-[#2566b0] hover:bg-blue-50 transition-all duration-200 active:scale-95">
+            <button onClick={() => showToast("info", "Sắp ra mắt")} className="cursor-pointer rounded-lg border border-[rgba(64,64,64,0.5)] px-3 py-2 text-[14px] font-medium text-gray-700 hover:text-[#2566b0] hover:bg-blue-50 transition-all duration-200 active:scale-95">
               Thêm tour customize
             </button>
 

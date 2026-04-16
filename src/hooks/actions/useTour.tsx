@@ -95,17 +95,20 @@ const fetchListTourPublish = async (body: any) => {
 };
 
 export const useListTourPublish = (filters?: {
-    page?: number;
-    pageSize?: number;
-    intCateID?: number;
-    intProductID?: number;
+    page?: number | null;
+    pageSize?: number | null;
+    intCateID?: number | null;
+    intProductID?: number | null;
+    strLocationCode?: string | null,
+    dtmFilterDateValidFrom?: string | null,
+    dtmFilterDateValidTo?: string | null,
 }) => {
     const { user } = useUser();
     const { coData } = useListCompanyOwner();
 
     const {
-        page = 1,
-        pageSize = 10,
+        page = filters?.page ?? null,
+        pageSize = filters?.pageSize ?? null,
         intCateID,
         intProductID,
     } = filters || {};
@@ -127,12 +130,12 @@ export const useListTourPublish = (filters?: {
                 strListEasiaCateID: null,
                 strListTransportOptionID: null,
                 dtmFilterDateStart: null,
-                dtmFilterDateValidFrom: null,
-                dtmFilterDateValidTo: null,
+                dtmFilterDateValidFrom: filters?.dtmFilterDateValidFrom,
+                dtmFilterDateValidTo: filters?.dtmFilterDateValidTo,
                 strOrder: null,
                 strPriceFromRange: null,
                 intCurrencyView: 1,
-                strLocationCode: null,
+                strLocationCode: filters?.strLocationCode,
                 intCurPage: page,
                 intPageSize: pageSize,
                 tblsReturn: "[0]",
@@ -144,7 +147,10 @@ export const useListTourPublish = (filters?: {
 
     const listData = query.data?.[0] ?? [];
     const totalRecords = listData?.[0]?.intTotalRecords || 0;
-    const totalPages = Math.ceil(totalRecords / pageSize);
+    const totalPages =
+        typeof pageSize === "number" && pageSize > 0
+            ? Math.ceil(totalRecords / pageSize)
+            : 0;
 
     return {
         tdpData: listData,
@@ -206,12 +212,12 @@ export const useSearchTour = (filters?: {
     const pageSize = filters?.pageSize ?? 10;
 
     const query = useQuery({
-        queryKey: [QUERY_KEYS.TOUR.LIST_TOUR_DAY, filters],
+        queryKey: [QUERY_KEYS.TOUR.LIST_SEARCH_TOUR, filters],
         queryFn: () =>
             fetchSearchTour({
                 strCompanyPartnerGUID: user?.strCompanyGUID,
                 strCompanyOwnerGUID: coData?.strCompanyGUID,
-                intCateID: 0,
+                intCateID: null,
                 strFilterDestinationName: filters?.strFilterDestinationName,
                 isTourSeries: filters?.isTourSeries,
                 intCurPage: page,
@@ -232,6 +238,73 @@ export const useSearchTour = (filters?: {
         totalPages,
         searchLoading: query.isLoading,
         searchError: query.isError,
+    };
+};
+const fetchListTourSeries = async (body: any) => {
+    const res = await apiClient.post("Tour/GetListTourSeriesPublish", body);
+    return res.data;
+};
+
+export const useListTourSeries = (filters?: {
+    page?: number,
+    pageSize?: number,
+    intNoOfAdult?: number
+    strListNoOfChild?: string
+    intNoOfSGLSup?: number
+    intNoOfTPLRec?: number
+    strLocationCode?: string
+    dtmFilterDateValidFrom?: string
+    dtmFilterDateValidTo?: string
+}) => {
+    const { user } = useUser();
+    const { coData } = useListCompanyOwner();
+    const page = filters?.page ?? 1;
+    const pageSize = filters?.pageSize ?? 10;
+
+    const query = useQuery({
+        queryKey: [QUERY_KEYS.TOUR.LIST_TOUR_SERIES, filters],
+        queryFn: () =>
+            fetchListTourSeries({
+                strTourGUID: null,
+                strCompanyOwnerGUID: coData?.strCompanyGUID,
+                strCompanyPartnerGUID: user?.strCompanyGUID,
+                strMemberPartnerGUID: user?.strUserGUID,
+                intLangID: user?.intLangID,
+                strPriceLevelGUID: null,
+                intCateID: null,
+                intProductID: null,
+                strNoOfDayRange: null,
+                strFilterServiceName: null,
+                strListEasiaCateID: null,
+                strListTransportOptionID: null,
+                dtmFilterDateStart: null,
+                dtmFilterDateValidFrom: filters?.dtmFilterDateValidFrom,
+                dtmFilterDateValidTo: filters?.dtmFilterDateValidTo,
+                intNoOfAdult: filters?.intNoOfAdult,
+                strListNoOfChild: filters?.strListNoOfChild,
+                intNoOfSGLSup: filters?.intNoOfSGLSup,
+                intNoOfTPLRec: filters?.intNoOfTPLRec,
+                strOrder: null,
+                strPriceFromRange: null,
+                intCurrencyView: 1,
+                strLocationCode: filters?.strLocationCode,
+                intCurPage: page,
+                intPageSize: pageSize,
+                tblsReturn: "[0]"
+            }),
+        enabled: !!user && !!coData,
+        placeholderData: keepPreviousData,
+    });
+
+    const listData = query.data?.[0] ?? [];
+    const totalRecords = listData?.[0]?.intTotalRecords || 0;
+    const totalPages = Math.ceil(totalRecords / pageSize);
+    return {
+        tsData: listData,
+        totalRecords,
+        totalPages,
+        tsLoading: query.isLoading,
+        tsError: query.isError,
     };
 };
 

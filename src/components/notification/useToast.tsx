@@ -28,7 +28,7 @@ const icons = {
 const textColors = {
   success: "text-[#2DC24E]",
   error: "text-[#C22D2D]",
-  info: "text-primary-blue",
+  info: "text-[#3772ff]",
 };
 
 const ToastComponent = () => {

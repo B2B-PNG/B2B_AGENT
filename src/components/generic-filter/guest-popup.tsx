@@ -116,10 +116,10 @@ const GuestPopup = ({ isOpen, value, onDone }: Props) => {
                                 onChange={(e) =>
                                     handleAgeChange(index, Number(e.target.value))
                                 }
-                                className="border border-gray-300 rounded-md px-2 py-1 cursor-pointer focus:outline-0"
+                                className="border border-gray-300 rounded-md px-2 py-1 cursor-pointer focus:outline-0 cursor-pointer"
                             >
                                 {ages.map((a) => (
-                                    <option key={a} value={a}>
+                                    <option className="cursor-pointer" key={a} value={a}>
                                         {a} years
                                     </option>
                                 ))}

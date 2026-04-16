@@ -138,6 +138,10 @@ const fetchListAgentHost = async (body: any) => {
 export const useListAgentHost = (filters?: {
     page?: number | null;
     pageSize?: number | null;
+    strFilterCompanyName?: string | null;
+    strFilterLocationCode?: string | null;
+    intCateID?: string | null;
+
 }) => {
     const { user } = useUser();
 
@@ -148,11 +152,11 @@ export const useListAgentHost = (filters?: {
         queryFn: () =>
             fetchListAgentHost({
                 strCompanyGUID: user?.strCompanyGUID,
-                strFilterCompanyName: "",
-                strFilterLocationCode: null,
-                intCateID: null,
-                intCurPage: filters?.page ?? null,
-                intPageSize: filters?.pageSize ?? null,
+                strFilterCompanyName: filters?.strFilterCompanyName ?? null,
+                strFilterLocationCode: filters?.strFilterLocationCode ?? null,
+                intCateID: filters?.intCateID ?? null,
+                intCurPage: page ?? null,
+                intPageSize: pageSize ?? null,
                 strOrder: null,
                 tblsReturn: "[0]",
             }),

@@ -156,7 +156,7 @@ const GuestRoomPopup = ({ isOpen, value, onDone, isRoomDetail = false }: Props) 
                                         onClick={() =>
                                             handleRoomTypeChange(item.key as any, "dec")
                                         }
-                                        className="w-8 h-8 bg-gray-200 rounded"
+                                        className="w-8 h-8 bg-gray-200 rounded cursor-pointer"
                                     >
                                         -
                                     </button>
@@ -167,7 +167,7 @@ const GuestRoomPopup = ({ isOpen, value, onDone, isRoomDetail = false }: Props) 
                                         onClick={() =>
                                             handleRoomTypeChange(item.key as any, "inc")
                                         }
-                                        className="w-8 h-8 bg-gray-200 rounded"
+                                        className="w-8 h-8 bg-gray-200 rounded cursor-pointer"
                                     >
                                         +
                                     </button>

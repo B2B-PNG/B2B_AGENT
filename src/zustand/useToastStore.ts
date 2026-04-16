@@ -10,10 +10,6 @@ interface ToastState {
 
 export const useToastStore = create<ToastState>((set) => ({
   toastData: null,
-  // toastData: {
-  //   type: "info",
-  //   message: "Debug toast đang hiện luôn ",
-  // },
   showToast: (type, message) => {
     set({ toastData: { type, message } });
     setTimeout(() => set({ toastData: null }), 3000);

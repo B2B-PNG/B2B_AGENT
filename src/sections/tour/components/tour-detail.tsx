@@ -44,7 +44,8 @@ const TourDetail = () => {
         page: 1,
         pageSize: 4,
         intCateID: item?.item?.intCateID,
-        intProductID: item?.item?.intProductID
+        intProductID: item?.item?.intProductID,
+        strLocationCode: null
     });
 
     const [filters3] = useState({
