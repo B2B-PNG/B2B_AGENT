@@ -252,7 +252,7 @@ export const useListTourSeries = (filters?: {
     strListNoOfChild?: string
     intNoOfSGLSup?: number
     intNoOfTPLRec?: number
-    strLocationCode?: string
+    strLocationCode?: string | null
     dtmFilterDateValidFrom?: string
     dtmFilterDateValidTo?: string
 }) => {

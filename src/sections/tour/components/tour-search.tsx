@@ -1,14 +1,9 @@
 import { GenericFilter } from "@/components/generic-filter/generic-filter";
-import {
-    useDetailTour,
-    useListTourPublish,
-    useListTourSeries,
-    useSearchTour,
-} from "@/hooks/actions/useTour";
 import { useState } from "react";
 import TourLocationDes from "./tour-location-des";
 import { paths } from "@/routes/paths";
 import { useRouter } from "@/routes/hooks/use-router";
+import { useSearchTour } from "@/hooks/actions/useTour";
 
 const today = new Date();
 
@@ -18,7 +13,7 @@ const DEFAULT_FILTERS = {
     isTourSeries: false,
     strFilterDestinationName: "Ha Noi, Vietnam",
     start: today,
-    end: today,
+    end: null,
     guestRoom: {
         rooms: 1,
         adults: 1,
@@ -34,52 +29,30 @@ const DEFAULT_FILTERS = {
 };
 
 const DEFAULT_FILTERS2 = {
-    page: 1,
-    pageSize: 10,
     intNoOfAdult: 1,
     strListNoOfChild: "",
     intNoOfSGLSup: 0,
     intNoOfTPLRec: 0,
     strLocationCode: "VN0000",
     dtmFilterDateValidFrom: today,
-    dtmFilterDateValidTo: today,
-};
-
-const MAIN_TOUR_OPTIONS = [
-    { label: "Tất cả", value: "all" },
-    { label: "Tour hằng ngày", value: "daily" },
-    { label: "Tour trọn gói", value: "package" },
-    { label: "Tour cố định", value: "fixed" },
-];
-
-const getSubTourOptions = (mainValue: string | number) => {
-    switch (mainValue) {
-        case "daily":
-            return [
-                { label: "Tất cả các loại", value: "all" },
-                { label: "FIT", value: "fit" },
-                { label: "GIT", value: "git" },
-                { label: "Excursion", value: "excursion" },
-            ];
-        case "package":
-            return [
-                { label: "Tất cả", value: "all" },
-                { label: "Cao cấp", value: "premium" },
-                { label: "Tiêu chuẩn", value: "standard" },
-            ];
-        default:
-            return [];
-    }
+    dtmFilterDateValidTo: null,
 };
 
 const TourSearch = () => {
-    const router = useRouter()
-    const [filters, setFilters] = useState<any>(DEFAULT_FILTERS);
+    const router = useRouter();
 
-    const [filters2, setFilters2] = useState<any>(DEFAULT_FILTERS2);
-    const [draftFilters2, setDraftFilters2] = useState<any>(DEFAULT_FILTERS2);
+    const [filters, setFilters] = useState(DEFAULT_FILTERS);
+    const [draftFilters2, setDraftFilters2] = useState<{
+        intNoOfAdult: number;
+        strListNoOfChild: string;
+        intNoOfSGLSup: number;
+        intNoOfTPLRec: number;
+        strLocationCode: string | null;
+        dtmFilterDateValidFrom: Date;
+        dtmFilterDateValidTo: Date | null;
+    }>(DEFAULT_FILTERS2);
 
-    const [enableSearch2, setEnableSearch2] = useState(false);
+    const [selectedTourUrl, setSelectedTourUrl] = useState<string | null>(null);
 
     const searchPayload = {
         page: filters.page,
@@ -90,53 +63,23 @@ const TourSearch = () => {
 
     const { searchData, searchLoading } = useSearchTour(searchPayload);
 
-    const { tsData } = useListTourSeries(
-        enableSearch2 ? { ...filters2 } : null
-    );
-
-    const [filters3, setFilters3] = useState<any>({
-        page: 1,
-        pageSize: 10,
-        strLocationCode: "VN0000",
-        dtmFilterDateValidFrom: today,
-        dtmFilterDateValidTo: today,
-    });
-
-    const { tdpData } = useListTourPublish(filters3);
-
-    const [filters4, setFilters4] = useState({
-        strServiceNameUrl: null as string | null,
-    });
-
+    // ================= CLICK SEARCH =================
     const handleSearch = () => {
-        // TOUR → đi detail (KHÔNG search)
-        if (filters4.strServiceNameUrl) {
+        // TOUR → detail
+        if (selectedTourUrl) {
             router.replaceParams(paths.tour.detail, {
-                state: {
-                    item: {
-                        strServiceNameUrl: filters4.strServiceNameUrl,
-                    },
+                item: {
+                    strServiceNameUrl: selectedTourUrl,
                 },
-            })
+            });
             return;
         }
 
-        // 👉 bình thường search
-        if (filters.isTourSeries) {
-            setFilters2({ ...draftFilters2 });
-
-            setEnableSearch2(false);
-            setTimeout(() => setEnableSearch2(true), 0);
-        } else {
-            setFilters3({
-                page: filters.page,
-                pageSize: filters.pageSize,
-                strLocationCode: draftFilters2.strLocationCode,
-                dtmFilterDateValidFrom: draftFilters2.dtmFilterDateValidFrom,
-                dtmFilterDateValidTo: draftFilters2.dtmFilterDateValidTo,
-                _t: Date.now(),
-            });
-        }
+        // SEARCH LIST
+        router.replaceParams(paths.search, {
+            isTourSeries: filters.isTourSeries,
+            filters: draftFilters2,
+        });
     };
 
     return (
@@ -144,6 +87,7 @@ const TourSearch = () => {
             <GenericFilter
                 filters={[
                     { type: "toggle", key: "isTourSeries", label: "Tour Series" },
+
                     {
                         type: "search",
                         key: "strFilterDestinationName",
@@ -158,32 +102,26 @@ const TourSearch = () => {
 
                                     setFilters((p: any) => ({
                                         ...p,
-                                        strFilterDestinationName: item?.strDestinationName,
+                                        strFilterDestinationName:
+                                            item?.strDestinationName,
                                     }));
 
                                     if (isTour) {
-                                        // 👉 chọn TOUR
-                                        setFilters4((prev) => ({
-                                            ...prev,
-                                            strServiceNameUrl: item?.strServiceNameUrl,
-                                        }));
+                                        setSelectedTourUrl(
+                                            item?.strServiceNameUrl
+                                        );
 
-                                        // reset location để tránh search nhầm
-                                        setDraftFilters2((prev: any) => ({
+                                        setDraftFilters2((prev) => ({
                                             ...prev,
                                             strLocationCode: null,
                                         }));
                                     } else {
-                                        // 👉 chọn DESTINATION
-                                        setDraftFilters2((prev: any) => ({
-                                            ...prev,
-                                            strLocationCode: item?.strDestinationCode,
-                                        }));
+                                        setSelectedTourUrl(null);
 
-                                        // reset detail
-                                        setFilters4((prev) => ({
+                                        setDraftFilters2((prev) => ({
                                             ...prev,
-                                            strServiceNameUrl: null,
+                                            strLocationCode:
+                                                item?.strDestinationCode,
                                         }));
                                     }
 
@@ -192,20 +130,9 @@ const TourSearch = () => {
                             />
                         ),
                     },
+
                     { type: "guestRoom", key: "guestRoom", isRoomDetail: true },
                     { type: "dateRange", keyStart: "start", keyEnd: "end" },
-
-                    ...(!filters.isTourSeries
-                        ? [
-                            {
-                                type: "tourType" as const,
-                                key: "tourTypeData",
-                                label: "Loại tour",
-                                mainOptions: MAIN_TOUR_OPTIONS,
-                                getSubOptions: getSubTourOptions,
-                            },
-                        ]
-                        : []),
                 ]}
                 values={filters}
                 onChange={(k, v) => {
@@ -213,21 +140,17 @@ const TourSearch = () => {
                         const next = { ...p, [k]: v };
 
                         if (k === "isTourSeries") {
-                            const resetFilters = {
+                            setDraftFilters2(DEFAULT_FILTERS2);
+                            setSelectedTourUrl(null);
+
+                            return {
                                 ...DEFAULT_FILTERS,
                                 isTourSeries: v,
                             };
-
-                            setFilters(resetFilters);
-                            setFilters2(DEFAULT_FILTERS2);
-                            setDraftFilters2(DEFAULT_FILTERS2);
-                            setEnableSearch2(false);
-
-                            return resetFilters;
                         }
 
                         if (k === "guestRoom") {
-                            setDraftFilters2((prev: any) => ({
+                            setDraftFilters2((prev) => ({
                                 ...prev,
                                 intNoOfAdult: v?.adults || 1,
                                 strListNoOfChild: v?.children
@@ -239,7 +162,7 @@ const TourSearch = () => {
                         }
 
                         if (k === "start" || k === "end") {
-                            setDraftFilters2((prev: any) => ({
+                            setDraftFilters2((prev) => ({
                                 ...prev,
                                 dtmFilterDateValidFrom:
                                     k === "start"

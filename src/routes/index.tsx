@@ -22,6 +22,7 @@ const HotelDetailPage = lazy(() => import("@/pages/hotel/detail"));
 const Page404Page = lazy(() => import("@/pages/error/page404"));
 const AgentTestPage = lazy(() => import("@/pages/agent-test/list"));
 const AgentCompanyPage = lazy(() => import("@/pages/agent-company/list"));
+const SearchPage = lazy(() => import("@/pages/search/search"));
 
 
 // import InitLayout, { LAYOUT } from "@/layouts/init-layout";
@@ -113,6 +114,10 @@ export function Router() {
             {
               path: paths.agentCompany.list,
               element: <AgentCompanyPage />,
+            },
+            {
+              path: paths.search,
+              element: <SearchPage />,
             },
           ],
         },

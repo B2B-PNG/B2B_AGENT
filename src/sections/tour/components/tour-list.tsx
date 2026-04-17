@@ -101,7 +101,7 @@ const TourList = () => {
         page: 1,
         pageSize: 15,
     });
-    
+
     const { tourData, tourLoading, tourError } = useListTour(filters);
 
     // const totalRecords = tourData?.[0]?.intTotalRecords || 0;
