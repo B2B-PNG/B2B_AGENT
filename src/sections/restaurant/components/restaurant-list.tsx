@@ -72,11 +72,11 @@ export const RestaurantCard = ({ restaurant }: { restaurant: any }) => {
           <div>
             <p className="text-[11px] text-gray-500 mb-0.5">Giá từ</p>
             <p className="text-[#2563eb] font-bold text-lg leading-none">
-              {restaurant.dblMaxPriceFrom === "$0" ||
-              restaurant.dblMaxPriceFrom === "N/A" ? (
+              {restaurant.dblPriceFrom === "$0" ||
+              restaurant.dblPriceFrom === "N/A" ? (
                 <span className="text-gray-400 text-base">N/A</span>
               ) : (
-                restaurant.dblMaxPriceFrom
+                restaurant.dblPriceFrom
               )}
             </p>
           </div>

@@ -68,16 +68,20 @@ const VehicleCard = ({ vehicle }: any) => {
           <div>
             <p className="text-[11px] text-gray-500 mb-0.5">Gia tu</p>
             <p className="text-[#2563eb] font-bold text-lg leading-none">
-              {vehicle.dblMaxPriceFrom === '$0' || vehicle.dblMaxPriceFrom === 'N/A' ? (
+              {vehicle.dblPriceFrom === '$0' || vehicle.dblPriceFrom === 'N/A' ? (
                 <span className="text-gray-400 text-base">N/A</span>
               ) : (
-                vehicle.dblMaxPriceFrom
+                vehicle.dblPriceFrom
               )}
             </p>
           </div>
 
           <button
-            onClick={handleNavigate}
+            onClick={() =>
+              router.replaceParams(paths.vehicle.detail, {
+                item: vehicle,
+              })
+            }
             className="cursor-pointer text-[#2566b0] border border-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap"
           >
             Xem chi tiet

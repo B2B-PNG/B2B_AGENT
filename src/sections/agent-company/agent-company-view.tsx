@@ -1,7 +1,7 @@
 import { useListAgentHost } from "@/hooks/actions/useCompanyOwner";
 import { getUrlImage } from "@/utils/format-image";
 import { isValidValue } from "@/utils/utilts";
-import { FileCheck, Search } from "lucide-react";
+import { FileCheck } from "lucide-react";
 import { useState } from "react";
 
 const BADGE_MAP: Record<number, { icon: string; label: string }> = {

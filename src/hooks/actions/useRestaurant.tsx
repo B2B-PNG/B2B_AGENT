@@ -125,5 +125,90 @@ export const useDetailRestaurant = (filters?: {
   };
 };
 
-// table 
+// image
 
+// const fetchListImageRestaurant = async(body: any) => {
+//   const res = await apiClient.post("supplier/GetListSupplierImageFile", body);
+//   return  res.data
+// }
+
+// export const  useListImageRestaurant = (filters?: {
+//   page?: number;
+//   pageSize?: number;
+//   strSupplierGUID?: string;
+// }) =>  {
+//   const page = filters?.page ?? 1;
+//   const pageSize  = filters?.pageSize ?? 10;
+
+//   const query = useQuery({
+//     queryKey: [QUERY_KEYS.RESTAURANT.LIST_IMAGE],
+//     queryFn: () => 
+//     fetchListImageRestaurant({
+//       strSupplierImageFileGUID: null,
+//       strSupplierGUID: filters?.strSupplierGUID,
+//       strItemTypeGUID: null,
+
+//       intCurPage: null,
+//       intPageSize: null,
+
+//       strOrder: null,
+
+//       tblsReturn: [0]
+//     }),
+//     placeholderData: keepPreviousData,
+//   })
+
+//   const listData = query.data?.[0] ?? [];
+//   const totalRecords = listData?.[0]?.intTotalRecords || 0;
+//   const totalPages = Math.ceil(totalRecords / pageSize);
+
+//   return {
+//     imgData: listData,
+//     totalPages,
+//     totalRecords,
+//     imgLoading: query.isLoading,
+//     imgError: query.isError,
+//   }
+// }
+
+
+const fetchListImage = async (body: any) => {
+  const res = await apiClient.post("supplier/GetListSupplierImageFile", body);
+  return res.data;
+};
+
+export const useListImage = (filters?: {
+  page?: number;
+  pageSize?: number;
+  strSupplierGUID?: string;
+}) => {
+  // const page = filters?.page ?? 1;
+  const pageSize = filters?.pageSize ?? 10;
+
+  const query = useQuery({
+    queryKey: [QUERY_KEYS.BOAT.LIST_IMAGE, filters],
+    queryFn: () =>
+      fetchListImage({
+        strSupplierImageFileGUID: null,
+        strSupplierGUID: filters?.strSupplierGUID,
+        strItemTypeGUID: null,
+        intCurPage: null,
+        intPageSize: null,
+        strOrder: null,
+        tblsReturn: [0],
+      }),
+    placeholderData: keepPreviousData,
+  });
+
+  const listData = query.data?.[0] ?? [];
+  const totalRecords = listData?.[0]?.intTotalRecords || 0;
+  const totalPages = Math.ceil(totalRecords / pageSize);
+
+  return {
+    imgData: listData,
+    totalRecords,
+    totalPages,
+    imgLoading: query.isLoading,
+    imgError: query.isError,
+  };
+};

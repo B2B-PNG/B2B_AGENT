@@ -120,7 +120,6 @@ export const useListFlight = (filters: { page: number; pageSize: number }) => {
 // };
 
 const fetchDetailFlight = async (body: any) => {
-  // Lưu ý: Kết quả trả về là { data: [[...], [...]], isSuccess: true }
   const res = await apiClient.post("supplier/GetListSupplierByAgent", body);
   return res.data;
 };
@@ -128,13 +127,14 @@ const fetchDetailFlight = async (body: any) => {
 export const useDetailFlight = (filters: {
   page: number;
   pageSize: number;
-  strSupplierGUID?: string ;
+  strSupplierGUID?: string;
 }) => {
   const { user } = useUser();
   const { coData } = useListCompanyOwner();
 
   const page = filters?.page ?? 1;
   const pageSize = filters?.pageSize ?? 10;
+
   const query = useQuery({
     queryKey: [
       QUERY_KEYS.FLIGHT.DETAIL_FLIGHT,
@@ -145,7 +145,7 @@ export const useDetailFlight = (filters: {
     ],
     queryFn: () =>
       fetchDetailFlight({
-        RestrCompanyPartnerGUID: user?.strCompanyGUID,
+        strCompanyPartnerGUID: user?.strCompanyGUID,
         strCompanyOwnerGUID: coData?.strCompanyGUID,
         strSupplierGUID: filters?.strSupplierGUID || null,
         intCurrencyID: user?.intCurrencyID,
@@ -159,20 +159,17 @@ export const useDetailFlight = (filters: {
         intPageSize: pageSize,
         strOrder: null,
         tblsReturn: "[0][1]",
-
-
       }),
     enabled: !!user && !!coData,
     placeholderData: keepPreviousData,
   });
 
   const listData = query.data ?? [];
-
-  const totalRecords = listData?.[0]?.intTotalRecords || 0;
-
+  const totalRecords = listData?.[0]?.[0]?.intTotalRecords || 0;
   const totalPages = Math.ceil(totalRecords / pageSize);
-  console.log("listData Flight", listData);
 
+  console.log("listData Flight", listData);
+  
   return {
     fdData: listData,
     totalRecords,
@@ -239,3 +236,58 @@ export const useDetailFlight = (filters: {
 //     mpError: query.isError,
 //   };
 // };
+
+
+const fetchMappingPrice = async (body: any) => {
+  const res = await apiClient.post(
+    "supplier/GetListSupplierMappingPriceForFlightByAgent",
+    body,
+  );
+  return res.data;
+};
+
+export const useListMappingPrice = (filters?: {
+  page?: number | null;
+  pageSize?: number | null;
+  strSupplierGUID?: string | null;
+  tblsReturn?: string | null;
+}) => {
+  const page = filters?.page ?? 1;
+  const pageSize = filters?.pageSize ?? 10;
+  const { user } = useUser();
+  const { coData } = useListCompanyOwner();
+
+  const query = useQuery({
+    queryKey: [QUERY_KEYS.FLIGHT.LIST_MAPPING_PRICE, filters],
+    queryFn: () =>
+      fetchMappingPrice({
+        strSupplierMappingPriceGUID: null,
+        strCompanyPartnerGUID: user?.strCompanyGUID,
+        strSupplierGUID: filters?.strSupplierGUID || null,
+        strPriceLevelGUID: coData?.strPriceLevelGUID,
+        strCompanyOwnerGUID: coData?.strCompanyGUID,
+        dtmDateStart: "2026-04-16",
+        strFilterLocationCode: null,
+        strFilterItemTypeName: null,
+        intTotalPax: 1,
+        strPriceRange: null,
+        intCurPage: page,
+        intPageSize: pageSize,
+        strOrder: null,
+        tblsReturn: filters?.tblsReturn,
+      }),
+    placeholderData: keepPreviousData,
+  });
+
+  const listData = query.data?.[0] ?? [];
+  const totalRecords = listData?.[0]?.intTotalRecords || 0;
+  const totalPages = Math.ceil(totalRecords / pageSize);
+
+  return {
+    mpData: listData,
+    totalRecords,
+    totalPages,
+    mpLoading: query.isLoading,
+    mpError: query.isError,
+  };
+};

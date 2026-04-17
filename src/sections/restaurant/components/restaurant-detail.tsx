@@ -1,20 +1,19 @@
-import { useState } from "react";
-import {
-  CameraOff,
-  Star,
-  Search,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { CameraOff, Star, Search, ChevronDown, ChevronUp } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import { useDetailRestaurant } from "@/hooks/actions/useRestaurant";
+import {
+  useDetailRestaurant,
+  
+} from "@/hooks/actions/useRestaurant";
 import { useListMappingPrice } from "@/hooks/actions/useBoat";
 import { TableCore, type ColumnDef } from "@/components/table/table-core";
+import { getUrlImage } from "@/utils/format-image";
 
 const RestaurantDetail = () => {
   const location = useLocation();
   const item = location?.state?.item;
 
+  // infor
   const [filters] = useState({
     page: 1,
     pageSize: 1,
@@ -46,33 +45,36 @@ const RestaurantDetail = () => {
         <span className="text-gray-400 font-medium">{value}</span>
       ),
     },
-     {
+    {
       field: "No",
       headerName: "Menu",
-      
     },
-     {
+    {
       field: "No",
       headerName: "Số lượng",
-      
     },
-     {
+    {
       field: "No",
       headerName: "Bữa ăn",
-      
     },
-     {
+    {
       field: "No",
       headerName: "Đơn giá",
-      
     },
-     {
+    {
       field: "No",
       headerName: "Tổng giá",
-      
     },
-   
   ];
+
+  // image
+  const [ setActiveImg] = useState<string | undefined>();
+  useEffect(() => {
+    if (restaurant?.strSupplierImage) {
+      setActiveImg(restaurant.strSupplierImage);
+    }
+  }, [restaurant]);
+
   return (
     <div className="max-w-[1400px] mx-auto px-6 pb-6 pt-[50px] bg-[#f8f9fa] min-h-screen flex flex-col lg:flex-row gap-8">
       {/* LEFT */}
@@ -80,17 +82,63 @@ const RestaurantDetail = () => {
         <div className="bg-white rounded-xl p-6">
           <div className="flex flex-col md:flex-row gap-6">
             {/* IMAGE */}
-            <div className="w-full md:w-[360px] space-y-3">
+            {/* <div className="w-full md:w-[360px] space-y-3">
               <div className="w-full h-[240px] bg-[#e5e7eb] overflow-hidden rounded-md">
-                <div className="flex items-center justify-center h-full">
-                  <CameraOff className="w-12 h-12 text-gray-400" />
-                </div>
+                {restaurant?.strSupplierImage ? (
+                  <img
+                    src={restaurant.strSupplierImage}
+                    alt="restaurant"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full">
+                    <CameraOff className="w-12 h-12 text-gray-400" />
+                  </div>
+                )}
               </div>
 
               <div className="flex gap-2 flex-wrap">
-                <div className="w-full h-14 flex items-center text-sm text-gray-400">
-                  Không có ảnh
-                </div>
+                {restaurant?.strSupplierImage ? (
+                  <img
+                    src={restaurant.strSupplierImage}
+                    alt="thumb"
+                    className="w-20 h-14 object-cover rounded-md"
+                  />
+                ) : (
+                  <div className="w-full h-14 flex items-center text-sm text-gray-400">
+                    Không có ảnh
+                  </div>
+                )}
+              </div>
+            </div> */}
+
+            <div className="w-full md:w-[360px] space-y-3">
+              <div className="w-full h-[240px] bg-[#e5e7eb] overflow-hidden rounded-md">
+                {restaurant?.strSupplierImage ? (
+                  <img
+                    src={getUrlImage(restaurant.strSupplierImage)}
+                    alt="restaurant"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full">
+                    <CameraOff className="w-12 h-12 text-gray-400" />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex gap-2 flex-wrap">
+                {restaurant?.strSupplierImage ? (
+                  <img
+                    src={getUrlImage(restaurant.strSupplierImage)}
+                    alt="thumb"
+                    className="w-20 h-14 object-cover rounded-md"
+                  />
+                ) : (
+                  <div className="w-full h-14 flex items-center text-sm text-gray-400">
+                    Không có ảnh
+                  </div>
+                )}
               </div>
             </div>
 

@@ -1,184 +1,277 @@
-import { CameraOff, Star, Filter, RefreshCcw, Search, ChevronDown } from 'lucide-react';
+import {
+  CameraOff,
+  Star,
+  Filter,
+  RefreshCcw,
+} from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useDetailRestaurant } from "@/hooks/actions/useRestaurant";
+import { useDetailGuideFee } from "@/hooks/actions/useGuideFee";
+import { TableCore, type ColumnDef } from "@/components/table/table-core";
 import { useListMappingPrice } from "@/hooks/actions/useBoat";
-import { TableCore } from "@/components/table/table-core";
-import { useDetailGuideFee } from '@/hooks/actions/useGuideFee';
-
-
-
-
-
-
 
 const GuideFeeDetail = () => {
   const location = useLocation();
   const item = location?.state?.item;
-  console.log("item guide", item);
-  
-  const[filters] = useState({
+
+  const [filters] = useState({
     page: 1,
     pageSize: 1,
     strSupplierGUID: item?.strSupplierGUID,
-
-  })
-
-  const { gfData, dgfLoading, dgfError } = useDetailGuideFee(filters)
-  console.log("gf  data " , gfData);
+  });
+  console.log("filters", filters);
   
+  const { gfData } = useDetailGuideFee(filters);
+
+  const guideFee = gfData?.[0]?.[0];
+  const company = gfData?.[1];
+
+  const [filters3] = useState({
+    page: null,
+    pageSize: null,
+    strSupplierGUID: item?.strSupplierGUID,
+    tblsReturn: "[0]",
+  });
+  const { mpData, mpLoading,  } = useListMappingPrice(filters3) 
+  console.log("mpData guide", mpData);
+
+  const colDefs: ColumnDef<any>[] = [
+    {
+      field: "No",
+      headerName:"STT",
+      render: (value: any) => (
+        <span className="text-gray-400 font-medium">{value}</span>
+      ),
+    },
+    {
+       field: "No",
+      headerName:"Tên nhà cung cấp",
+
+    },
+    {
+       field: "No",
+      headerName:"Tên hướng dẫn",
+    },
+    {
+       field: "No",
+      headerName:"Action",
+    }
+  ]
   
+
+  // const [showVehicleFilter, setShowVehicleFilter] = useState(false);
+
 
 
 
   return (
-    <div className="max-w-[1400px] mx-auto px-6 pb-6 pt-[50px] bg-[#f8f9fa] min-h-screen flex flex-col lg:flex-row items-start gap-8 font-sans">
-      
-      {/* =========================================
-          CỘT TRÁI: THÔNG TIN & CHỌN HÀNH TRÌNH 
-          ========================================= */}
-      <div className="flex-1 w-full space-y-10 min-w-0">
-        
-        {/* 1. Phần Thông tin */}
-        <div className="flex flex-col sm:flex-row gap-6">
-          <div className="w-full sm:w-64 h-48 bg-[#e5e7eb] flex items-center justify-center flex-shrink-0">
-            <CameraOff className="w-12 h-12 text-white" />
-          </div>
-          
-          <div className="flex flex-col pt-2">
-            <h1 className="text-3xl font-medium text-gray-800 uppercase tracking-wide">1. GUIDE FEE (APPLY FOR KENSINGTON TOUR)</h1>
-            <div className="flex text-yellow-400 mt-2 mb-3">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Star key={star} className="w-4 h-4" />
-              ))}
-            </div>
-            <p className="text-sm text-gray-700 mb-1"><span className="font-medium">Địa chỉ:</span></p>
-            <p className="text-sm text-gray-700 italic">Mô tả:</p>
-            <p className="text-sm text-gray-500 italic mt-1">Không có dữ liệu</p>
-          </div>
-        </div>
-
-        {/* 2. Phần Chọn hành trình */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-medium text-gray-800">Chọn hành trình</h2>
-          
-          <div className="bg-white p-5 rounded-md shadow-sm border border-gray-200 space-y-4">
-            <div className="flex flex-col">
-              <label className="text-sm text-gray-800 mb-2">Lựa chọn nhà cung cấp</label>
-              <select className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#2566b0] w-full bg-white text-gray-700">
-                <option>CÔNG TY KẾT NỐI DU LỊCH (Giá từ: $0/Xe)</option>
-              </select>
+    <div className="min-h-screen bg-[#f4f6f8]">
+      <div className="max-w-[1400px] mx-auto px-6 pt-10 pb-10 flex flex-col lg:flex-row gap-8">
+        {/* LEFT */}
+        <div className="flex-1 space-y-8">
+          {/* ===== INFO ===== */}
+          <div className="flex flex-col md:flex-row gap-6">
+            <div className="w-full md:w-[260px] h-[200px] bg-gray-200 flex items-center justify-center rounded-md">
+              {guideFee?.strSupplierImage ? (
+                <img
+                  src={guideFee.strSupplierImage}
+                  alt={guideFee?.strSupplierName || "guide-fee"}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <CameraOff className="w-12 h-12 text-white/80" />
+              )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start pt-2">
-              <div className="flex flex-col">
-                <label className="text-sm text-gray-800 mb-2">Tên thuyền</label>
-                <input type="text" className="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:border-[#2566b0]" />
+            <div className="flex flex-col justify-start">
+              <h1 className="text-[28px] font-semibold text-gray-800 uppercase leading-tight">
+                {guideFee?.strSupplierName}
+              </h1>
+
+              <div className="flex text-yellow-400 mt-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star key={star} className="w-4 h-4 fill-current" />
+                ))}
               </div>
-              
-              <div className="flex flex-col">
-                <div className="flex justify-between text-sm text-gray-800 mb-3">
-                  <label>Thời lượng</label>
+
+              <div className="mt-3 space-y-1 text-sm text-gray-700">
+                <p>
+                  <span className="font-medium">Địa chỉ:</span>{" "}
+                  {guideFee?.strSupplierAddr}
+                </p>
+                <p>
+                  <span className="font-medium">Mô tả:</span>{" "}
+                  {guideFee?.strRemark}
+                </p>
+                <p className="italic text-gray-500">Không có dữ liệu</p>
+              </div>
+            </div>
+          </div>
+
+          {/* ===== CHỌN HÀNH TRÌNH ===== */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-800">
+              Chọn hành trình
+            </h2>
+
+            {/* ===== FILTER CARD ===== */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 space-y-5">
+              {/* SELECT */}
+              <div>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">
+                  Lựa chọn nhà cung cấp
+                </label>
+                <select className="w-full h-[42px] border border-gray-300 rounded-md px-3 text-sm focus:border-[#2566b0]">
+                  {company?.map((item: any, index: number) => (
+                    <option key={item.strCompanyOwnerGUID || index}>
+                      {item.strCompanyName} (Giá từ: $
+                      {item.dblPriceFrom?.value || 0}/Xe)
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* FILTER GRID */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* INPUT */}
+                <div>
+                  <label className="text-sm mb-1 block text-gray-700">
+                    Tên thuyền
+                  </label>
+                  <input className="w-full h-[38px] border border-gray-300 rounded px-3 text-sm focus:border-[#2566b0]" />
                 </div>
-                <div className="px-2">
-                  <div className="relative h-1.5 bg-gray-200 rounded-full">
-                    {/* Cập nhật thanh trượt về 0 */}
-                    <div className="absolute top-1/2 left-0 -mt-2 -ml-2 w-4 h-4 bg-white border border-gray-300 rounded-full shadow-sm cursor-pointer"></div>
-                    <div className="absolute top-1/2 right-0 -mt-2 -mr-2 w-4 h-4 bg-white border border-gray-300 rounded-full shadow-sm cursor-pointer"></div>
+
+                {/* SLIDER 1 */}
+                <div>
+                  <label className="text-sm mb-2 block text-gray-700">
+                    Thời lượng
+                  </label>
+                  <div className="h-1.5 bg-gray-200 rounded-full relative">
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white border rounded-full"></div>
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white border rounded-full"></div>
+                  </div>
+                  <div className="flex justify-between text-xs mt-2">
+                    <span>0 ngày</span>
+                    <span>0 ngày</span>
                   </div>
                 </div>
-                <div className="flex justify-between text-xs text-gray-800 font-medium mt-2">
-                  <span>0 ngày</span>
-                  <span>0 ngày</span>
-                </div>
-              </div>
 
-              <div className="flex flex-col">
-                <div className="flex justify-between text-sm text-gray-800 mb-3">
-                  <label>Giá</label>
-                </div>
-                <div className="px-2">
-                  <div className="relative h-1.5 bg-gray-200 rounded-full">
-                    {/* Cập nhật thanh trượt về 0 */}
-                    <div className="absolute top-1/2 left-0 -mt-2 -ml-2 w-4 h-4 bg-white border border-gray-300 rounded-full shadow-sm cursor-pointer"></div>
-                    <div className="absolute top-1/2 right-0 -mt-2 -mr-2 w-4 h-4 bg-white border border-gray-300 rounded-full shadow-sm cursor-pointer"></div>
+                {/* SLIDER 2 */}
+                <div>
+                  <label className="text-sm mb-2 block text-gray-700">
+                    Giá
+                  </label>
+                  <div className="h-1.5 bg-gray-200 rounded-full relative">
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white border rounded-full"></div>
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white border rounded-full"></div>
+                  </div>
+                  <div className="flex justify-between text-xs mt-2">
+                    <span>$0</span>
+                    <span>$0</span>
                   </div>
                 </div>
-                <div className="flex justify-between text-xs text-gray-800 font-medium mt-2">
-                  <span>$0</span>
-                  <span>$0</span>
+              </div>
+
+              {/* ACTION */}
+              <div className="flex items-center gap-2">
+                <button className="bg-[#1b4998] text-white px-4 py-1.5 rounded flex items-center gap-1 text-sm">
+                  <Filter className="w-4 h-4" />
+                  Lọc
+                </button>
+
+                <button className="border p-1.5 rounded bg-white hover:bg-gray-50">
+                  <RefreshCcw className="w-4 h-4" />
+                </button>
+
+                {/* <button
+                  onClick={() => setShowVehicleFilter(!showVehicleFilter)}
+                  className="border px-3 py-1.5 rounded bg-white flex items-center gap-1 text-sm text-[#2566b0]"
+                >
+                  <Search className="w-4 h-4" />
+                  {showVehicleFilter ? (
+                    <ChevronUp className="w-4 h-4" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4" />
+                  )}
+                </button> */}
+              </div>
+
+              {/* EXPAND FILTER */}
+              <div>
+                <p className="text-sm font-medium mb-2">Tên xe</p>
+                <div className="flex flex-wrap gap-4">
+                  {[
+                    "Xe 4 chỗ",
+                    "Xe 8 chỗ",
+                    "Xe 16 chỗ",
+                    "Xe 29 chỗ",
+                    "Xe 35 chỗ",
+                    "Xe 45 chỗ",
+                  ].map((item) => (
+                    <label
+                      key={item}
+                      className="flex items-center gap-2 text-sm"
+                    >
+                      <input type="checkbox" />
+                      {item}
+                    </label>
+                  ))}
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 pt-2">
-              <button className="bg-[#1b4998] text-white px-4 py-1.5 rounded flex items-center gap-1.5 text-sm hover:bg-blue-800 transition-colors">
-                <Filter className="w-4 h-4 fill-current" /> Lọc
-              </button>
-              <button className="border border-gray-300 p-1.5 rounded bg-white hover:bg-gray-50 text-gray-600 transition-colors">
-                <RefreshCcw className="w-4 h-4" />
-              </button>
-              <button className="text-[#2566b0] hover:bg-blue-50 p-1.5 rounded flex items-center gap-0.5 transition-colors">
-                <Search className="w-4 h-4" />
-                <ChevronDown className="w-3 h-3" />
-              </button>
-            </div>
-          </div>
+            {/* ===== TABLE ===== */}
 
-          <div className="bg-white rounded-md shadow-sm border border-gray-200 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse min-w-max">
-                <thead>
-                  <tr className="bg-[#1b4998] text-white text-sm">
-                    <th className="px-4 py-3 font-medium">STT</th>
-                    <th className="px-4 py-3 font-medium">Tên nhà cung cấp</th>
-                    <th className="px-4 py-3 font-medium">Tên hướng dẫn</th>
-                    <th className="px-4 py-3 font-medium">Action</th>
+            <TableCore
+              rowData={mpData ?? []}
+              columnDefs={colDefs}
+              loading={mpLoading}
+            />
+            {/* <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
+              <table className="w-full text-sm">
+                <thead className="bg-[#1b4998] text-white">
+                  <tr>
+                    <th className="px-4 py-3 text-left">STT</th>
+                    <th className="px-4 py-3 text-left">Tên nhà cung cấp</th>
+                    <th className="px-4 py-3 text-left">Tên hướng dẫn</th>
+                    <th className="px-4 py-3 text-left">Action</th>
                   </tr>
                 </thead>
-                <tbody className="text-sm text-gray-700">
-                  {/* Trạng thái không có dữ liệu */}
-                  <tr className="border-b border-gray-200">
-                    <td colSpan={4} className="px-4 py-4 text-gray-600 bg-gray-50/50">
+
+                <tbody>
+                  <tr>
+                    <td colSpan={4} className="text-center py-6 text-gray-500">
                       Không có dữ liệu
                     </td>
                   </tr>
                 </tbody>
               </table>
-            </div>
+            </div> */}
           </div>
         </div>
-      </div>
 
-      {/* =========================================
-          CỘT PHẢI: WIDGET ĐẶT XE (STICKY)
-          Đã giữ nguyên top-[150px] để tránh header
-          ========================================= */}
-      <div className="w-full lg:w-[320px] flex-shrink-0 sticky top-[150px] self-start h-fit">
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-          <h2 className="text-xl font-medium text-[#2566b0] mb-5">Đặt Xe</h2>
-          
-          <div className="space-y-4">
-            <div className="flex flex-col">
-              <label className="text-sm font-medium text-gray-800 mb-1.5">
-                Ngày khởi hành <span className="text-red-500">*</span>
-              </label>
-              <input 
-                type="text" 
-                defaultValue="11/04/2026" 
-                className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-[#2566b0] w-full"
-              />
-            </div>
-            
-            <div className="flex flex-col">
-              <select className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-[#2566b0] bg-white text-gray-700 w-full mt-2">
+        {/* RIGHT */}
+        <div className="w-full lg:w-[320px] sticky top-[120px] h-fit">
+          <div className="bg-white rounded-xl shadow-lg p-6 border">
+            <h2 className="text-lg font-semibold text-[#2566b0] mb-4">
+              Đặt Xe
+            </h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium">
+                  Ngày khởi hành <span className="text-red-500">*</span>
+                </label>
+                <input className="mt-1 w-full border rounded px-3 py-2 text-sm" />
+              </div>
+
+              <select className="w-full border rounded px-3 py-2 text-sm">
                 <option>1 N.Lớn - 0 T.Em</option>
               </select>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   );
 };

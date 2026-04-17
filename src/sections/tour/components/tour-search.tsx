@@ -1,9 +1,9 @@
 import { GenericFilter } from "@/components/generic-filter/generic-filter";
+import { useSearchTour } from "@/hooks/actions/useTour";
 import { useState } from "react";
 import TourLocationDes from "./tour-location-des";
 import { paths } from "@/routes/paths";
 import { useRouter } from "@/routes/hooks/use-router";
-import { useSearchTour } from "@/hooks/actions/useTour";
 
 const today = new Date();
 

@@ -1,32 +1,62 @@
 import { useState } from "react";
-import {
-  CameraOff,
-  Star,
-} from "lucide-react";
+import { CameraOff, Star } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { Filter, Search, RefreshCcw , ChevronDown} from "lucide-react";
 
-import { useDetailFlight } from "@/hooks/actions/useFilght";
+import {
+  useDetailFlight,
+  useListMappingPrice,
+} from "@/hooks/actions/useFilght";
 import BookingForm from "@/sections/flight/components/booking-form";
+import { formatPrice } from "@/utils/format-number";
+import { TableCore, type ColumnDef } from "@/components/table/table-core";
+
 
 const FlightDetail = () => {
   const location = useLocation();
   const item = location?.state?.item;
   console.log("item", item);
-  
 
   const { fdData } = useDetailFlight({
     page: 1,
     pageSize: 1,
-    strSupplierGUID: item?.strSupplierGUID
-
+    strSupplierGUID: item?.strSupplierGUID,
   });
-  console.log("fdData", fdData);
-  
+
   const flight = fdData?.[0]?.[0];
-  console.log("flight" , flight);
+  const company = fdData?.[1]?.[0];
 
-  const [selectedCompany] = useState("");
+  const [filters] = useState({
+    page: 1,
+    pageSize: 10,
+    strSupplierGUID: item?.strSupplierGUID,
+    tblsReturn: "[0][1][2]",
+  });
+  const { mpData, mpLoading } =useListMappingPrice(filters);
 
+  const [searchKeyword, setSearchKeyword] = useState("");
+const [selectedCompany, setSelectedCompany] = useState("");
+
+
+  console.log("mpData Flight", mpData);
+
+  const colDefs: ColumnDef<any>[] =[
+  {
+      field: "No",
+      headerName: "STT",
+      render: (value: any) => (
+        <span className="text-gray-400 font-medium">{value}</span>
+      ),
+    },
+  {
+      field: "No",
+      headerName: "Tên nhà cung cấp",
+    },
+    {
+      field: "No",
+      headerName: "Action",
+    },
+  ]
   // if (!supplierGuid && !supplierFromState) {
   //   return (
   //     <section className="min-h-screen bg-[#f3f4f6] px-6 py-10 text-slate-700 md:px-6">
@@ -89,7 +119,9 @@ const FlightDetail = () => {
                 <div>
                   <p className="font-medium">Mô tả:</p>
                   <p className="mt-3 italic text-slate-600">
-                    {flight?.description || flight?.strRemark || "Không có dữ liệu"}
+                    {flight?.description ||
+                      flight?.strRemark ||
+                      "Không có dữ liệu"}
                   </p>
                 </div>
               </div>
@@ -106,19 +138,22 @@ const FlightDetail = () => {
                 Lựa chọn nhà cung cấp
               </label>
 
-              {/* <select
+                  
+
+
+              <select
                 className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-[15px]"
-                value={selectedCompany || strCompanyName}
+                value={selectedCompany || company?.strCompanyName || ""}
                 onChange={(event) => setSelectedCompany(event.target.value)}
               >
-                <option value={strCompanyName}>
-                  {strCompanyName || "Không có dữ liệu"}
-                  {strCompanyName ? ` (Giá từ: ${priceFrom}/Vé)` : ""}
+                <option value={company?.strCompanyName || ""}>
+                  {company?.strCompanyName || "Không có dữ liệu"}
+                  {` (Giá từ: $${formatPrice(company?.dblPriceFrom)}/Xe)`}
                 </option>
-              </select> */}
+              </select>
             </div>
 
-            {/* <div className="rounded-2xl bg-white p-4">
+            <div className="rounded-2xl bg-white p-4">
               <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                 <div>
                   <label className="mb-2 block text-[15px] font-medium text-[#1f2937]">
@@ -179,7 +214,13 @@ const FlightDetail = () => {
                 </button>
               </div>
 
-              <div className="mt-4 overflow-hidden rounded-2xl bg-white">
+
+               <TableCore
+                           rowData={mpData ?? []}
+                           columnDefs={colDefs}
+                           loading={mpLoading}
+                         />       
+              {/* <div className="mt-4 overflow-hidden rounded-2xl bg-white">
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="bg-[#1f5fad] text-white">
@@ -197,7 +238,9 @@ const FlightDetail = () => {
                     <tr className="border-t border-slate-200">
                       <td className="px-4 py-3">1</td>
                       <td className="px-4 py-3">
-                        {strCompanyName || flight?.strSupplierName || "Không có dữ liệu"}
+                        {strCompanyName ||
+                          flight?.strSupplierName ||
+                          "Không có dữ liệu"}
                       </td>
                       <td className="px-4 py-3 text-center">
                         <button className="rounded bg-gray-100 px-3 py-1.5 text-sm text-slate-700 hover:bg-gray-200">
@@ -207,8 +250,8 @@ const FlightDetail = () => {
                     </tr>
                   </tbody>
                 </table>
-              </div>
-            </div> */}
+              </div> */}
+            </div>
           </div>
         </div>
 

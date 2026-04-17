@@ -117,3 +117,60 @@ export const useDetailGuideFee = (filters?: {
     refetch: query.refetch,
   };
 };
+
+
+// tabe 
+
+const fetchMappingPrice = async (body: any) => {
+  const res = await apiClient.post(
+    "supplier/GetListSupplierMappingPriceForGuideByAgent",
+    body,
+  );
+  return res.data;
+};
+
+export const useListMappingPrice = (filters?: {
+  page?: number | null;
+  pageSize?: number | null;
+  strSupplierGUID?: string | null;
+  tblsReturn?: any;
+}) => {
+  const page = filters?.page ?? 1;
+  const pageSize = filters?.pageSize ?? 10;
+  const { user } = useUser();
+  const { coData } = useListCompanyOwner();
+
+  const query = useQuery({
+    queryKey: [QUERY_KEYS.BOAT.LIST_MAPPING_PRICE, filters],
+    queryFn: () =>
+      fetchMappingPrice({
+        strSupplierMappingPriceGUID: null,
+        strCompanyPartnerGUID: user?.strCompanyGUID,
+        strSupplierGUID: filters?.strSupplierGUID || null,
+        strPriceLevelGUID: coData?.strPriceLevelGUID,
+        strCompanyOwnerGUID: coData?.strCompanyGUID,
+        dtmDateStart: "2026-04-16",
+        strFilterLocationCode: null,
+        strFilterItemTypeName: null,
+        intTotalPax: 1,
+        strPriceRange: null,
+        intCurPage: page,
+        intPageSize: pageSize,
+        strOrder: null,
+        tblsReturn: filters?.tblsReturn,
+      }),
+    placeholderData: keepPreviousData,
+  });
+
+  const listData = query.data?.[0] ?? [];
+  const totalRecords = listData?.[0]?.intTotalRecords || 0;
+  const totalPages = Math.ceil(totalRecords / pageSize);
+
+  return {
+    mpData: listData,
+    totalRecords,
+    totalPages,
+    mpLoading: query.isLoading,
+    mpError: query.isError,
+  };
+};
