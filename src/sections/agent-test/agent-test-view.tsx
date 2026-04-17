@@ -5,7 +5,7 @@ import { paths } from "@/routes/paths";
 
 const AgentTestView = () => {
     const router = useRouter()
-    const { user, userLoading } = useUser()
+    const { user } = useUser()
     const data = [
         { id: 11, name: 'CÔNG TY KẾT NỐI DU LỊCH', strCompanyNameUrl: "cong-ty-tnhh-ket-noi-du-lich-8F620" },
     ];
