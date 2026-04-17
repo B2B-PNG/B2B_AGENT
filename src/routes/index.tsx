@@ -21,7 +21,7 @@ const SignInPage = lazy(() => import("@/pages/auth/sign-in"));
 const HotelPage = lazy(() => import("@/pages/hotel/list"));
 const HotelDetailPage = lazy(() => import("@/pages/hotel/detail"));
 const Page404Page = lazy(() => import("@/pages/error/page404"));
-const AgentTestPage = lazy(() => import("@/pages/agent-test/list"));
+// const AgentTestPage = lazy(() => import("@/pages/agent-test/list"));
 const AgentCompanyPage = lazy(() => import("@/pages/agent-company/list"));
 const SearchPage = lazy(() => import("@/pages/search/search"));
 const CartPage = lazy(() => import("@/pages/cart/list"));
@@ -130,24 +130,6 @@ export function Router() {
             {
               path: paths.cart.list,
               element: <CartPage />,
-            },
-          ],
-        },
-
-        // INFO LAYOUT
-        {
-          element: (
-            // <AuthRoute>
-              <InitLayout type={LAYOUT.INFO}>
-                <Outlet />
-              </InitLayout>
-            // </AuthRoute>
-          ),
-          children: [
-            {
-              // path: paths.agentTest.list,
-              index: true,
-              element: <AgentTestPage />,
             },
           ],
         },

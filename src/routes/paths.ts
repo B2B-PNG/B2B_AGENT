@@ -1,5 +1,5 @@
 export const paths = {
-  root: "/",
+  // root: "/",
   comingSoon: "/coming-soon",
   auth: {
     signIn: "/sign-in",
@@ -7,11 +7,8 @@ export const paths = {
     forgotPass: "/forgot-pass",
     newPassword: "/new-password",
   },
-  agentTest: {
-    list: "/"
-  },
   tour: {
-    list: "/tour",
+    list: "/",
     detail: "/tour-detail"
   },
   boat: {
