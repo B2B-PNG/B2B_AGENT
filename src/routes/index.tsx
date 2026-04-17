@@ -3,7 +3,7 @@ import { Navigate, Outlet, useRoutes } from "react-router-dom";
 import { paths } from "./paths";
 import InitLayout, { LAYOUT } from "../layouts/init-layout";
 import { SplashScreen } from "@/components/loading";
-import { AuthRoute } from "./auth-route";
+// import { AuthRoute } from "./auth-route";
 const TourPage = lazy(() => import("@/pages/tour/list"));
 const TourDetailPage = lazy(() => import("@/pages/tour/detail"));
 const BoatPage = lazy(() => import("@/pages/boat/list"));
@@ -48,12 +48,12 @@ export function Router() {
         {
           element: (
             // <ProtectedRoute>
-            <AuthRoute>
+           // <AuthRoute>
 
               <InitLayout type={LAYOUT.MAIN}>
                 <Outlet />
               </InitLayout>
-            </AuthRoute>
+         //   </AuthRoute>
             //  </ProtectedRoute>
           ),
           children: [
@@ -137,11 +137,11 @@ export function Router() {
         // INFO LAYOUT
         {
           element: (
-            <AuthRoute>
+            // <AuthRoute>
               <InitLayout type={LAYOUT.INFO}>
                 <Outlet />
               </InitLayout>
-            </AuthRoute>
+            // </AuthRoute>
           ),
           children: [
             {

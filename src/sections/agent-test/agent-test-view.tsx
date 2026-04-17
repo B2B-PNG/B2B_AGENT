@@ -1,12 +1,18 @@
+import { CONFIG } from "@/config-global";
+import { useUser } from "@/hooks/actions/useAuth";
 import { useRouter } from "@/routes/hooks/use-router";
 import { paths } from "@/routes/paths";
 
 const AgentTestView = () => {
     const router = useRouter()
+    const { user, userLoading } = useUser()
     const data = [
         { id: 11, name: 'CÔNG TY KẾT NỐI DU LỊCH', strCompanyNameUrl: "cong-ty-tnhh-ket-noi-du-lich-8F620" },
     ];
 
+    const handleRouter = () => {
+        window.location.href = `${CONFIG.serverUrl}auth/login`
+    }
     return (
         <div className="p-4 bg-white min-h-screen">
             <div className="overflow-hidden border border-gray-200 rounded-lg shadow-sm">
@@ -27,16 +33,28 @@ const AgentTestView = () => {
                                     {item.name}
                                 </td>
                                 <td className="px-4 py-4 text-right">
-                                    <div className="flex justify-end gap-2">
-                                        <button className="cursor-pointer bg-[#00468C] hover:bg-[#003366] text-white px-4 py-1.5 rounded text-sm font-medium transition-all">
-                                            Tariff
-                                        </button>
+
+                                    {user ? (
+                                        <div className="flex justify-end gap-2">
+                                            <button className="cursor-pointer bg-[#00468C] hover:bg-[#003366] text-white px-4 py-1.5 rounded text-sm font-medium transition-all">
+                                                Tariff
+                                            </button>
+                                            <button
+                                                onClick={() => router.push(paths.tour.list)}
+                                                className="cursor-pointer bg-[#00468C] hover:bg-[#003366] text-white px-4 py-1.5 rounded text-sm font-medium transition-all"
+                                            >
+                                                Shop
+                                            </button>
+                                        </div>
+                                    ) : (
                                         <button
-                                            onClick={() => router.replaceParams(paths.tour.list)}
-                                            className="cursor-pointer bg-[#00468C] hover:bg-[#003366] text-white px-4 py-1.5 rounded text-sm font-medium transition-all">
-                                            Shop
+                                            onClick={handleRouter}
+                                            className="cursor-pointer bg-[#00468C] hover:bg-[#003366] text-white px-4 py-1.5 rounded text-sm font-medium transition-all"
+                                        >
+                                            Đăng nhập
                                         </button>
-                                    </div>
+                                    )}
+
                                 </td>
                             </tr>
                         ))}
