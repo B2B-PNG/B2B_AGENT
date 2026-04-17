@@ -1,23 +1,23 @@
 import { QUERY_KEYS } from "@/hooks/actions/query-keys";
 import {
   useListAgentNotify,
-  // useUpdNotifyIsRead,
+  useUpdNotifyIsRead,
 } from "@/hooks/actions/useNoti";
-// import { useRouter } from "@/routes/hooks/use-router";
-// import { paths } from "@/routes/paths";
+import { useRouter } from "@/routes/hooks/use-router";
+import { paths } from "@/routes/paths";
 import { useUserStore } from "@/zustand/useUserStore";
 import {
   keepPreviousData,
-  // useMutation,
+  useMutation,
   useQuery,
-  // useQueryClient,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { Calendar } from "lucide-react";
 import { useState } from "react";
 
 const NotificationPopup = () => {
-  // const queryClient = useQueryClient();
-  // const router = useRouter();
+  const queryClient = useQueryClient();
+  const router = useRouter();
   const user = useUserStore((state) => state.user);
   const [page] = useState(1);
   const pageSize = 3;
@@ -39,27 +39,27 @@ const NotificationPopup = () => {
   });
 
   const listData = data?.[0] ?? [];
-  // const { mutate: useUpdNotifyIsReadApi } = useMutation({
-  //   mutationFn: useUpdNotifyIsRead,
-  // });
-  // const handleIsRead = (guid: string) => {
-  //   useUpdNotifyIsReadApi(
-  //     { strAgentNotifyToGUID: guid },
-  //     {
-  //       onSuccess: () => {
-  //         queryClient.invalidateQueries({
-  //           queryKey: [QUERY_KEYS.USER.LIST_AGENT_NOTIFY],
-  //         });
+  const { mutate: useUpdNotifyIsReadApi } = useMutation({
+    mutationFn: useUpdNotifyIsRead,
+  });
+  const handleIsRead = (guid: string) => {
+    useUpdNotifyIsReadApi(
+      { strAgentNotifyToGUID: guid },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEYS.USER.LIST_AGENT_NOTIFY],
+          });
 
-  //         router.push(paths.notification.list);
-  //       },
-  //     },
-  //   );
-  // };
+          router.push(paths.notification.list);
+        },
+      },
+    );
+  };
 
   return (
     <div className="relative">
-      <div className="absolute right-0 top-[120%] pt-2 w-[320px]">
+      <div className="absolute right-0 top-[15px] pt-2 w-[320px]">
         <div className="bg-white/90 backdrop-blur-xl rounded-2xl overflow-hidden z-50 p-1.5 shadow-2xl border border-gray-100">
           <div className="px-3 py-2 mb-1 flex justify-between items-center">
             <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
@@ -108,7 +108,7 @@ const NotificationPopup = () => {
               listData.map((item: any) => (
                 <button
                   key={item.id}
-                  // onClick={() => handleIsRead(item?.strAgentNotifyToGUID)}
+                  onClick={() => handleIsRead(item?.strAgentNotifyToGUID)}
                   className="group relative p-3 rounded-xl hover:bg-blue-50/50 transition-all cursor-pointer mb-0.5 border-b border-gray-50 last:border-0"
                 >
                   <div className="flex gap-3">
@@ -134,7 +134,7 @@ const NotificationPopup = () => {
           </div>
 
           <button
-            // onClick={() => router.push(paths.notification.list)}
+            onClick={() => router.push(paths.notification.list)}
             className="cursor-pointer p-2 border-t border-gray-50 mt-1 w-full py-2 text-[12px] text-gray-500 hover:text-[#004b91] hover:bg-gray-50 rounded-lg transition-colors font-medium"
           >
             Xem tất cả thông báo

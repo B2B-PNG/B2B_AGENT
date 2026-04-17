@@ -48,6 +48,10 @@ export const paths = {
     list: "/agent-company"
   },
   search: "/search",
+  cart: {
+    list: "/cart",
+    detail: "/cart-detail"
+  },
   backdoor: "/backdoor",
   page403: "/error/403",
   page404: "/error/404",

@@ -7,12 +7,13 @@ const Notification = () => {
     const [open, setOpen] = useState(false)
 
     return (
+     
         <div
-            className="relative cursor-pointer group"
+            className="relative cursor-pointer group flex w-10 h-10 justify-center items-center gap-2.5 rounded-lg border border-[rgba(64,64,64,0.5)]"
             onMouseEnter={() => setOpen(true)}
             onMouseLeave={() => setOpen(false)}
         >
-            <button className="cursor-pointer p-2.5 text-gray-600 group-hover:bg-gray-100 group-hover:text-[#4a6fa5] rounded-full transition-all duration-300">
+            <button className="cursor-pointer p-2.5 text-gray-600 group-hover:text-[#4a6fa5] rounded-lg transition-all duration-300">
                 <Bell size={20} strokeWidth={2} />
             </button>
 

@@ -32,7 +32,7 @@ export const QUERY_KEYS = {
     VEHICLE: {
         LIST_VEHICLE: "LIST_VEHICLE",
         DETAI_VEHICLE: "DETAIL_VEHICLE",
-        LIST_MAPPING_PRICE:"LIST_MAPPING_PRICE",
+        LIST_MAPPING_PRICE: "LIST_MAPPING_PRICE",
     },
     FLIGHT: {
         LIST_FLIGHT: "LIST_FLIGHT",
@@ -51,5 +51,8 @@ export const QUERY_KEYS = {
         DETAIL_GUIDE_FEE: "DETAIL_GUIDE_FEE",
         LIST_MAPPING_PRICE: "LIST_MAPPING_PRICE",
     },
+    CART: {
+        LIST_CART: "LIST_CART",
 
+    }
 };

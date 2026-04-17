@@ -30,15 +30,14 @@ const NotificationView = () => {
                 strPassengerGUID: null,
                 strGuideGUID: null,
                 intLangID: user?.intLangID,
-                intCurPage: null,
-                intPageSize: null,
+                intCurPage: 1,
+                intPageSize: 20,
                 strOrder: null,
                 tblsReturn: "[0]"
             }),
     });
 
     const listData = data?.[0] ?? [];
-
     const filteredData =
         filter === "unread"
             ? listData.filter((item: any) => !item?.IsRead)
@@ -70,7 +69,7 @@ const NotificationView = () => {
     };
 
     return (
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto mt-20">
             <div className="flex justify-between items-end mb-8">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-800">Thông báo của bạn</h1>
