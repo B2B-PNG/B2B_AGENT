@@ -58,7 +58,7 @@ const Header = () => {
     <div className="bg-white px-6 fixed top-0 left-0 w-full z-51 shadow h-30 flex flex-col justify-center gap-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-5">
-          <button onClick={() => router.push(paths.root)} className="overflow-hidden w-10 cursor-pointer">
+          <button onClick={() => router.push(paths.tour.list)} className="overflow-hidden w-10 cursor-pointer">
             <img src={logo} alt="logo" className="w-full h-full object-contain" />
           </button>
           <div className="h-10 w-px bg-[rgba(64,64,64,0.5)]" />
