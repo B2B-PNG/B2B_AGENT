@@ -1,3 +1,5 @@
+import { CarTaxiFront } from "lucide-react";
+
 export const QUERY_KEYS = {
 
     AUTH: {
@@ -49,5 +51,8 @@ export const QUERY_KEYS = {
         DETAIL_GUIDE_FEE: "DETAIL_GUIDE_FEE",
         LIST_MAPPING_PRICE: "LIST_MAPPING_PRICE",
     },
-
+    CART: {
+        LIST_CART: "LIST_CART",
+        
+    }
 };

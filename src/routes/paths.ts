@@ -47,6 +47,10 @@ export const paths = {
   agentCompany: {
     list: "/agent-company"
   },
+  cart: {
+    list: "/cart",
+    detail: "/cart-detail"
+  },
   backdoor: "/backdoor",
   page403: "/error/403",
   page404: "/error/404",

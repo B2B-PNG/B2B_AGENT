@@ -11,6 +11,8 @@ import { useLocation } from "react-router-dom";
 import { dataMenu } from "./data-menu";
 import Notification from "@/sections/notification/components/notification";
 
+import CartIcon from "@/sections/cart/components/cart-icon";
+
 const Header = () => {
   const loccation = useLocation();
   const pathname = loccation.pathname
@@ -66,7 +68,8 @@ const Header = () => {
           <div className="flex items-center gap-2">
             <Lang />
             <Currency />
-
+            
+            <CartIcon />
             <Notification />
 
             <button className="cursor-pointer rounded-lg border border-[rgba(64,64,64,0.5)] px-3 py-2 text-[14px] font-medium text-gray-700 hover:text-[#2566b0] hover:bg-blue-50 transition-all duration-200 active:scale-95">
