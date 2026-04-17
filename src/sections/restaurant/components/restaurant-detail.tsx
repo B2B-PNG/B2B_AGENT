@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CameraOff, Star, Search, ChevronDown, ChevronUp } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import {
   useDetailRestaurant,
-  
+
 } from "@/hooks/actions/useRestaurant";
 import { useListMappingPrice } from "@/hooks/actions/useBoat";
 import { TableCore, type ColumnDef } from "@/components/table/table-core";
@@ -67,13 +67,7 @@ const RestaurantDetail = () => {
     },
   ];
 
-  // image
-  const [ setActiveImg] = useState<string | undefined>();
-  useEffect(() => {
-    if (restaurant?.strSupplierImage) {
-      setActiveImg(restaurant.strSupplierImage);
-    }
-  }, [restaurant]);
+
 
   return (
     <div className="max-w-[1400px] mx-auto px-6 pb-6 pt-[50px] bg-[#f8f9fa] min-h-screen flex flex-col lg:flex-row gap-8">
@@ -152,11 +146,10 @@ const RestaurantDetail = () => {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
-                    className={`w-4 h-4 ${
-                      star <= (restaurant?.intEasiaCateID ?? 0)
+                    className={`w-4 h-4 ${star <= (restaurant?.intEasiaCateID ?? 0)
                         ? "fill-current"
                         : ""
-                    }`}
+                      }`}
                   />
                 ))}
               </div>

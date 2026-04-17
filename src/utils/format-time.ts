@@ -1,6 +1,8 @@
 // import type { Dayjs, OpUnitType } from "dayjs";
 
 // import dayjs from "dayjs";
+
+// import dayjs from "dayjs";
 // import duration from "dayjs/plugin/duration";
 // import relativeTime from "dayjs/plugin/relativeTime";
 // import i18next from "i18next";
@@ -350,18 +352,18 @@
 //   if (!dateString) return "";
 //   return new Date(dateString).getTime();
 // };
-export function fDateTime(date: DatePickerFormat, format?: string) {
-  if (!date) return null;
+// export function fDateTime(date: DatePickerFormat, format?: string) {
+//   if (!date) return null;
 
-  const d = dayjs(date);
-  if (!d.isValid()) return "Invalid time value";
+//   const d = dayjs(date);
+//   if (!d.isValid()) return "Invalid time value";
 
-  const day = d.day();
-  const thu = day === 0 ? "CN" : `T${day + 1}`;
+//   const day = d.day();
+//   const thu = day === 0 ? "CN" : `T${day + 1}`;
 
-  const formatted = d
-    .locale(i18next.language)
-    .format(format ?? formatStr.dateTime);
+//   // const formatted = d
+//   //   .locale(i18next.language)
+//   //   .format(format ?? formatStr.dateTime);
 
-  return `${thu}, ${formatted}`;
-}
+//   return `${thu}`;
+// }
