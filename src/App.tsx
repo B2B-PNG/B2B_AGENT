@@ -1,15 +1,17 @@
-import { BrowserRouter } from "react-router-dom"
+import { HashRouter } from "react-router-dom"
 import { Router } from "./routes"
 import ToastComponent from "./components/notification/useToast"
 
 function App() {
 
   return (
-    <BrowserRouter>
+    // <BrowserRouter>
+    <HashRouter>
       <Router />
       <ToastComponent />
-      {/* <LoginPopup /> */}
-    </BrowserRouter>
+    </HashRouter>
+    /* <LoginPopup /> */
+    // </BrowserRouter>
   )
 }
 
