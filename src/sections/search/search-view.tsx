@@ -2,27 +2,42 @@ import { useLocation } from "react-router-dom";
 import { useListTourPublish, useListTourSeries } from "@/hooks/actions/useTour";
 import { TourListCard } from "./tour-list-card";
 import TourSeriesCard from "./tour-series-card";
+import { useSearchHotel } from "@/hooks/actions/useHotel";
+import { HotelCard } from "../hotel/components/hotel-list";
 
 const SearchView = () => {
     const location = useLocation();
 
     const state = location.state as {
         isTourSeries: boolean;
-        filters: any;
+        isSearchTour: any;
+        isSearchHotel: any;
     };
 
     const isSeries = state?.isTourSeries;
-    const filters = state?.filters;
+    const isSearchTour = state?.isSearchTour;
+    const isSearchHotel = state?.isSearchHotel;
 
     const { tsData, tsLoading, tsError } = useListTourSeries(
-        isSeries ? filters : null
+        isSeries ? isSearchTour : null
     );
 
     const { tdpData, tdpLoading, tdpError } = useListTourPublish(
-        !isSeries ? filters : null
+        !isSeries ? isSearchTour : null
     );
-
-
+    const {
+        searchData: hotelData,
+        searchLoading: hotelLoading,
+        searchError: hotelError,
+    } = useSearchHotel(
+        isSearchHotel
+            ? {
+                ...isSearchHotel,
+                page: 1,
+                pageSize: 20,
+            }
+            : undefined
+    );
 
     return (
         <div className="mt-20 max-w-7xl m-auto">
@@ -31,22 +46,20 @@ const SearchView = () => {
             {/* DATA */}
             <>
                 {isSeries ? (
+                    // ===== TOUR SERIES =====
                     <>
-                        {/* TITLE */}
                         <div className="text-2xl font-semibold mb-10">
                             {tsLoading
                                 ? "Đang tìm kiếm..."
                                 : `Tìm thấy ${tsData?.[0]?.intTotalRecords || 0} dữ liệu`}
                         </div>
 
-                        {/* ERROR */}
-                        {tsError || tsError && (
+                        {tsError && (
                             <div className="text-red-500 text-center py-10">
                                 Có lỗi xảy ra. Vui lòng thử lại!
                             </div>
                         )}
 
-                        {/* LOADING SKELETON */}
                         {tsLoading && (
                             <div className="grid grid-cols-1 gap-6">
                                 {Array.from({ length: 4 }).map((_, i) => (
@@ -57,28 +70,57 @@ const SearchView = () => {
 
                         <div className="grid grid-cols-1 gap-6">
                             {!tsLoading && !tsError && tsData?.map((tour: any) => (
-                                <TourSeriesCard key={tour.strTourGUID}
-                                    tour={tour} />
+                                <TourSeriesCard key={tour.strTourGUID} tour={tour} />
+                            ))}
+                        </div>
+                    </>
+                ) : isSearchHotel ? (
+                    // ===== HOTEL =====
+                    <>
+                        <div className="text-2xl font-semibold mb-10">
+                            {hotelLoading
+                                ? "Đang tìm kiếm..."
+                                : ""}
+                        </div>
+
+                        {hotelError && (
+                            <div className="text-red-500 text-center py-10">
+                                Có lỗi xảy ra. Vui lòng thử lại!
+                            </div>
+                        )}
+
+                        {hotelLoading && (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {Array.from({ length: 8 }).map((_, i) => (
+                                    <HotelCardSkeleton key={i} />
+                                ))}
+                            </div>
+                        )}
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {!hotelLoading && !hotelError && hotelData?.map((hotel: any) => (
+                                <HotelCard
+                                    key={hotel.strSupplierGUID}
+                                    hotel={hotel} // tạm reuse
+                                />
                             ))}
                         </div>
                     </>
                 ) : (
+                    // ===== TOUR NORMAL =====
                     <>
-                        {/* TITLE */}
                         <div className="text-2xl font-semibold mb-10">
                             {tdpLoading
                                 ? "Đang tìm kiếm..."
                                 : `Tìm thấy ${tdpData?.[0]?.intTotalRecords || 0} dữ liệu`}
                         </div>
 
-                        {/* ERROR */}
-                        {tdpError || tsError && (
+                        {tdpError && (
                             <div className="text-red-500 text-center py-10">
                                 Có lỗi xảy ra. Vui lòng thử lại!
                             </div>
                         )}
 
-                        {/* LOADING SKELETON */}
                         {tdpLoading && (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                 {Array.from({ length: 8 }).map((_, i) => (
@@ -86,12 +128,10 @@ const SearchView = () => {
                                 ))}
                             </div>
                         )}
+
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             {!tdpLoading && !tdpError && tdpData?.map((tour: any) => (
-                                <TourListCard
-                                    key={tour.strTourGUID}
-                                    tour={tour}
-                                />
+                                <TourListCard key={tour.strTourGUID} tour={tour} />
                             ))}
                         </div>
                     </>
@@ -166,6 +206,56 @@ const TourSeriesCardSkeleton = () => {
                 <div className="h-10 w-24 bg-gray-200 rounded" />
                 <div className="h-9 w-full bg-gray-200 rounded-full" />
                 <div className="h-6 w-24 bg-gray-200 rounded" />
+            </div>
+        </div>
+    );
+};
+
+
+const HotelCardSkeleton = () => {
+    return (
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm flex flex-col h-full animate-pulse">
+
+            {/* IMAGE */}
+            <div className="h-44 bg-gray-200" />
+
+            <div className="p-4 flex flex-col flex-grow">
+
+                {/* TITLE */}
+                <div className="h-4 bg-gray-200 rounded mb-2" />
+                <div className="h-4 bg-gray-200 rounded w-2/3 mb-4" />
+
+                {/* TYPE + STAR */}
+                <div className="flex items-center gap-2 mb-3">
+                    <div className="h-3 w-20 bg-gray-200 rounded" />
+                    <div className="flex gap-1 ml-2">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                            <div key={i} className="w-3 h-3 bg-gray-200 rounded" />
+                        ))}
+                    </div>
+                </div>
+
+                {/* ADDRESS */}
+                <div className="space-y-2 mb-4">
+                    <div className="h-3 bg-gray-200 rounded w-full" />
+                    <div className="h-3 bg-gray-200 rounded w-5/6" />
+                    <div className="h-3 bg-gray-200 rounded w-3/4" />
+                </div>
+
+                {/* DIVIDER TEXT */}
+                <div className="my-4 flex justify-center">
+                    <div className="h-3 w-24 bg-gray-200 rounded" />
+                </div>
+
+                {/* PRICE + BUTTON */}
+                <div className="mt-auto flex items-end justify-between">
+                    <div>
+                        <div className="h-3 w-10 bg-gray-200 rounded mb-2" />
+                        <div className="h-5 w-20 bg-gray-200 rounded" />
+                    </div>
+
+                    <div className="h-8 w-24 bg-gray-200 rounded-lg" />
+                </div>
             </div>
         </div>
     );

@@ -72,15 +72,15 @@ export function RHFSelect({
 
             <div className="relative w-full focus:border-red-500">
               {label && (
-                <div className="flex gap-1 text-mdMedium text-gray-50 mb-2">
+                <div className="flex gap-1 text-mdMedium text-black mb-2">
                   <span>{label.text}</span>
                   <span className="text-red-400">{label.icon}</span>
                 </div>
               )}
               <div
-                className={`flex items-center text-white justify-between px-4 py-3  h-[48px] rounded-[10px] bg-[#404040]/40 cursor-pointer
+                className={`flex items-center justify-between px-4 py-3  h-[48px] rounded-[10px] cursor-pointer
               border
-                ${error ? "border-red-500" : "border-[#404040] "}
+                ${error ? "border-red-500" : "border-[#cccccc] "}
               `}
                 onClick={() => setOpen(!open)}
               >
@@ -101,17 +101,17 @@ export function RHFSelect({
               </div>
 
               {open && (
-                <div className="absolute top-full left-0 w-full mt-1 z-10 bg-white dark:bg-[#404040] border-gray-600 border rounded-xl shadow-lg max-h-60 overflow-auto">
+                <div className="absolute top-full left-0 w-full mt-1 z-10 bg-white dark:bg-[#404040] border-[#cccccc] border rounded-xl shadow-lg max-h-60 overflow-auto">
                   {options.map((opt) => (
                     <div
                       key={opt.value}
-                      className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-600 hover:text-white"
+                      className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 hover:text-white"
                       onClick={() => {
                         field.onChange(opt.value);
                         setOpen(false);
                       }}
                     >
-                      <p className="text-white">{opt.label}</p>
+                      <p className="text-black">{opt.label}</p>
                     </div>
                   ))}
                 </div>

@@ -24,3 +24,9 @@
   background-color: #4a6fa5;
   border-radius: 10px;
 }
+
+
+/* Tùy chỉnh độ cao tối thiểu của vùng soạn thảo */
+.ck-editor__editable_inline {
+    min-height: 200px; 
+}

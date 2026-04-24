@@ -6,7 +6,7 @@ import { formatPrice } from '@/utils/format-number';
 import { Building2, MapPin, Star, LayoutGrid, List } from 'lucide-react';
 import { useState } from 'react';
 
-const HotelCard = ({ hotel }: any) => {
+export const HotelCard = ({ hotel }: any) => {
     const router = useRouter()
     return (
         <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full group">

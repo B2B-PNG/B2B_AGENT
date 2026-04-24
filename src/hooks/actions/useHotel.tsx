@@ -95,3 +95,113 @@ export const useListItemByAgent = (filters?: { strSupplierGUID?: string | null }
         ibgError: query.isError,
     };
 };
+
+
+const fetchSearchHotel = async (body: any) => {
+    const res = await apiClient.post("supplier/GetListSupplierForHotelAlotmentByAgent", body);
+    return res.data;
+};
+
+export const useSearchHotel = (filters?: {
+    page?: number,
+    pageSize?: number,
+    strFilterDestinationName?: string,
+    strFilterLocationCode?: string | null,
+    IsShowAll?: boolean,
+    intNoOfRooms?: number,
+    dtmFilterCheckIn?: Date,
+    dtmFilterCheckOut?: Date | null
+}) => {
+    const { user } = useUser();
+    const { coData } = useListCompanyOwner();
+
+    const page = filters?.page ?? null;
+    const pageSize = filters?.pageSize ?? null;
+
+    const query = useQuery({
+        queryKey: [QUERY_KEYS.HOTEL.LIST_SEARCH_HOTEL, filters],
+        queryFn: () =>
+            fetchSearchHotel({
+                strCompanyPartnerGUID: user?.strCompanyGUID,
+                strCompanyOwnerGUID: coData?.strCompanyGUID,
+
+                strFilterLocationCode: filters?.strFilterLocationCode,
+
+                intNoOfRooms: filters?.intNoOfRooms,
+                dtmFilterCheckIn: filters?.dtmFilterCheckIn,
+                dtmFilterCheckOut: filters?.dtmFilterCheckOut,
+
+                intCurrencyID: user?.intCurrencyID,
+                IsShowAll: filters?.IsShowAll,
+
+                strSupplierGUID: null,
+                strFilterSupplierName: null,
+                strPriceFromRange: null,
+                strListEasiaCateID: null,
+
+                intCurPage: page,
+                intPageSize: pageSize,
+                strOrder: null,
+                tblsReturn: "[0],[1],[2]"
+            }),
+        enabled: !!user && !!coData,
+        placeholderData: keepPreviousData,
+    });
+
+    const listData = query.data?.[0] ?? [];
+    const totalRecords = listData?.[0]?.intTotalRecords || 0;
+    const totalPages = pageSize ? Math.ceil(totalRecords / pageSize) : 0;
+    return {
+        searchData: listData,
+        searchLoading: query.isLoading,
+        searchError: query.isError,
+        totalRecords,
+        totalPages,
+    };
+};
+
+
+const fetchSearchDesHotel = async (body: any) => {
+    const res = await apiClient.post("system/GetListDirectorySearchingForSuppByAgent", body);
+    return res.data;
+};
+
+export const useSearchDesHotel = (filters?: {
+    page?: number,
+    pageSize?: number,
+    strFilterDestinationName?: string
+}) => {
+    const { user } = useUser();
+    const { coData } = useListCompanyOwner();
+
+    const page = filters?.page ?? null;
+    const pageSize = filters?.pageSize ?? null;
+
+    const query = useQuery({
+        queryKey: [QUERY_KEYS.HOTEL.LIST_SEARCH_DES_HOTEL, filters],
+        queryFn: () =>
+            fetchSearchDesHotel({
+                strCompanyPartnerGUID: user?.strCompanyGUID,
+                strCompanyOwnerGUID: coData?.strCompanyGUID,
+                intCateID: 1,
+                strFilterDestinationName: filters?.strFilterDestinationName,
+                intCurPage: page,
+                intPageSize: pageSize,
+                strOrder: null,
+                tblsReturn: "[0]"
+            }),
+        enabled: !!user || !!coData,
+        placeholderData: keepPreviousData,
+    });
+
+    const listData = query.data?.[0] ?? [];
+    const totalRecords = listData?.[0]?.intTotalRecords || 0;
+    const totalPages = pageSize ? Math.ceil(totalRecords / pageSize) : 0;
+    return {
+        searchDesData: listData,
+        totalRecords,
+        totalPages,
+        searchDesLoading: query.isLoading,
+        searchDesError: query.isError,
+    };
+};

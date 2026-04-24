@@ -63,7 +63,6 @@ const TourSearch = () => {
 
     const { searchData, searchLoading } = useSearchTour(searchPayload);
 
-    // ================= CLICK SEARCH =================
     const handleSearch = () => {
         // TOUR → detail
         if (selectedTourUrl) {
@@ -78,7 +77,7 @@ const TourSearch = () => {
         // SEARCH LIST
         router.replaceParams(paths.search, {
             isTourSeries: filters.isTourSeries,
-            filters: draftFilters2,
+            isSearchTour: draftFilters2,
         });
     };
 

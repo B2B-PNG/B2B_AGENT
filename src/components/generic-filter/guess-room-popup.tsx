@@ -126,14 +126,14 @@ const GuestRoomPopup = ({ isOpen, value, onDone, isRoomDetail = false }: Props) 
                         <div className="flex items-center gap-3">
                             <button
                                 onClick={() => setRooms((p) => Math.max(1, p - 1))}
-                                className="w-8 h-8 border rounded-full flex items-center justify-center"
+                                className="w-8 h-8 border border-slate-200 rounded-full flex items-center justify-center cursor-pointer"
                             >
                                 -
                             </button>
                             <span>{rooms}</span>
                             <button
                                 onClick={() => setRooms((p) => p + 1)}
-                                className="w-8 h-8 border rounded-full flex items-center justify-center"
+                                className="w-8 h-8 border border-slate-200 rounded-full flex items-center justify-center cursor-pointer"
                             >
                                 +
                             </button>

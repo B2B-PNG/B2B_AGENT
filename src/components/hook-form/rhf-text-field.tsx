@@ -66,7 +66,7 @@ export function RHFTextField({
       render={({ field, fieldState: { error } }) => (
         <div className="w-full">
           {label && (
-            <div className="flex gap-1 text-white mb-2">
+            <div className="flex gap-1 text-black mb-2">
               <span>{label.text}</span>
               <span className="text-red-500">{label.icon}</span>
             </div>

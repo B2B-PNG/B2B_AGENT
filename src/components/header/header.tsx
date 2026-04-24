@@ -10,12 +10,11 @@ import { useUser } from "@/hooks/actions/useAuth";
 import { useLocation } from "react-router-dom";
 import { dataMenu } from "./data-menu";
 import Notification from "@/sections/notification/components/notification";
-import { useToastStore } from "@/zustand/useToastStore";
 
 import CartIcon from "@/sections/cart/components/cart-icon";
+import TourCustomized from "@/sections/tour-customized/tour-customized";
 
 const Header = () => {
-  const { showToast } = useToastStore()
   const loccation = useLocation();
   const pathname = loccation.pathname
   const router = useRouter();
@@ -74,9 +73,7 @@ const Header = () => {
             <CartIcon />
             <Notification />
 
-            <button onClick={() => showToast("info", "Sắp ra mắt")} className="cursor-pointer rounded-lg border border-[rgba(64,64,64,0.5)] px-3 py-2 text-[14px] font-medium text-gray-700 hover:text-[#2566b0] hover:bg-blue-50 transition-all duration-200 active:scale-95">
-              Thêm tour customize
-            </button>
+            <TourCustomized />
 
             <button onClick={() => router.push(paths.agentCompany.list)} className="cursor-pointer rounded-lg border border-[rgba(64,64,64,0.5)] px-3 py-2 text-[14px] font-medium text-gray-700 hover:text-[#2566b0] hover:bg-blue-50 transition-all duration-200 active:scale-95">
               Danh sách Agent Host

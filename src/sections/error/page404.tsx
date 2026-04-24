@@ -32,7 +32,7 @@ const Page404 = () => {
                         className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 border-2 border-gray-200 text-gray-600 font-bold rounded-full hover:bg-gray-100 hover:border-gray-300 transition-all active:scale-95 text-[14px]"
                     >
                         <ArrowLeft size={18} />
-                        <h1 className="text-2xl font-bold text-gray-800">  Quay lại</h1>
+                        <h1 className="text-[13px] uppercase font-bold text-gray-800">  Quay lại</h1>
                     </button>
 
                     <button
