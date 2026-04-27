@@ -3,17 +3,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z as zod } from "zod";
 
 import { Field, Form } from "@/components/hook-form";
-import PrimaryButton from "@/components/button/primary-button";
 import { useToastStore } from "@/zustand/useToastStore";
 import { GripVertical, MapPin, Moon, RotateCcw, Trash2 } from "lucide-react";
-import { AGENT_HOST, COUNTRIES_OPTIONS, CURRENCYS_OPTIONS, STARS2_OPTIONS } from "@/utils/oprion-data";
-
+import { CURRENCYS_OPTIONS, STARS2_OPTIONS } from "@/utils/oprion-data";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { addNewTourCustomized } from "@/hooks/actions/useTour";
 import { useUser } from "@/hooks/actions/useAuth";
 import { useListCompanyOwner } from "@/hooks/actions/useCompanyOwner";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import { useListCity } from "@/hooks/actions/useCity";
 
 
