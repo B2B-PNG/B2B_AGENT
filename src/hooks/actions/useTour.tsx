@@ -308,3 +308,8 @@ export const useListTourSeries = (filters?: {
     };
 };
 
+
+export const addNewTourCustomized = async (body: any) => {
+    const res = await apiClient.post("tourcustomized/AddTourCustomized", body);
+    return res.data;
+};

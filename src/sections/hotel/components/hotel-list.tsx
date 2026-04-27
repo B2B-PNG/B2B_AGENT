@@ -90,7 +90,7 @@ const HotelList = () => {
                 <div className="flex items-center gap-3 bg-gray-50 p-1 rounded-lg border border-gray-200">
                     <span className="text-[12px] text-gray-500 ml-2">Hiển thị dạng:</span>
                     <div className="flex gap-1">
-                        <button className="p-1.5 bg-blue-600 text-white rounded-md">
+                        <button className="p-1.5 bg-[#2566b0] text-white rounded-md">
                             <LayoutGrid size={16} />
                         </button>
                         <button className="p-1.5 text-gray-400 hover:bg-gray-200 rounded-md">

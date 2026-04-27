@@ -22,6 +22,7 @@ type Props = {
     endAdornment?: React.ReactNode;
   };
   placeholder?: string;
+  disabled?: boolean;
 };
 
 export function RHFSelect({
@@ -29,8 +30,8 @@ export function RHFSelect({
   label,
   options,
   InputProps,
-
   placeholder = "-- Chọn --",
+  disabled = false,
 }: Props) {
   const { control, clearErrors } = useFormContext();
   const [open, setOpen] = useState(false);
@@ -47,8 +48,14 @@ export function RHFSelect({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const { errors } = useFormState({ name });
+  // 👉 FIX: nếu disabled thì auto đóng dropdown
+  useEffect(() => {
+    if (disabled && open) {
+      setOpen(false);
+    }
+  }, [disabled, open]);
 
+  const { errors } = useFormState({ name });
   const error = errors[name];
 
   useEffect(() => {
@@ -65,11 +72,12 @@ export function RHFSelect({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => {
-        const selectedOption = options.find((opt) => opt.value === field.value);
+        const selectedOption = options.find(
+          (opt) => opt.value === field.value
+        );
 
         return (
-          <div className="flex flex-col gap-1 w-ful" ref={ref}>
-
+          <div className="flex flex-col gap-1 w-full" ref={ref}>
             <div className="relative w-full focus:border-red-500">
               {label && (
                 <div className="flex gap-1 text-mdMedium text-black mb-2">
@@ -77,12 +85,20 @@ export function RHFSelect({
                   <span className="text-red-400">{label.icon}</span>
                 </div>
               )}
+
+              {/* SELECT BOX */}
               <div
-                className={`flex items-center justify-between px-4 py-3  h-[48px] rounded-[10px] cursor-pointer
-              border
-                ${error ? "border-red-500" : "border-[#cccccc] "}
-              `}
-                onClick={() => setOpen(!open)}
+                className={twMerge(
+                  `flex items-center justify-between px-4 py-3 h-[48px] rounded-[10px] border`,
+                  error ? "border-red-500" : "border-[#cccccc]",
+                  disabled
+                    ? "bg-gray-100 cursor-not-allowed opacity-70"
+                    : "cursor-pointer"
+                )}
+                onClick={() => {
+                  if (disabled) return;
+                  setOpen(!open);
+                }}
               >
                 <div className="flex items-center gap-2">
                   {InputProps?.startAdornment && (
@@ -90,6 +106,7 @@ export function RHFSelect({
                       {InputProps.startAdornment}
                     </div>
                   )}
+
                   <span className="text-base">
                     {selectedOption?.label || (
                       <span className="text-[#b7b9c0]">{placeholder}</span>
@@ -97,16 +114,23 @@ export function RHFSelect({
                   </span>
                 </div>
 
-                <ChevronDown className={twMerge("", open && 'rotate-180')} />
+                <ChevronDown
+                  className={twMerge(
+                    "",
+                    open && !disabled && "rotate-180"
+                  )}
+                />
               </div>
 
-              {open && (
+              {/* DROPDOWN */}
+              {open && !disabled && (
                 <div className="absolute top-full left-0 w-full mt-1 z-10 bg-white dark:bg-[#404040] border-[#cccccc] border rounded-xl shadow-lg max-h-60 overflow-auto">
                   {options.map((opt) => (
                     <div
                       key={opt.value}
-                      className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 hover:text-white"
+                      className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100"
                       onClick={() => {
+                        if (disabled) return;
                         field.onChange(opt.value);
                         setOpen(false);
                       }}
@@ -118,6 +142,7 @@ export function RHFSelect({
               )}
             </div>
 
+            {/* ERROR */}
             {error && (
               <AnimatePresence>
                 <motion.div

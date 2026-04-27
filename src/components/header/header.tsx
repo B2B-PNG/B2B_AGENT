@@ -61,7 +61,7 @@ const Header = () => {
             <img src={logo} alt="logo" className="w-full h-full object-contain" />
           </button>
           <div className="h-10 w-px bg-[rgba(64,64,64,0.5)]" />
-          <button className="cursor-pointer rounded-lg px-3 py-2 text-[14px] font-medium text-gray-700 hover:text-[#2566b0] hover:bg-blue-50 transition-all duration-200 active:scale-95">
+          <button onClick={() => router.push(paths.salesChannel.list)} className="cursor-pointer rounded-lg px-3 py-2 text-[14px] font-medium text-gray-700 hover:text-[#2566b0] hover:bg-blue-50 transition-all duration-200 active:scale-95">
             Thiết lập kênh bán
           </button>
         </div>
@@ -69,12 +69,12 @@ const Header = () => {
           <div className="flex items-center gap-2">
             <Lang />
             <Currency />
-
             <CartIcon />
             <Notification />
-
+            <button onClick={() => router.push(paths.agentCompany.list)} className="cursor-pointer rounded-lg border border-[rgba(64,64,64,0.5)] px-3 py-2 text-[14px] font-medium text-gray-700 hover:text-[#2566b0] hover:bg-blue-50 transition-all duration-200 active:scale-95">
+              Yêu cầu của tôi
+            </button>
             <TourCustomized />
-
             <button onClick={() => router.push(paths.agentCompany.list)} className="cursor-pointer rounded-lg border border-[rgba(64,64,64,0.5)] px-3 py-2 text-[14px] font-medium text-gray-700 hover:text-[#2566b0] hover:bg-blue-50 transition-all duration-200 active:scale-95">
               Danh sách Agent Host
             </button>

@@ -49,6 +49,9 @@ export const paths = {
     list: "/cart",
     detail: "/cart-detail"
   },
+  salesChannel: {
+    list: "/sales-channel"
+  },
   backdoor: "/backdoor",
   page403: "/error/403",
   page404: "/error/404",

@@ -1,36 +1,71 @@
-// import { Controller, useFormContext } from "react-hook-form";
-// import { CKEditor } from "@ckeditor/ckeditor5-react";
-// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { Controller, useFormContext, useFormState } from "react-hook-form";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-// export const RHFEditorField = ({ name, label }: { name: string; label?: string }) => {
-//   const { control } = useFormContext();
+type Props = {
+    name: string;
+    label?: string;
+};
 
-//   return (
-//     <div className="editor-wrapper">
-//       {label && <label className="block mb-2 font-medium">{label}</label>}
-//       <Controller
-//         name={name}
-//         control={control}
-//         render={({ field }) => (
-//           <CKEditor
-//             editor={ClassicEditor}
-//             data={field.value || ""} // CKEditor dùng 'data' thay vì 'value'
-//             config={{
-//               placeholder: "Nhập nội dung tại đây...",
-//               // Bạn có thể tùy chỉnh toolbar tại đây nếu muốn giống ảnh hơn
-//               toolbar: [
-//                 "heading", "|", "bold", "italic", "link", "bulletedList", "numberedList", "blockQuote", "|",
-//                 "insertTable", "mediaEmbed", "undo", "redo"
-//               ]
-//             }}
-//             onChange={(_, editor) => {
-//               const data = editor.getData();
-//               field.onChange(data);
-//             }}
-//             onBlur={() => field.onBlur()}
-//           />
-//         )}
-//       />
-//     </div>
-//   );
-// };
+export const RHFEditorField = ({ name, label }: Props) => {
+    const { control } = useFormContext();
+    const { errors } = useFormState({ name });
+
+    const error = errors[name];
+
+    return (
+        <div className="w-full">
+            {label && (
+                <label className="block mb-2 text-sm font-semibold">
+                    {label}
+                </label>
+            )}
+
+            <div
+                className={`border rounded-xl overflow-hidden ${error ? "border-red-500" : "border-gray-200"
+                    }`}
+            >
+                <Controller
+                    name={name}
+                    control={control}
+                    defaultValue="" // 👉 tránh warning uncontrolled
+                    render={({ field }) => (
+                        <CKEditor
+                            editor={ClassicEditor as any}
+                            data={field.value || ""}
+                            config={{
+                                placeholder: "Nhập nội dung tại đây...",
+                                toolbar: [
+                                    "heading",
+                                    "|",
+                                    "bold",
+                                    "italic",
+                                    "link",
+                                    "bulletedList",
+                                    "numberedList",
+                                    "blockQuote",
+                                    "|",
+                                    "insertTable",
+                                    "mediaEmbed",
+                                    "undo",
+                                    "redo",
+                                ],
+                            }}
+                            onChange={(_, editor) => {
+                                field.onChange(editor.getData());
+                            }}
+                            onBlur={() => field.onBlur()}
+                        />
+                    )}
+                />
+            </div>
+
+            {/* ERROR */}
+            {error && (
+                <p className="text-red-500 text-xs mt-1">
+                    {String(error.message)}
+                </p>
+            )}
+        </div>
+    );
+};

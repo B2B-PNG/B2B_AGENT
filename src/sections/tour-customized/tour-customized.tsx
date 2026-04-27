@@ -11,10 +11,10 @@ const TourCustomized = () => {
             </button>
 
             <PanelPopup
-                title=""
+                title="Thêm tour customized"
                 open={openPopup}
                 onClose={() => setOpenPopup(false)}
-                className="w-[700px]"
+                className="w-[900px]"
             >
                 <div className="max-h-[80vh] flex flex-col">
                     <div className="flex-1 overflow-y-auto">

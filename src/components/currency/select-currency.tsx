@@ -36,7 +36,7 @@ export const SelectCurrency = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.15 }}
-            className="absolute w-28 bg-white/20 backdrop-blur-md rounded-2xl right-0 top-[110%] p-2 space-y-1 shadow-xl border border-gray-800"
+            className="absolute w-28 bg-white/20 backdrop-blur-md rounded-2xl right-0 top-[110%] p-2 space-y-1 shadow-xl border border-[rgba(64,64,64,0.5)]"
           >
             {listCurrency.map((item) => (
               <div
@@ -44,7 +44,7 @@ export const SelectCurrency = ({
                 onClick={() => setSelected(item)}
                 className={twMerge(
                   "flex justify-between p-2 rounded-lg cursor-pointer",
-                  "hover:bg-[#4a6fa5] hover:text-white text-white",
+                  "hover:bg-[#4a6fa5] hover:text-white text-black",
                   selected.value === item.value && "bg-[#4a6fa5] text-white"
                 )}
               >

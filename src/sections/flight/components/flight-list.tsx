@@ -112,7 +112,7 @@ const FlightList = () => {
 
       <div className="flex items-center gap-3 bg-white p-1.5 rounded-lg border border-gray-200 shadow-sm">
         <span className="text-sm text-gray-500 ml-2">Hiển thị dạng:</span>
-        <button className="p-1.5 bg-blue-600 text-white rounded-md shadow-sm">
+        <button className="p-1.5 bg-[#2566b0] text-white rounded-md shadow-sm">
           <LayoutGrid size={18} />
         </button>
         <button className="p-1.5 text-gray-400 hover:bg-gray-100 rounded-md transition-colors">
