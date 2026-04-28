@@ -4,8 +4,11 @@ import { User, LogOut, ChevronDown } from "lucide-react";
 import { getUrlImage } from "@/utils/format-image";
 import { CONFIG } from "@/config-global";
 import { truncateEmail, truncateText } from "@/utils/format-number";
+import { paths } from "@/routes/paths";
+import { useRouter } from "@/routes/hooks/use-router";
 
 const AuthUserInfo = () => {
+    const router = useRouter();
     const { user, userLoading } = useUser();
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -58,7 +61,9 @@ const AuthUserInfo = () => {
                     </div>
 
                     <div className="mt-2">
-                        <button className="cursor-pointer w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-colors text-sm">
+                        <button onClick={() => {
+                            router.push(paths.content.info);
+                        }} className="cursor-pointer w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-colors text-sm">
                             <User size={18} /> Hồ Sơ Cá Nhân
                         </button>
                         {/* <button className="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-colors text-sm">
