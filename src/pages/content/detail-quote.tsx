@@ -1,7 +1,7 @@
 import DetailQuote from "@/sections/content/quote/components/detail-quote";
 import { CONFIG } from "../../config-global";
 
-const metadata = { title: `Agent member - ${CONFIG.appName}` };
+const metadata = { title: `Agent - ${CONFIG.appName}` };
 
 export default function Page() {
     return (
