@@ -3,6 +3,7 @@ import type { IUser } from "@/hooks/interfaces/auth"
 import { useRouter } from "@/routes/hooks/use-router"
 import { paths } from "@/routes/paths"
 import { getUrlImage } from "@/utils/format-image"
+import { isValidValue } from "@/utils/utilts"
 import { useUserStore } from "@/zustand/useUserStore"
 import { AnimatePresence, motion } from "framer-motion"
 import { ClipboardList, LogOut, User } from "lucide-react"
@@ -53,7 +54,6 @@ interface Props {
 const InfoCard = ({ user, isLoading }: Props) => {
     const router = useRouter()
 
-
     const handleLogout = async () => {
         window.location.href = `${CONFIG.serverUrl}auth/logout`;
     };
@@ -71,8 +71,8 @@ const InfoCard = ({ user, isLoading }: Props) => {
                     ) : (
                         <>
                             <div className="px-4 py-3 border-b border-gray-50">
-                                <div className="text-[15px] font-bold text-gray-800 leading-tight"> {user?.strFullName} </div>
-                                <div className="text-[12px] text-gray-400 font-normal mt-0.5 tracking-tight"> {user?.strEmail}
+                                <div className="text-[15px] font-bold text-gray-800 leading-tight"> {isValidValue(user?.strFullName)} </div>
+                                <div className="text-[12px] text-gray-400 font-normal mt-0.5 tracking-tight"> {isValidValue(user?.strEmail)}
                                 </div>
                             </div>
                         </>

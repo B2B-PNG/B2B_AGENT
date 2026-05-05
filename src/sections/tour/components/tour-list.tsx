@@ -1,3 +1,4 @@
+import { useListMenu } from '@/hooks/actions/useMenu';
 import { useListTour } from '@/hooks/actions/useTour';
 import { useRouter } from '@/routes/hooks/use-router';
 import { paths } from '@/routes/paths';
@@ -5,6 +6,7 @@ import { getUrlImage } from '@/utils/format-image';
 import { formatPrice } from '@/utils/format-number';
 import { Flag, Clock, MapPin, LayoutGrid, List } from 'lucide-react';
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export const TourCard = ({ tour }: any) => {
     const router = useRouter();
@@ -97,11 +99,12 @@ const TourCardSkeleton = () => {
 };
 
 const TourList = () => {
+
+
     const [filters] = useState({
         page: 1,
         pageSize: 15,
     });
-
     const { tourData, tourLoading, tourError } = useListTour(filters);
 
     // const totalRecords = tourData?.[0]?.intTotalRecords || 0;
@@ -169,6 +172,7 @@ const TourList = () => {
                     <TourCard key={tour.strTourGUID} tour={tour} />
                 ))}
             </div>
+
             {/* <Pagination
                 currentPage={filters.page}
                 onPageChange={handlePageChange}

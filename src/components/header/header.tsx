@@ -8,13 +8,17 @@ import { CONFIG } from "@/config-global";
 import AuthUserInfo from "@/sections/auth/components/auth-user-info";
 import { useUser } from "@/hooks/actions/useAuth";
 import { useLocation } from "react-router-dom";
-import { dataMenu } from "./data-menu";
 import Notification from "@/sections/notification/components/notification";
 
 import CartIcon from "@/sections/cart/components/cart-icon";
 import TourCustomized from "@/sections/tour-customized/tour-customized";
+import { useListMenu } from "@/hooks/actions/useMenu";
+import { buildMenu } from "./data-menu";
 
 const Header = () => {
+  const { menuData } = useListMenu();
+
+  const menu = buildMenu(menuData || []);
   const loccation = useLocation();
   const pathname = loccation.pathname
   const router = useRouter();
@@ -53,6 +57,17 @@ const Header = () => {
     );
   };
 
+  
+     const isPathMatch = (item: any) => {
+  return item.match?.some((p: string) => {
+    if (p === "/") return pathname === "/";
+      return pathname === p || pathname.startsWith(p + "/");
+  });
+};
+
+const hasActive = (menu || []).some((item) => item && isPathMatch(item));
+
+     
   return (
     <div className="bg-white px-6 fixed top-0 left-0 w-full z-51 shadow h-30 flex flex-col justify-center gap-5">
       <div className="flex items-center justify-between">
@@ -86,23 +101,25 @@ const Header = () => {
       </div>
 
       <div className="flex items-center gap-5">
-        {dataMenu.map((item) => {
-          const isActive = item.match?.some((p) => {
-            if (p === "/") return pathname === "/";
-            return pathname === p || pathname.startsWith(p + "/");
-          });
+        {(menu || []).map((item, index) => {
+          if (!item) return null;
+
+          const isMatch = isPathMatch(item);
+
+          const isActive =
+            isMatch || (!hasActive && index === 0);
 
           return (
             <div
               key={item.id}
-              onClick={() => router.push(item.link)}
+              onClick={() => item.link && router.push(item.link)}
               className={`
-  flex items-center gap-2 p-1 cursor-pointer transition-all
-  ${isActive
+          flex items-center gap-2 p-1 cursor-pointer transition-all
+          ${isActive
                   ? "text-[#2566b0] font-semibold"
                   : "text-gray-700 hover:text-[#2566b0] font-semibold"
                 }
-`}
+        `}
             >
               <div>{item.icon}</div>
               <div className="text-[14px]">{item.title}</div>

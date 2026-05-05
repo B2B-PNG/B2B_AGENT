@@ -2,20 +2,28 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "./query-keys";
 import { useUser } from "./useAuth";
 import apiClient from "@/axios";
+import { useSearchParams } from "react-router-dom";
 
 const fetchListCompanyOwner = async (body: any) => {
     const res = await apiClient.post("user/GetListCompanyOwner", body);
     return res.data;
 };
 
+
 export const useListCompanyOwner = () => {
     const { user } = useUser();
+    const [searchParams] = useSearchParams();
+
+    const companyNameUrl =
+        searchParams.get("company") ||
+        "cong-ty-tnhh-ket-noi-du-lich-8F620"; // fallback
 
     const query = useQuery({
         queryKey: [
             QUERY_KEYS.COMPANY_OWNER.LIST_COMPANY_OWNER,
             user?.strUserGUID,
-            user?.strCompanyGUID
+            user?.strCompanyGUID,
+            companyNameUrl, 
         ],
         queryFn: () =>
             fetchListCompanyOwner({
@@ -26,7 +34,7 @@ export const useListCompanyOwner = () => {
                 intPageSize: 1,
                 strOrder: null,
                 strFilterCompanyName: null,
-                strCompanyNameUrl: "cong-ty-tnhh-ket-noi-du-lich-8F620",
+                strCompanyNameUrl: companyNameUrl,
                 IsOwnerFriend: true,
                 tblsReturn: "[0]"
             }),
@@ -40,9 +48,6 @@ export const useListCompanyOwner = () => {
         coError: query.isError,
     };
 };
-
-
-
 
 
 export const useListCompanyPartner = (filters?: { page?: number; pageSize?: number }) => {

@@ -71,14 +71,10 @@ export function Router() {
 
         {
           element: (
-            // <ProtectedRoute>
-            // <AuthRoute>
 
             <InitLayout type={LAYOUT.MAIN}>
               <Outlet />
             </InitLayout>
-            //   </AuthRoute>
-            //  </ProtectedRoute>
           ),
           children: [
             {

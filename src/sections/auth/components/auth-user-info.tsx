@@ -6,6 +6,7 @@ import { CONFIG } from "@/config-global";
 import { truncateEmail, truncateText } from "@/utils/format-number";
 import { paths } from "@/routes/paths";
 import { useRouter } from "@/routes/hooks/use-router";
+import { isValidValue } from "@/utils/utilts";
 
 const AuthUserInfo = () => {
     const router = useRouter();
@@ -37,10 +38,10 @@ const AuthUserInfo = () => {
                 className="flex items-center gap-2 bg-blue-50 p-2 rounded-lg hover:bg-blue-100 transition-all cursor-pointer"
             >
 
-                {user?.strAvatar ?
+                {isValidValue(user?.strAvatar) ?
 
                     <div className="w-8 h-8 rounded-full flex items-center justify-center text-white overflow-hidden">
-                        <img src={getUrlImage(user?.strAvatar)} alt={user?.strAvatar} className="w-full h-full object-cover" />
+                        <img src={getUrlImage(isValidValue(user?.strAvatar))} alt={isValidValue(user?.strAvatar)} className="w-full h-full object-cover" />
                     </div>
                     :
                     <div className="w-8 h-8 bg-[#2566b0] rounded-full flex items-center justify-center text-white">
@@ -49,15 +50,15 @@ const AuthUserInfo = () => {
 
                 }
 
-                <span className="font-medium text-slate-700">{truncateText(user.strFullName, 10) || "User"}</span>
+                <span className="font-medium text-slate-700">{truncateText(isValidValue(user?.strFullName), 10) || "User"}</span>
                 <ChevronDown size={16} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
             </button>
 
             {isOpen && (
                 <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-100 py-4 z-50">
                     <div className="px-4 pb-3 border-b border-slate-50">
-                        <p className="font-bold text-slate-800">{truncateText(user?.strFullName, 10)}</p>
-                        <p className="text-sm text-slate-400 truncate">{truncateEmail(user?.strEmail, 10)}</p>
+                        <p className="font-bold text-slate-800">{truncateText(isValidValue(user?.strFullName), 10)}</p>
+                        <p className="text-sm text-slate-400 truncate">{truncateEmail(isValidValue(user?.strEmail), 10)}</p>
                     </div>
 
                     <div className="mt-2">

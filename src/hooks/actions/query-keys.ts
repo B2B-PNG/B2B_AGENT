@@ -81,5 +81,8 @@ export const QUERY_KEYS = {
     CART: {
         LIST_CART: "LIST_CART",
 
+    },
+    MENU: {
+        LIST_MENU: "LIST_MENU",
     }
 };

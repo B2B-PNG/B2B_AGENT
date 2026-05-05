@@ -52,7 +52,9 @@ const DestinationAccordion = () => {
 
     if (tcdLoading) return <DestinationSkeleton />;
     if (tcdError) return <DestinationError />;
-
+    if (!tcdData || tcdData.length === 0) {
+        return <DestinationEmpty />;
+    }
     return (
         <div className="max-w-7xl mx-auto p-6 bg-white min-h-screen">
             <div className="text-center mb-10">
@@ -96,6 +98,17 @@ const DestinationError = () => {
         <div className="text-center py-20">
             <p className="text-red-500 font-medium">
                 Có lỗi xảy ra, vui lòng thử lại
+            </p>
+        </div>
+    );
+};
+
+
+const DestinationEmpty = () => {
+    return (
+        <div className="text-center py-20">
+            <p className="text-gray-500 font-medium">
+                Không có dữ liệu điểm đến
             </p>
         </div>
     );

@@ -17,6 +17,7 @@ import { useUserStore } from "@/zustand/useUserStore";
 import { getUrlImage } from "@/utils/format-image";
 import { useMutation } from "@tanstack/react-query";
 import { updMemberInfoProfile } from "@/hooks/actions/useUser";
+import { isValidValue } from "@/utils/utilts";
 
 const Schema = zod.object({
   avartarFile: zod.any().optional(),
@@ -114,7 +115,7 @@ const InfoPerson = () => {
       signature: "",
     });
 
-    setAvatarPreview(user?.strAvatar ? getUrlImage(user.strAvatar) : "");
+    setAvatarPreview(isValidValue(user?.strAvatar) ? getUrlImage(isValidValue(user?.strAvatar)) : "");
   }, [user, reset]);
 
   const avartarFile = watch("avartarFile");
@@ -242,7 +243,7 @@ const InfoPerson = () => {
             <div className="flex-1 space-y-1">
               <p className="text-sm font-medium text-gray-500">Tên đăng nhập</p>
               <div className="flex items-center gap-4">
-                <span className="font-bold text-lg">{user?.strFullName}</span>
+                <span className="font-bold text-lg">{isValidValue(user?.strFullName)}</span>
                 <button
                   onClick={() =>
                     setOpen((prev) => ({ ...prev, changeId: true }))
