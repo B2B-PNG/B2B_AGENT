@@ -23,7 +23,7 @@ export const useListCity = (filters?: {
         placeholderData: keepPreviousData,
     });
 
-    const listData = query.data?.[0] ?? [];
+    const listData = query.data ?? [];
 
     return {
         ctData: listData,

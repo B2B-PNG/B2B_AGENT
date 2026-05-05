@@ -12,7 +12,7 @@ import { addNewTourCustomized } from "@/hooks/actions/useTour";
 import { useUser } from "@/hooks/actions/useAuth";
 import { useListCompanyOwner } from "@/hooks/actions/useCompanyOwner";
 import { useEffect, useState } from "react";
-// import { useListCity } from "@/hooks/actions/useCity";
+import { useListCity } from "@/hooks/actions/useCity";
 
 
 export const Schema = z
@@ -54,11 +54,10 @@ export const Schema = z
 type SchemaType = zod.infer<typeof Schema>;
 
 const TourCustomizedPopup = () => {
-
     const { user } = useUser();
     const { coData, coLoading } = useListCompanyOwner();
-    const [preview, setPreview] = useState<string | null>(null);
 
+    const [preview, setPreview] = useState<string | null>(null);
     const AGENT_HOST_OPTIONS = coData
         ? [
             {
@@ -76,16 +75,9 @@ const TourCustomizedPopup = () => {
         const url = URL.createObjectURL(file);
         setPreview(url);
 
-        // vẫn set vào form cho đúng schema (nhưng KHÔNG dùng khi submit)
         methods.setValue("bannerImg", file);
     };
-    // const { ctData, ctLoading, ctError } = useListCity({
-    //     strTableName: "MC04",
-    //     strFeildSelect: "WHERE IsActive=1 AND MC04_CityCode LIKE'%AO%' AND MC04.IsActive=1 ORDER BY MC04_CityName",
-    //     strWhere: "MC04_CityCode AS strCityCode,MC04_CityName AS strCityName",
-    // })
 
-    // console.log("ctdata", ctData)
     const { showToast } = useToastStore();
     const methods = useForm<SchemaType>({
         resolver: zodResolver(Schema) as any,
@@ -125,7 +117,7 @@ const TourCustomizedPopup = () => {
             strCompanyAgentHostGUID: data.agentHost, // nếu đang là GUID thì OK, không thì cần map lại
 
             intLangID: null,
-            strCountryGUID: "01D5623E-752F-4A3D-A2B2-C62EB984FB13",
+            strCountryGUID: data.nationality,
 
             intAdult: data.adults,
             intNoOfChild: data.children,
@@ -170,6 +162,32 @@ const TourCustomizedPopup = () => {
         }
     }, [coData]);
 
+
+    //     // quốc gia
+
+    const { ctData } = useListCity({
+        strTableName: "MC02",
+        strFeildSelect: "MC02_CountryGUID AS intID,MC02_CountryName AS strName,MC02_CountryGUID AS id,MC02_CountryName AS text,MC02_CountryName AS strCountryName, MC02_CountryFlagIcon strCountryFlagIcon",
+        strWhere: "WHERE (IsActive=1)  ORDER BY MC02_CountryName ASC ",
+    })
+
+    // // thành phố
+    // const { ctData: ntData } = useListCity({
+    //     strTableName: "MC04",
+    //     strFeildSelect: "MC04_CityCode AS strCityCode,MC04_CityName AS strCityName",
+    //     strWhere: "WHERE IsActive=1 AND MC04_CityCode LIKE '%VN%' AND MC04.IsActive=1 ORDER BY MC04_CityName",
+    // })
+
+    console.log("ctData", ctData)
+    // console.log("ntData", ntData)
+
+
+    const NATIONALITY_OPTIONS = ctData.map((item: any) => ({
+        label: item.strName,
+        value: item.id,
+    }));
+
+
     const renderForm = (
         <div className="bg-white rounded-4xl p-8 border border-gray-100 shadow-sm space-y-8 font-sans">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -199,13 +217,7 @@ const TourCustomizedPopup = () => {
                 <Field.Select
                     name="nationality"
                     label={{ text: "Nationality" }}
-                    options={[
-                        {
-                            label: "Vietnam",
-                            value: "01D5623E-752F-4A3D-A2B2-C62EB984FB13",
-                        },
-                    ]}
-                    disabled
+                    options={NATIONALITY_OPTIONS}
                 />
 
 
@@ -254,8 +266,8 @@ const TourCustomizedPopup = () => {
                 <div className="flex gap-2">
                     <div className="flex-1">
                         <Field.Select
-                            name="country_fake"
-                            options={[{ label: "Vietnam", value: "VN" }]}
+                            name="country"
+                            options={NATIONALITY_OPTIONS}
                             disabled
                         />
                     </div>
@@ -326,6 +338,8 @@ const TourCustomizedPopup = () => {
                 </div>
             </div>
 
+
+
             <div className="space-y-2">
                 <label className="">Remark</label>
                 <div className="rounded-2xl overflow-hidden border border-gray-200">
@@ -379,6 +393,26 @@ const TourCustomizedPopup = () => {
             </div>
         </div>
     );
+
+
+    // quốc gia
+
+    // const { ctData } = useListCity({
+    //     strTableName: "MC02",
+    //     strFeildSelect: "MC02_CountryGUID AS intID,MC02_CountryName AS strName,MC02_CountryGUID AS id,MC02_CountryName AS text,MC02_CountryName AS strCountryName, MC02_CountryFlagIcon strCountryFlagIcon",
+    //     strWhere: "WHERE (IsActive=1)  ORDER BY MC02_CountryName ASC ",
+    // })
+
+    // // thành phố
+    // const { ctData: ntData } = useListCity({
+    //     strTableName: "MC04",
+    //     strFeildSelect: "MC04_CityCode AS strCityCode,MC04_CityName AS strCityName",
+    //     strWhere: "WHERE IsActive=1 AND MC04_CityCode LIKE '%VN%' AND MC04.IsActive=1 ORDER BY MC04_CityName",
+    // })
+
+    // console.log("ctData", ctData)
+    // console.log("ntData", ntData)
+
 
     return (
         <div className="">

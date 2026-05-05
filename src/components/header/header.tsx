@@ -25,6 +25,12 @@ const Header = () => {
   const { user, userLoading } = useUser();
 
   const handleLogin = async () => {
+    const company = new URLSearchParams(window.location.search).get("company");
+
+    if (company) {
+      localStorage.setItem("company", company);
+    }
+
     window.location.href = `${CONFIG.serverUrl}auth/login`;
   };
 
@@ -57,17 +63,17 @@ const Header = () => {
     );
   };
 
-  
-     const isPathMatch = (item: any) => {
-  return item.match?.some((p: string) => {
-    if (p === "/") return pathname === "/";
+
+  const isPathMatch = (item: any) => {
+    return item.match?.some((p: string) => {
+      if (p === "/") return pathname === "/";
       return pathname === p || pathname.startsWith(p + "/");
-  });
-};
+    });
+  };
 
-const hasActive = (menu || []).some((item) => item && isPathMatch(item));
+  const hasActive = (menu || []).some((item) => item && isPathMatch(item));
 
-     
+
   return (
     <div className="bg-white px-6 fixed top-0 left-0 w-full z-51 shadow h-30 flex flex-col justify-center gap-5">
       <div className="flex items-center justify-between">
