@@ -41,6 +41,9 @@ export const Schema = z
         listLocation: z.string().min(1, "Danh sách điểm đến là bắt buộc"),
 
         bannerImg: z.any().optional(),
+
+        country: z.string().optional(),
+        city: z.string().optional(),
     })
     .refine(
         (data) =>
@@ -56,6 +59,7 @@ type SchemaType = zod.infer<typeof Schema>;
 const TourCustomizedPopup = () => {
     const { user } = useUser();
     const { coData, coLoading } = useListCompanyOwner();
+    const [nationalityCode, setNationalityCode] = useState("");
 
     const [preview, setPreview] = useState<string | null>(null);
     const AGENT_HOST_OPTIONS = coData
@@ -87,7 +91,7 @@ const TourCustomizedPopup = () => {
             tourName: "Test Tour 1044",
             dateStart: "2026-04-25",
 
-            nationality: "01D5623E-752F-4A3D-A2B2-C62EB984FB13", // 🇻🇳 fix cứng
+            nationality: "",
 
             sgl: 0,
             dbl: 2,
@@ -101,7 +105,7 @@ const TourCustomizedPopup = () => {
 
             remark: "<p>Ghi chú</p>",
 
-            listLocation: "VN00070001!1#VN00070000!1#",
+            listLocation: "",
         }
     });
 
@@ -110,6 +114,8 @@ const TourCustomizedPopup = () => {
     const { mutate: addNewTourCustomizedApi, isPending: isLoading } = useMutation({
         mutationFn: addNewTourCustomized,
     });
+
+
 
     const onSubmit = handleSubmit(async (data) => {
         const payload = {
@@ -140,7 +146,7 @@ const TourCustomizedPopup = () => {
 
             strRemark: data.remark,
 
-            strListLocation: data.listLocation,
+            strListLocation: buildListLocation(),
         };
 
         addNewTourCustomizedApi(payload, {
@@ -167,26 +173,107 @@ const TourCustomizedPopup = () => {
 
     const { ctData } = useListCity({
         strTableName: "MC02",
-        strFeildSelect: "MC02_CountryGUID AS intID,MC02_CountryName AS strName,MC02_CountryGUID AS id,MC02_CountryName AS text,MC02_CountryName AS strCountryName, MC02_CountryFlagIcon strCountryFlagIcon",
+        strFeildSelect: "MC02_CountryCode AS code, MC02_CountryGUID AS intID,MC02_CountryName AS strName,MC02_CountryGUID AS id,MC02_CountryName AS text,MC02_CountryName AS strCountryName, MC02_CountryFlagIcon strCountryFlagIcon",
         strWhere: "WHERE (IsActive=1)  ORDER BY MC02_CountryName ASC ",
     })
 
-    // // thành phố
-    // const { ctData: ntData } = useListCity({
-    //     strTableName: "MC04",
-    //     strFeildSelect: "MC04_CityCode AS strCityCode,MC04_CityName AS strCityName",
-    //     strWhere: "WHERE IsActive=1 AND MC04_CityCode LIKE '%VN%' AND MC04.IsActive=1 ORDER BY MC04_CityName",
-    // })
-
-    console.log("ctData", ctData)
-    // console.log("ntData", ntData)
-
-
-    const NATIONALITY_OPTIONS = ctData.map((item: any) => ({
+    const COUNTRY_OPTIONS = ctData.map((item: any) => ({
         label: item.strName,
         value: item.id,
     }));
 
+    const COUNTRY_OPTIONS_LIST = ctData.map((item: any) => ({
+        label: item.strName,
+        value: item.code,
+    }));
+
+
+    // thành phố
+    const { ctData: ntData } = useListCity({
+        strTableName: "MC04",
+        strFeildSelect: "MC04_CityCode AS strCityCode,MC04_CityName AS strCityName",
+        strWhere: `WHERE IsActive=1 
+               AND MC04_CityCode LIKE '%${nationalityCode}%' 
+               AND MC04.IsActive=1 
+               ORDER BY MC04_CityName`,
+    });
+
+    console.log("ntData", ntData)
+    const CITY_OPTIONS = ntData.map((item: any) => ({
+        label: item.strCityName,
+        value: item.strCityCode,
+    }));
+
+
+    const [locations, setLocations] = useState<
+        { countryCode: string; cityCode: string; nights: number }[]
+    >([]);
+
+    const watchedCountry = methods.watch("country");
+
+    const handleAddLocation = () => {
+        const countryVal = methods.getValues("country");
+        const cityVal = methods.getValues("city");
+
+        if (!countryVal || !cityVal) return;
+
+        setLocations((prev) => {
+            // tránh duplicate city
+            if (prev.some((x) => x.cityCode === cityVal)) return prev;
+
+            return [
+                ...prev,
+                {
+                    countryCode: countryVal,
+                    cityCode: cityVal,
+                    nights: 1,
+                },
+            ];
+        });
+
+        // reset form fields
+        methods.setValue("city", "");
+    };
+
+    useEffect(() => {
+        if (!watchedCountry) return;
+
+        setNationalityCode(watchedCountry);
+
+        // reset city khi đổi country
+        methods.setValue("city", "");
+    }, [watchedCountry]);
+
+
+    const buildListLocation = () => {
+        return locations
+            .map((x) => `${x.cityCode}!${x.nights}`)
+            .join("#") + (locations.length ? "#" : "");
+    };
+
+    // keep form field `listLocation` in sync with locations state
+    useEffect(() => {
+        methods.setValue("listLocation", buildListLocation());
+    }, [locations]);
+
+    // initialize from existing form value if any (parse format CITYCODE!N#...)
+    useEffect(() => {
+        const initial = methods.getValues("listLocation") || "";
+        if (!initial) return;
+        const parsed = initial
+            .split("#")
+            .filter(Boolean)
+            .map((t) => {
+                const [cityCode, nights] = t.split("!");
+                return {
+                    countryCode: "",
+                    cityCode: cityCode || "",
+                    nights: Number(nights) || 1,
+                };
+            });
+
+        if (parsed.length) setLocations(parsed);
+    }, []);
 
     const renderForm = (
         <div className="bg-white rounded-4xl p-8 border border-gray-100 shadow-sm space-y-8 font-sans">
@@ -214,10 +301,10 @@ const TourCustomizedPopup = () => {
                     options={CURRENCYS_OPTIONS}
                 />
 
-                <Field.Select
+                <Field.SearchSelect
                     name="nationality"
                     label={{ text: "Nationality" }}
-                    options={NATIONALITY_OPTIONS}
+                    options={COUNTRY_OPTIONS}
                 />
 
 
@@ -265,77 +352,84 @@ const TourCustomizedPopup = () => {
 
                 <div className="flex gap-2">
                     <div className="flex-1">
-                        <Field.Select
+                        <Field.SearchSelect
                             name="country"
-                            options={NATIONALITY_OPTIONS}
-                            disabled
+                            options={COUNTRY_OPTIONS_LIST}
                         />
                     </div>
 
                     <div className="flex-1">
-                        <Field.Select
-                            name="city_fake"
-                            options={[{ label: "--- Chọn Địa danh ---", value: "" }]}
-                            disabled
+                        <Field.SearchSelect
+                            name="city"
+                            options={CITY_OPTIONS}
+                            disabled={!watchedCountry}
                         />
                     </div>
 
                     <button
                         type="button"
-                        className="px-4 py-2 bg-gray-200 text-gray-500 rounded-lg cursor-not-allowed text-sm"
+                        onClick={handleAddLocation}
+                        className="px-4 py-2 bg-[#004b91] text-white rounded-lg text-sm cursor-pointer hover:bg-[#003d75] transition"
                     >
                         Thêm điểm đến
                     </button>
                 </div>
 
-                <div className="space-y-2">
-                    {[
-                        { city: "Ba Be", code: "VN00070001" },
-                        { city: "Bac Kan", code: "VN00070000" },
-                    ].map((item, index) => (
+                <div className="space-y-3">
+                    {locations.map((item, index) => (
                         <div
                             key={index}
-                            className="flex items-center justify-between border border-slate-200 rounded-xl px-4 py-3 bg-gray-50 hover:bg-gray-100 transition"
+                            className="flex items-center justify-between gap-4 p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition"
                         >
-                            {/* LEFT */}
-                            <div className="flex items-center gap-3">
-                                <GripVertical size={16} className="text-gray-400" />
-
-                                <span className="text-lg">🇻🇳</span>
-
-                                <div className="flex items-center gap-2 text-sm">
-                                    <span className="font-medium">Vietnam</span>
-                                    <MapPin size={14} className="text-gray-400" />
-                                    <span>{item.city}</span>
-                                </div>
+                            {/* LEFT: location info */}
+                            <div className="flex flex-col">
+                                <span className="text-sm font-semibold text-gray-800">
+                                    {item.cityCode}
+                                </span>
+                                <span className="text-xs text-gray-400">
+                                    {item.countryCode}
+                                </span>
                             </div>
 
-                            {/* RIGHT */}
+                            {/* CENTER: nights */}
                             <div className="flex items-center gap-2">
+                                <span className="text-xs text-gray-500">Nights</span>
+
                                 <select
-                                    className="cursor-pointer border border-slate-200 rounded-md px-2 py-1 text-sm bg-white"
-                                    disabled
+                                    value={item.nights}
+                                    onChange={(e) => {
+                                        const value = Number(e.target.value);
+
+                                        setLocations((prev) =>
+                                            prev.map((x, i) =>
+                                                i === index ? { ...x, nights: value } : x
+                                            )
+                                        );
+                                    }}
+                                    className="px-2 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 >
-                                    <option>1</option>
+                                    {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+                                        <option key={n} value={n}>
+                                            {n}
+                                        </option>
+                                    ))}
                                 </select>
-
-                                <button
-                                    type="button"
-                                    className="p-2 rounded-md bg-gray-100 text-gray-400 cursor-not-allowed"
-                                >
-                                    <Moon size={16} />
-                                </button>
-
-                                <button
-                                    type="button"
-                                    className="p-2 rounded-md bg-gray-100 text-gray-400 cursor-not-allowed"
-                                >
-                                    <Trash2 size={16} />
-                                </button>
                             </div>
+
+                            {/* RIGHT: delete */}
+                            <button
+                                onClick={() =>
+                                    setLocations((prev) => prev.filter((_, i) => i !== index))
+                                }
+                                className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition cursor-pointer"
+                            >
+                                <Trash2 size={16} />
+                            </button>
                         </div>
                     ))}
                 </div>
+
+
             </div>
 
 
@@ -393,26 +487,6 @@ const TourCustomizedPopup = () => {
             </div>
         </div>
     );
-
-
-    // quốc gia
-
-    // const { ctData } = useListCity({
-    //     strTableName: "MC02",
-    //     strFeildSelect: "MC02_CountryGUID AS intID,MC02_CountryName AS strName,MC02_CountryGUID AS id,MC02_CountryName AS text,MC02_CountryName AS strCountryName, MC02_CountryFlagIcon strCountryFlagIcon",
-    //     strWhere: "WHERE (IsActive=1)  ORDER BY MC02_CountryName ASC ",
-    // })
-
-    // // thành phố
-    // const { ctData: ntData } = useListCity({
-    //     strTableName: "MC04",
-    //     strFeildSelect: "MC04_CityCode AS strCityCode,MC04_CityName AS strCityName",
-    //     strWhere: "WHERE IsActive=1 AND MC04_CityCode LIKE '%VN%' AND MC04.IsActive=1 ORDER BY MC04_CityName",
-    // })
-
-    // console.log("ctData", ctData)
-    // console.log("ntData", ntData)
-
 
     return (
         <div className="">

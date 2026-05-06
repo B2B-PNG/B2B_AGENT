@@ -3,6 +3,7 @@ import { RHFSelect } from "./rhf-select-field";
 import { RHFCheckField } from "./rhf-check-field";
 import { RHFMultiSelect } from "./rhf-multi-select";
 import { RHFEditorField } from "./rhf-editor-field";
+import { RHFSearchSelect } from "./rhf-search-select-field";
 
 export const Field = {
   Select: RHFSelect,
@@ -10,4 +11,5 @@ export const Field = {
   Text: RHFTextField,
   Check: RHFCheckField,
   Editor: RHFEditorField,
+  SearchSelect: RHFSearchSelect,
 };
